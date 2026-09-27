@@ -16,9 +16,12 @@ HERE = Path(__file__).resolve().parent
 
 CHECKS = (
     ("career data", "check_data.py"),
+    ("community members", "check_people.py"),
     ("page styling", "check_pages.py"),
     ("static references", "check_static.py"),
     ("animations", "check_anim.py"),
+    ("log in / sign up", "check_auth.py"),
+    ("profile popup", "check_profile.py"),
 )
 
 failed: list[str] = []

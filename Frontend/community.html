@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — Future Era</title>
+  <meta name="description"
+    content="Where the Future Era talks back — build logs, career help, show and tell, and the questions nobody else will answer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Audiowide&family=Marck+Script&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="nav" id="nav">
+    <a href="index.html#intro" class="nav__logo" aria-label="Future Era — home">
+      <span class="nav__mark" aria-hidden="true">FE</span>
+      <span class="nav__word">Future<em>Era</em></span>
+    </a>
+
+    <nav class="nav__links" id="nav-links" aria-label="Main">
+      <a href="index.html#intro" class="nav__link">Home</a>
+      <a href="index.html#about" class="nav__link">About</a>
+      <a href="creators.html" class="nav__link">Creators</a>
+      <a href="community.html" class="nav__link is-active">Community</a>
+      <a href="career.html" class="nav__cta">Enter the Era</a>
+      <button class="auth__trigger auth__nav-trigger" type="button" data-auth-open>
+        Log in
+      </button>
+      <span class="auth__who" data-auth-who>
+        <button class="prof__chip" type="button" data-profile-open aria-haspopup="dialog">
+          <span class="auth__avatar" data-auth-initial aria-hidden="true">FE</span>
+          <span class="prof__chipname" data-profile-chipname>Profile</span>
+        </button>
+        <button class="auth__trigger" type="button" data-auth-signout>Sign out</button>
+      </span>
+    </nav>
+
+    <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false"
+      aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ============ COMMUNITY ============ -->
+  <main>
+    <section class="community community--page" id="community">
+      <div class="community__inner">
+
+        <span class="community__eyebrow" data-reveal>Community</span>
+
+        <h1 class="community__title" data-reveal>
+          Where the era<br /><em>talks back</em>.
+        </h1>
+
+        <p class="community__lede" data-reveal>
+          The work is better when someone has already hit the wall you are about to hit.
+          Four rooms, no noise — bring the thing you are building, or the thing that broke.
+        </p>
+
+        <div class="community__channels">
+          <article class="channel" data-reveal>
+            <h2 class="channel__name">Build Logs</h2>
+            <p class="channel__desc">
+              What you shipped this week, however small. Screenshots, ugly first drafts and
+              the bug that took three days all count.
+            </p>
+            <span class="channel__count">214 threads</span>
+          </article>
+
+          <article class="channel" data-reveal>
+            <h2 class="channel__name">Career Corner</h2>
+            <p class="channel__desc">
+              Which path to take, which skill to learn next, what to do when the plan changes.
+              Bring the real situation, not the hypothetical one.
+            </p>
+            <span class="channel__count">389 threads</span>
+          </article>
+
+          <article class="channel" data-reveal>
+            <h2 class="channel__name">Show &amp; Tell</h2>
+            <p class="channel__desc">
+              Finished things, mostly. Demos, experiments and the one feature you are
+              quietly proud of.
+            </p>
+            <span class="channel__count">156 threads</span>
+          </article>
+
+          <article class="channel" data-reveal>
+            <h2 class="channel__name">Questions</h2>
+            <p class="channel__desc">
+              The ones that look too obvious to ask and turn out everyone else had too.
+              No question is too small here.
+            </p>
+            <span class="channel__count">502 threads</span>
+          </article>
+        </div>
+
+        <!-- ============ PEOPLE YOU MIGHT FOLLOW ============ -->
+        <section class="people" id="people" aria-labelledby="people-title">
+
+          <div class="people__head">
+            <div class="people__headtext">
+              <span class="people__eyebrow" data-reveal>Suggested for you</span>
+              <h2 class="people__title" id="people-title" data-reveal>People worth following</h2>
+              <p class="people__lede" data-reveal>
+                Ranked by how much of what you picked they also have. Pick your own tags
+                below and the whole slide re-ranks itself.
+              </p>
+            </div>
+
+            <div class="people__arrows">
+              <button class="people__arrow" type="button" data-people-prev aria-label="Show earlier suggestions">
+                <span aria-hidden="true">&larr;</span>
+              </button>
+              <button class="people__arrow" type="button" data-people-next aria-label="Show more suggestions">
+                <span aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="people__picker" data-reveal>
+            <div class="people__row">
+              <span class="people__rowlabel" id="people-interests-label">Your interests</span>
+              <div class="people__chips" id="people-interests" role="group" aria-labelledby="people-interests-label">
+              </div>
+            </div>
+
+            <div class="people__row">
+              <span class="people__rowlabel" id="people-skills-label">Your skills</span>
+              <input class="people__filter" id="people-skill-filter" type="search" placeholder="Filter 41 skills"
+                aria-label="Filter the skill list" autocomplete="off">
+              <div class="people__chips" id="people-skills" role="group" aria-labelledby="people-skills-label">
+              </div>
+            </div>
+
+            <p class="people__status" id="people-status" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="people__slide" id="people-slide" role="list" aria-label="Suggested members" data-reveal>
+            <p class="people__loading">Loading members&hellip;</p>
+          </div>
+
+        </section>
+
+        <section class="groups" id="groups" aria-labelledby="groups-title" data-reveal>
+          <div class="groups__head">
+            <span class="people__eyebrow">Communities</span>
+            <h2 class="people__title" id="groups-title">Groups you might like</h2>
+            <p class="people__lede">
+              Ranked by how much of what you picked the people in each group have between them.
+              Joining is your call - take any of them, leave the rest, change it whenever.
+            </p>
+          </div>
+
+          <p class="people__status" id="groups-status" role="status" aria-live="polite"></p>
+
+          <ul class="groups__list" id="groups-list" role="list">
+            <li class="people__loading">Loading groups&hellip;</li>
+          </ul>
+        </section>
+
+        <div class="community__listwrap">
+          <div class="community__rail" aria-hidden="true"><span></span></div>
+            <br>
+            <br>
+          <h2 class="community__listhead">Latest discussion</h2>
+
+          <div class="community__list">
+            <article class="thread">
+              <span class="thread__tag">Career Corner</span>
+              <h3 class="thread__title">Graduated in June, no experience yet — where do I actually start?</h3>
+              <p class="thread__excerpt">
+                Degree done, portfolio empty. Every guide online jumps straight to "network
+                aggressively" without saying how when you have nothing to show yet.
+              </p>
+              <p class="thread__meta">
+                <span class="thread__author">Himanshu Bisht</span>
+                <span class="thread__replies">38 replies</span>
+              </p>
+            </article>
+
+            <article class="thread">
+              <span class="thread__tag">Build Logs</span>
+              <h3 class="thread__title">Week 3: the login finally works and I understand why it took three weeks</h3>
+              <p class="thread__excerpt">
+                Spent longer than I want to admit on the password hashing. Turns out the fix
+                was reading the error message properly instead of retrying the same request.
+              </p>
+              <p class="thread__meta">
+                <span class="thread__author">Dev Sharma</span>
+                <span class="thread__replies">12 replies</span>
+              </p>
+            </article>
+
+            <article class="thread">
+              <span class="thread__tag">Questions</span>
+              <h3 class="thread__title">How do you keep a scroll animation from feeling slow on a cheap phone?</h3>
+              <p class="thread__excerpt">
+                The page is fine on my laptop and stutters on the phone I actually own.
+                Is it the number of elements, or the scrub value?
+              </p>
+              <p class="thread__meta">
+                <span class="thread__author">Aman Chauhan</span>
+                <span class="thread__replies">27 replies</span>
+              </p>
+            </article>
+
+            <article class="thread">
+              <span class="thread__tag">Show &amp; Tell</span>
+              <h3 class="thread__title">Built a career path tool that reads like a conversation, not a form</h3>
+              <p class="thread__excerpt">
+                Two doors instead of a dropdown, and it tells you what to do next rather than
+                just listing skills. First version is up, would like it torn apart.
+              </p>
+              <p class="thread__meta">
+                <span class="thread__author">Harshit Chaurasiya</span>
+                <span class="thread__replies">19 replies</span>
+              </p>
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="footer">
+    <div class="footer__inner">
+
+      <p class="footer__statement">
+        The future is already here for<br />whoever is <em>willing to build it</em>.
+      </p>
+
+      <div class="footer__top">
+        <a href="index.html#intro" class="footer__logo" aria-label="Future Era — back to top">
+          <span class="footer__mark">FE</span>
+          <span class="footer__word">Future<em>Era</em></span>
+        </a>
+
+        <nav class="footer__links" aria-label="Footer">
+          <a href="index.html#intro">Home</a>
+          <a href="index.html#about">About</a>
+          <a href="creators.html">Creators</a>
+          <a href="community.html">Community</a>
+        </nav>
+
+        <a href="index.html#intro" class="btn btn--ghost footer__back">Back to top</a>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">
+          © <span id="year"></span> Future Era — The GenX Era. All rights reserved.
+        </p>
+
+        <p class="footer__tagline">
+          Built for the ones who come after — made to ship, not just show.
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ============ LOG IN / SIGN UP ============ -->
+  <dialog class="auth__dialog" id="auth-dialog" aria-labelledby="auth-title">
+    <button class="auth__close" type="button" data-auth-close aria-label="Close">&times;</button>
+
+    <div class="auth__inner">
+      <span class="auth__eyebrow">Members</span>
+      <h2 class="auth__title" id="auth-title">Join the <em>Era</em></h2>
+      <div class="auth__rule" aria-hidden="true"></div>
+
+      <div class="auth__tabs" role="tablist" aria-label="Account">
+        <button class="auth__tab" type="button" role="tab" id="auth-tab-login" data-auth-tab="login"
+          aria-selected="true" aria-controls="auth-panel-login">Log in</button>
+        <button class="auth__tab" type="button" role="tab" id="auth-tab-signup" data-auth-tab="signup"
+          aria-selected="false" aria-controls="auth-panel-signup">Sign up</button>
+      </div>
+
+      <p class="auth__msg" id="auth-msg" role="status" aria-live="polite"></p>
+
+      <form class="auth__form is-active" id="auth-panel-login" role="tabpanel" aria-labelledby="auth-tab-login"
+        novalidate>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-login-email">Email</label>
+          <input class="inp" type="email" id="auth-login-email" name="email" autocomplete="email"
+            placeholder="you@example.com" required>
+        </div>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-login-pass">Password</label>
+          <input class="inp" type="password" id="auth-login-pass" name="password" autocomplete="current-password"
+            placeholder="Your password" required>
+        </div>
+        <button class="btn btn--solid auth__submit" type="submit">Log in</button>
+        <p class="auth__note">No account yet? Switch to <strong>Sign up</strong> above.</p>
+      </form>
+
+      <form class="auth__form" id="auth-panel-signup" role="tabpanel" aria-labelledby="auth-tab-signup" novalidate>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-signup-name">Name</label>
+          <input class="inp" type="text" id="auth-signup-name" name="name" autocomplete="name"
+            placeholder="Your name" required>
+        </div>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-signup-email">Email</label>
+          <input class="inp" type="email" id="auth-signup-email" name="email" autocomplete="email"
+            placeholder="you@example.com" required>
+        </div>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-signup-pass">Password</label>
+          <input class="inp" type="password" id="auth-signup-pass" name="password" autocomplete="new-password"
+            placeholder="At least 6 characters" required>
+        </div>
+        <button class="btn btn--solid auth__submit" type="submit">Create account</button>
+        <p class="auth__note">Already have an account? Switch to <strong>Log in</strong> above.</p>
+      </form>
+    </div>
+  </dialog>
+    <dialog class="prof__dialog" id="profile-dialog" aria-labelledby="profile-title">
+        <button class="prof__close" type="button" data-profile-close aria-label="Close">&times;</button>
+
+        <div class="prof__inner">
+            <header class="prof__head">
+                <span class="prof__avatar" data-profile-initial aria-hidden="true">F</span>
+                <div class="prof__ident">
+                    <h2 class="prof__title" id="profile-title">Your <em>profile</em></h2>
+                    <p class="prof__email" data-profile-email></p>
+                </div>
+            </header>
+
+            <dl class="prof__stats">
+                <div class="prof__stat">
+                    <dt class="prof__statlabel">Following</dt>
+                    <dd class="prof__statvalue" data-profile-following-count>0</dd>
+                </div>
+                <div class="prof__stat">
+                    <dt class="prof__statlabel">Followers</dt>
+                    <dd class="prof__statvalue" data-profile-followers-count>0</dd>
+                </div>
+                <div class="prof__stat">
+                    <dt class="prof__statlabel">Groups</dt>
+                    <dd class="prof__statvalue" data-profile-group-count>0</dd>
+                </div>
+            </dl>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Your data</h3>
+                <ul class="prof__tags" data-profile-tags></ul>
+                <p class="prof__empty" data-profile-tags-empty>Pick interests and skills on the
+                    Community page and they show up here.</p>
+            </section>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Following</h3>
+                <ul class="prof__list" data-profile-following></ul>
+                <p class="prof__empty" data-profile-following-empty>You are not following anyone
+                    yet. Find people on the Community page.</p>
+            </section>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Followers</h3>
+                <p class="prof__empty">No one follows you yet, and that number is honest rather than
+                    broken. Accounts and follows live in this browser only, with no shared server, so
+                    nobody else's follow can reach your profile. Your following list above is real.</p>
+            </section>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Groups <span class="prof__hint" data-profile-group-hint></span></h3>
+                <ul class="prof__list" data-profile-groups></ul>
+                <p class="prof__empty" data-profile-groups-empty>You are not in any groups yet. Pick
+                    some below and they are saved to your account.</p>
+                <ul class="prof__choices" data-profile-group-choices></ul>
+            </section>
+        </div>
+    </dialog>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
+  <script src="script.js?v=8"></script>
+</body>
+
+</html>

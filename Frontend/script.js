@@ -1,5 +1,5 @@
-﻿/* =========================================================
-   Future Era â€” intro animation timeline
+/* =========================================================
+   Future Era — intro animation timeline
    ========================================================= */
 
 /* Removes missing elements so GSAP never gets a null target */
@@ -116,6 +116,279 @@ function initNav() {
             }
         }
     }
+}
+
+/* =========================================================
+   Log in / sign up modal
+   =========================================================
+   Front-end only, and deliberately so: the dialog, the tab switch and every
+   validation below are plain DOM, so none of it depends on GSAP having loaded.
+   <dialog> gives us the top layer, the backdrop and Escape for free.
+
+   Passwords are hashed with SHA-256 and kept in localStorage on this device.
+   That is enough to make the flow real for a demo but it is NOT authentication
+   - anyone with devtools can read it and nothing is verified against a server.
+   Real accounts need routes in Backend/main.py. */
+const AUTH_USERS = "future-era:users";
+const AUTH_SESSION = "future-era:session";
+
+/* Where a successful sign in lands. Every page sits in the same folder, so a
+   plain relative name is enough and works from any of them. */
+const HOME_PAGE = "index.html";
+
+function initAuth() {
+    const dialog = document.getElementById("auth-dialog");
+    /* every trigger on the page, not just the navbar one: community.html also
+       carries a "Log in" button in its closing call to action, and
+       querySelector would have left that second button doing nothing */
+    const openBtns = Array.from(document.querySelectorAll("[data-auth-open]"));
+
+    /* career.html has no navbar, so it carries no dialog either */
+    if (!dialog || !openBtns.length) return;
+
+    const who = document.querySelector("[data-auth-who]");
+    const msg = document.getElementById("auth-msg");
+    const closeBtn = dialog.querySelector("[data-auth-close]");
+    const tabs = Array.from(dialog.querySelectorAll("[data-auth-tab]"));
+    const panels = {
+        login: document.getElementById("auth-panel-login"),
+        signup: document.getElementById("auth-panel-signup"),
+    };
+
+    const store = {
+        read(key) {
+            try {
+                return JSON.parse(window.localStorage.getItem(key)) || {};
+            } catch (err) {
+                return {};
+            }
+        },
+        write(key, value) {
+            try {
+                window.localStorage.setItem(key, JSON.stringify(value));
+            } catch (err) {
+                /* storage blocked or private mode - the form still works for
+                   this page view, it just will not be remembered */
+            }
+        },
+        drop(key) {
+            try {
+                window.localStorage.removeItem(key);
+            } catch (err) {
+                /* nothing to clean up if storage is unavailable */
+            }
+        },
+    };
+
+    /* SHA-256 where the browser exposes it (https or localhost), otherwise a
+       cheap stand-in so the flow still behaves on a plain http:// origin. Neither
+       is a real KDF - hashing at all is only here to keep the password out of
+       readable text. */
+    const digest = (text) => {
+        const subtle = window.crypto && window.crypto.subtle;
+        if (subtle && window.TextEncoder) {
+            return subtle
+                .digest("SHA-256", new window.TextEncoder().encode(text))
+                .then((buf) =>
+                    Array.from(new Uint8Array(buf))
+                        .map((b) => b.toString(16).padStart(2, "0"))
+                        .join("")
+                );
+        }
+        let h = 0;
+        for (let i = 0; i < text.length; i += 1) h = (h * 31 + text.charCodeAt(i)) | 0;
+        return Promise.resolve("weak:" + h);
+    };
+
+    const looksLikeEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    const val = (panel, id) => {
+        const el = panel.querySelector("#" + id);
+        return el ? String(el.value || "").trim() : "";
+    };
+
+    const say = (text, ok) => {
+        if (!msg) return;
+        msg.textContent = text;
+        msg.classList.toggle("auth__msg--ok", !!ok);
+        msg.classList.add("is-shown");
+    };
+
+    const hush = () => {
+        if (!msg) return;
+        msg.textContent = "";
+        msg.classList.remove("is-shown", "auth__msg--ok");
+    };
+
+    const setTab = (name) => {
+        tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.authTab === name)));
+        Object.keys(panels).forEach((key) => {
+            if (panels[key]) panels[key].classList.toggle("is-active", key === name);
+        });
+    };
+
+    /* swaps the nav button for a "signed in" chip, and back on sign out */
+    const renderWho = () => {
+        const session = store.read(AUTH_SESSION);
+        const signedIn = !!(session && session.email);
+
+        openBtns.forEach((btn) => btn.classList.toggle("is-hidden", signedIn));
+
+        if (who) {
+            who.classList.toggle("is-shown", signedIn);
+
+            const badge = who.querySelector("[data-auth-initial]");
+            if (badge && signedIn) {
+                const seed = String(session.name || session.email || "F").trim();
+                badge.textContent = seed.charAt(0).toUpperCase();
+            }
+        }
+
+        /* Follows are stored per account, so anything rendering a follow button
+           has to repaint when the account changes. Announced from here rather
+           than at each call site so signing in, signing out and the first render
+           all say the same thing. */
+        window.dispatchEvent(new CustomEvent("future-era:session"));
+    };
+
+    const open = (name) => {
+        const tab = name || "login";
+        setTab(tab);
+        hush();
+
+        /* on mobile the dropdown would otherwise sit open behind the dialog */
+        const links = document.getElementById("nav-links");
+        const toggle = document.getElementById("nav-toggle");
+        if (links) links.classList.remove("is-open");
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+
+        if (typeof dialog.showModal === "function") {
+            if (!dialog.open) dialog.showModal();
+        } else {
+            dialog.setAttribute("open", "");
+        }
+
+        const panel = panels[tab] || panels.login;
+        const first = panel && panel.querySelector ? panel.querySelector(".inp") : null;
+        if (first) window.setTimeout(() => first.focus(), 30);
+    };
+
+    const close = () => {
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
+    };
+
+    /* Signing in always ends on the home page. Deliberately not a
+       "first sign in only" branch and not a once-per-session flag: signing in
+       again, from any page, lands on home every time - the dialog is a
+       doorman, not a doorway you only go through once.
+
+       The pause is so "Signed in. Welcome back." is actually readable before
+       the page goes, and so the session event dispatched by renderWho above
+       has landed before the document is torn down. Guarded on `assign`
+       existing so the function is inert in a test harness with no location,
+       rather than throwing where it cannot be caught. */
+    const land = (message, panel) => {
+        say(message, true);
+
+        /* Nothing in here may be allowed to stop the redirect. An earlier
+           version called panel.reset() unguarded, on the assumption that the
+           panel is always present because the dialog is: a missing panel threw
+           a TypeError, and because the setTimeout came after it, the
+           navigation was never even scheduled. The dialog closed, the visitor
+           stayed put, and nothing was logged anywhere. */
+        try {
+            if (panel && typeof panel.reset === "function") panel.reset();
+        } catch (err) {
+            /* a form that does not clear is not worth losing the move over */
+        }
+
+        window.setTimeout(() => {
+            close();
+            if (window.location && typeof window.location.assign === "function") {
+                window.location.assign(HOME_PAGE);
+            }
+        }, 900);
+    };
+
+    openBtns.forEach((btn) => btn.addEventListener("click", () => open("login")));
+    if (closeBtn) closeBtn.addEventListener("click", close);
+
+    /* The suggestion slide needs to ask for an account when someone follows
+       while signed out, and it has no business knowing how this popup opens.
+       A window event rather than a shared function so the two stay decoupled
+       and neither has to exist for the other. */
+    window.addEventListener("future-era:open-auth", () => open("login"));
+
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            setTab(tab.dataset.authTab);
+            hush();
+        });
+    });
+
+    /* a click on the dimmed backdrop lands on the dialog element itself, while a
+       click inside the panel does not - so this closes on backdrop only */
+    dialog.addEventListener("click", (e) => {
+        if (e.target === dialog) close();
+    });
+
+    const signout = document.querySelector("[data-auth-signout]");
+    if (signout) {
+        signout.addEventListener("click", () => {
+            store.drop(AUTH_SESSION);
+            renderWho();
+        });
+    }
+
+    if (panels.signup) {
+        panels.signup.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const name = val(panels.signup, "auth-signup-name");
+            const email = val(panels.signup, "auth-signup-email").toLowerCase();
+            const pass = val(panels.signup, "auth-signup-pass");
+
+            if (!name) return say("Please enter your name.");
+            if (!looksLikeEmail(email)) return say("That email does not look right.");
+            if (pass.length < 6) return say("Password needs to be at least 6 characters.");
+
+            const users = store.read(AUTH_USERS);
+            if (users[email]) return say("That email is already registered. Try logging in.");
+
+            digest(email + "::" + pass).then((hash) => {
+                users[email] = { name: name, email: email, hash: hash };
+                store.write(AUTH_USERS, users);
+                store.write(AUTH_SESSION, { name: name, email: email });
+                renderWho();
+                land("Account created. Taking you home.", panels.signup);
+            });
+        });
+    }
+
+    if (panels.login) {
+        panels.login.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const email = val(panels.login, "auth-login-email").toLowerCase();
+            const pass = val(panels.login, "auth-login-pass");
+
+            if (!looksLikeEmail(email)) return say("That email does not look right.");
+            if (!pass) return say("Please enter your password.");
+
+            const users = store.read(AUTH_USERS);
+            const user = users[email];
+            if (!user) return say("No account with that email. Sign up first.");
+
+            digest(email + "::" + pass).then((hash) => {
+                if (hash !== user.hash) return say("That password does not match.");
+                store.write(AUTH_SESSION, { name: user.name, email: user.email });
+                renderWho();
+                land("Signed in. Taking you home.", panels.login);
+            });
+        });
+    }
+
+    renderWho();
 }
 
 function initIntro() {
@@ -292,13 +565,448 @@ function initCreators() {
 }
 
 /* =========================================================
-   Career blueprint â€” one scrolling form, two paths
+   Community — channels and the latest discussion
+   =========================================================
+   Same shape as the creators page: the header fades up on scroll, each thread is
+   tied to the scrollbar so the list assembles as you read, and the rail fills
+   alongside. Every reveal is a gsap.from(), so the markup carries no
+   opacity: 0 of its own and the page is fully readable with motion off. */
+function initCommunity() {
+    const section = document.querySelector("#community");
+    if (!section) return;
+
+    if (!MOTION.ok) return;
+
+    /* header, channel cards and the closing row */
+    gsap.utils.toArray("#community [data-reveal]").forEach((el) => {
+        gsap.from(el, {
+            y: 48,
+            opacity: 0,
+            duration: 1,
+            ease: "expo.out",
+            scrollTrigger: { trigger: el, start: "top 88%" },
+        });
+    });
+
+    /* each thread is tied to the scrollbar */
+    gsap.utils.toArray(".thread").forEach((row) => {
+        gsap.from(row, {
+            y: 70,
+            opacity: 0,
+            ease: "none",
+            scrollTrigger: {
+                trigger: row,
+                start: "top 95%",
+                end: "top 58%",
+                scrub: 0.6,
+            },
+        });
+    });
+
+    /* the rail fills alongside the list */
+    const rail = section.querySelector(".community__rail span");
+    const list = section.querySelector(".community__list");
+
+    if (rail && list) {
+        gsap.fromTo(
+            rail,
+            { scaleY: 0 },
+            {
+                scaleY: 1,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: list,
+                    start: "top 80%",
+                    end: "bottom 60%",
+                    scrub: 0.4,
+                },
+            }
+        );
+    }
+
+    /* the channel name tracks the tag colour on hover, matching the creators row */
+    gsap.utils.toArray(".channel__count").forEach((count) => {
+        const card = count.closest(".channel");
+        if (!card) return;
+        card.addEventListener("mouseenter", () =>
+            gsap.to(count, { letterSpacing: "0.3em", duration: 0.5, ease: "expo.out" })
+        );
+        card.addEventListener("mouseleave", () =>
+            gsap.to(count, { letterSpacing: "0.2em", duration: 0.5, ease: "expo.out" })
+        );
+    });
+}
+
+/* =========================================================
+   Community: the suggestion slide, and who you follow
+   =========================================================
+   The member list, the tag vocabularies and the match score all arrive from
+   /api/people, so the ranking rule lives in Python where check_people.py can
+   test it. This only renders what it is handed and keeps the two bits of local
+   state: the tags you picked, and who you follow.
+
+   The tags are a single anonymous bucket. They exist to rank the slide and
+   nothing is private in them. Follows are keyed by account, because who you
+   follow is per-person - and following needs an account at all: with nobody
+   signed in the button opens the log in popup rather than appearing to work
+   and storing nothing. */
+const FOLLOWS_KEY = "future-era:follows:";
+const PROFILE_KEY = "future-era:profile";
+
+/* Member text is interpolated into markup, so it gets escaped. The data is our
+   own, but the rule costs nothing and a name containing an apostrophe quietly
+   breaking a card is not worth the risk. */
+function esc(text) {
+    return String(text == null ? "" : text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+function readStore(key, fallback) {
+    try {
+        const raw = window.localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+    } catch (err) {
+        return fallback;
+    }
+}
+
+function writeStore(key, value) {
+    try {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (err) {
+        /* storage blocked or private mode - the slide still works for this
+           page view, it just will not be remembered */
+    }
+}
+
+/* ---------- group membership, in one place ----------
+   The profile popup and the community group list both show and change which
+   groups you are in, so the read and the write live here rather than being
+   written twice and drifting - the popup would end up showing a group the
+   community page had just removed. */
+
+const sessionOf = () => readStore(AUTH_SESSION, {}) || {};
+
+const userRecord = (email) => {
+    const users = readStore(AUTH_USERS, {}) || {};
+    return email && users[email] ? users[email] : {};
+};
+
+/* Membership lives on the account record rather than under a key of its own, so
+   signing out - which clears the session - cannot leave a stranded list behind,
+   and the groups travel with the account. */
+function myGroups() {
+    const g = userRecord(sessionOf().email).groups;
+    return Array.isArray(g) ? g : [];
+}
+
+function setMyGroups(ids) {
+    const s = sessionOf();
+    if (!s.email) return false;
+
+    const users = readStore(AUTH_USERS, {}) || {};
+    const rec = users[s.email] || { name: s.name, email: s.email };
+    rec.groups = ids;
+    users[s.email] = rec;
+    writeStore(AUTH_USERS, users);
+
+    /* whoever else is showing the same list has to hear about it, or the popup
+       and the community page disagree until the next reload */
+    window.dispatchEvent(new CustomEvent("future-era:groups-changed"));
+    return true;
+}
+
+/* ---------- the ranked payload, fetched once ----------
+   The member slide and the group suggestions are both ranked from the same
+   picks by the same request. Fetching it twice would mean two responses that
+   could disagree, and the page would make a request it does not need - so the
+   slide fetches, and hands the payload on. Kept in a variable as well as an
+   event because the group list is initialised after the slide and would
+   otherwise miss the first one. */
+let RANKED = null;
+
+function announceRanked(data) {
+    RANKED = data;
+    window.dispatchEvent(new CustomEvent("future-era:ranked", { detail: data }));
+}
+
+function initCommunityFollow() {
+    const slide = document.getElementById("people-slide");
+    const interestBox = document.getElementById("people-interests");
+    const skillBox = document.getElementById("people-skills");
+    const status = document.getElementById("people-status");
+    const filter = document.getElementById("people-skill-filter");
+
+    if (!slide || !interestBox || !skillBox) return;
+
+    let vocabulary = { interests: [], skills: [] };
+    let label = { interests: {}, skills: {} };
+    let mine = { interests: [], skills: [] };
+
+    const stored = readStore(PROFILE_KEY, {}) || {};
+    mine.interests = Array.isArray(stored.interests) ? stored.interests : [];
+    mine.skills = Array.isArray(stored.skills) ? stored.skills : [];
+
+    const followKey = () => {
+        const session = readStore(AUTH_SESSION, {}) || {};
+        return session.email ? FOLLOWS_KEY + session.email : "";
+    };
+
+    const following = () => {
+        const key = followKey();
+        const list = key ? readStore(key, []) : [];
+        return Array.isArray(list) ? list : [];
+    };
+
+    const labelOf = (kind, id) => label[kind][id] || id;
+
+    /* ---------- the request ---------- */
+    const load = () => {
+        const q = new URLSearchParams();
+        if (mine.interests.length) q.set("interests", mine.interests.join(","));
+        if (mine.skills.length) q.set("skills", mine.skills.join(","));
+        const query = q.toString();
+
+        return fetch("/api/people" + (query ? "?" + query : ""))
+            .then((res) => {
+                if (!res.ok) throw new Error("server said " + res.status);
+                return res.json();
+            })
+            .then((data) => {
+                vocabulary = { interests: data.interests || [], skills: data.skills || [] };
+                label = {
+                    interests: Object.fromEntries(vocabulary.interests.map((t) => [t.id, t.label])),
+                    skills: Object.fromEntries(vocabulary.skills.map((t) => [t.id, t.label])),
+                };
+
+                /* the server drops tags it does not know, so trust its answer
+                   rather than what is in storage - that is what it ranked on */
+                if (data.mine) {
+                    mine.interests = data.mine.interests || [];
+                    mine.skills = data.mine.skills || [];
+                }
+
+                renderChips();
+                renderPeople(data.people || []);
+
+                /* the group suggestions come out of this same response, ranked
+                   for this same visitor */
+                announceRanked(data);
+            });
+    };
+
+    /* ---------- the tag picker ---------- */
+    const chip = (kind, id, text) =>
+        '<button class="chip" type="button" data-tag="' + esc(id) + '" data-kind="' + kind + '"' +
+        ' aria-pressed="' + (mine[kind].indexOf(id) > -1 ? "true" : "false") + '">' +
+        esc(text) + "</button>";
+
+    const renderChips = () => {
+        interestBox.innerHTML = vocabulary.interests
+            .map((t) => chip("interests", t.id, t.label))
+            .join("");
+
+        const needle = filter ? String(filter.value || "").trim().toLowerCase() : "";
+        const shown = vocabulary.skills.filter(
+            (t) => !needle || t.label.toLowerCase().indexOf(needle) > -1 || t.id.indexOf(needle) > -1
+        );
+
+        skillBox.innerHTML = shown.length
+            ? shown.map((t) => chip("skills", t.id, t.label)).join("")
+            : '<span class="person__followers">No skill matches that.</span>';
+    };
+
+    const toggleTag = (kind, id) => {
+        const at = mine[kind].indexOf(id);
+        if (at > -1) mine[kind].splice(at, 1);
+        else mine[kind].push(id);
+
+        writeStore(PROFILE_KEY, mine);
+        load().catch(showPeopleError);
+    };
+
+    /* ---------- one card ---------- */
+    const card = (person, followed) => {
+        const match = person.match || {};
+        const scored = match.score !== null && match.score !== undefined;
+        const shared = (match.interests || []).concat(match.skills || []);
+        const mineSet = new Set(shared);
+
+        /* Shared tags first and in the accent, so the reason for the suggestion
+           is visible before the number is. */
+        const tags = (person.skills || [])
+            .slice(0, 4)
+            .map((id) => tagChip(id, mineSet.has(id)))
+            .join("");
+
+        const why = scored
+            ? (shared.length
+                ? "Shares " +
+                  (match.interests || []).length + " of your interests and " +
+                  (match.skills || []).length + " of your skills"
+                : "No overlap yet - same direction, different toolkits")
+            : "Pick a tag above and this gets ranked";
+
+        return (
+            '<article class="person' + (followed ? " is-following" : "") + '" role="listitem" data-person="' +
+            esc(person.id) + '">' +
+            '<div class="person__top">' +
+            '<span class="person__avatar" aria-hidden="true">' + esc(person.name.charAt(0).toUpperCase()) + "</span>" +
+            '<span class="person__id">' +
+            '<h3 class="person__name">' + esc(person.name) + "</h3>" +
+            '<span class="person__handle">' + esc(person.handle) + "</span>" +
+            "</span>" +
+            "</div>" +
+            '<span class="person__role">' + esc(person.roleLabel) + "</span>" +
+            '<p class="person__blurb">' + esc(person.blurb) + "</p>" +
+            (tags ? '<div class="person__tags">' + tags + "</div>" : "") +
+            '<p class="person__why">' + esc(why) + "</p>" +
+            '<div class="person__foot">' +
+            '<span class="person__score">' +
+            (scored ? "<b>" + esc(match.score) + "%</b> match" : "not ranked") +
+            "</span>" +
+            '<button class="follow" type="button" data-follow="' + esc(person.id) + '"' +
+            ' aria-pressed="' + (followed ? "true" : "false") + '">' +
+            (followed ? "Following" : "Follow") +
+            "</button>" +
+            "</div>" +
+            '<span class="person__followers">' + esc(person.followers) + " followers</span>" +
+            "</article>"
+        );
+    };
+
+    const tagChip = (id, isShared) =>
+        '<span class="tag' + (isShared ? " tag--shared" : "") + '">' +
+        esc(labelOf("skills", id)) +
+        "</span>";
+
+    const renderPeople = (list) => {
+        const followed = following();
+
+        if (!list.length) {
+            slide.innerHTML = '<p class="people__empty">Nobody to suggest right now.</p>';
+            return;
+        }
+
+        slide.innerHTML = list.map((p) => card(p, followed.indexOf(p.id) > -1)).join("");
+
+        if (status) {
+            const bits = [];
+            if (mine.interests.length) {
+                bits.push(mine.interests.length + (mine.interests.length === 1 ? " interest" : " interests"));
+            }
+            if (mine.skills.length) {
+                bits.push(mine.skills.length + (mine.skills.length === 1 ? " skill" : " skills"));
+            }
+
+            status.innerHTML = bits.length
+                ? list.length + " members, ranked by your <b>" + bits.join("</b> and <b>") + "</b>"
+                : list.length + (list.length === 1 ? " member" : " members") + ", most followed first";
+        }
+
+        syncArrows();
+    };
+
+    /* ---------- following ---------- */
+    const flipFollow = (id, button) => {
+        const key = followKey();
+        if (!key) {
+            /* Nobody signed in. Rather than store a follow against nobody, ask
+               for an account - initAuth listens for this event. */
+            window.dispatchEvent(new CustomEvent("future-era:open-auth"));
+            return;
+        }
+
+        const list = following();
+        const at = list.indexOf(id);
+        const nowFollowing = at === -1;
+        if (nowFollowing) list.push(id);
+        else list.splice(at, 1);
+
+        writeStore(key, list);
+
+        const article = button.closest(".person");
+        if (article) {
+            const on = nowFollowing;
+            article.classList.toggle("is-following", on);
+            button.setAttribute("aria-pressed", String(on));
+            button.textContent = on ? "Following" : "Follow";
+        }
+    };
+
+    /* ---------- the slide arrows ---------- */
+    const prev = document.querySelector("[data-people-prev]");
+    const next = document.querySelector("[data-people-next]");
+
+    const syncArrows = () => {
+        const max = slide.scrollWidth - slide.clientWidth - 1;
+        if (prev) prev.disabled = slide.scrollLeft <= 1;
+        if (next) next.disabled = slide.scrollLeft >= max;
+    };
+
+    const nudge = (dir) => {
+        const card = slide.querySelector(".person");
+        const width = card ? card.getBoundingClientRect().width + 14 : slide.clientWidth * 0.8;
+        slide.scrollBy({ left: dir * width * 2, behavior: MOTION.ok ? "smooth" : "auto" });
+    };
+
+    if (prev) prev.addEventListener("click", () => nudge(-1));
+    if (next) next.addEventListener("click", () => nudge(1));
+    slide.addEventListener("scroll", syncArrows, { passive: true });
+    window.addEventListener("resize", syncArrows);
+
+    /* ---------- events ---------- */
+    const onChip = (e) => {
+        const button = e.target.closest("[data-tag]");
+        if (button) toggleTag(button.dataset.kind, button.dataset.tag);
+    };
+
+    const onFollow = (e) => {
+        const button = e.target.closest("[data-follow]");
+        if (button) flipFollow(button.dataset.follow, button);
+    };
+
+    interestBox.addEventListener("click", onChip);
+    skillBox.addEventListener("click", onChip);
+    slide.addEventListener("click", onFollow);
+
+    if (filter) {
+        filter.addEventListener("input", () => renderChips());
+    }
+
+    /* Signing in or out changes which account the follows belong to, so the
+       cards have to be repainted or the buttons would claim the wrong state. */
+    window.addEventListener("future-era:session", () => {
+        if (slide.querySelector(".person")) load().catch(showPeopleError);
+    });
+
+    load().catch(showPeopleError);
+}
+
+/* The backend being down should say so rather than leave a slide that reads as
+   "nobody to follow". */
+function showPeopleError(err) {
+    const slide = document.getElementById("people-slide");
+    if (slide) {
+        slide.innerHTML =
+            '<p class="people__empty" role="alert">Could not load the member list (' +
+            String(err.message || err) +
+            "). Start the backend with <code>uvicorn main:app</code> and reload.</p>";
+    }
+    if (window.console) console.error("community members failed to load:", err);
+}
+
+/* =========================================================
+   Career blueprint — one scrolling form, two paths
    ========================================================= */
 
 const CAREER_PATHS = [
     {
         id: 'student', label: '12th Pass Student',
-        blurb: 'School just ended. No degree, no plan â€” and no reason that has to be a problem.'
+        blurb: 'School just ended. No degree, no plan — and no reason that has to be a problem.'
     },
     {
         id: 'grad', label: 'Graduated Professional',
@@ -623,7 +1331,7 @@ function initCareer() {
         if (note) {
             note.textContent = gaps.length
                 ? gaps.join(' ')
-                : (state.path ? 'Ready. This runs entirely in your browser â€” nothing is sent anywhere.' : '');
+                : (state.path ? 'Ready. This runs entirely in your browser — nothing is sent anywhere.' : '');
         }
     }
 
@@ -1037,6 +1745,373 @@ function initFooter() {
     if (year) year.textContent = new Date().getFullYear();
 }
 
+/* ---------- profile popup ----------
+   Opened from the signed-in chip in the navbar, so it is on every page that has
+   a navbar. It answers four questions: who am I, what have I picked, who do I
+   follow, and which groups am I in.
+
+   Followers is the odd one out and deliberately so. An account here is an email
+   and a password hash in this browser, and nothing ever links one account to a
+   member card, so no other person's follow can be attributed to you - there is
+   no honest way to produce a number. Rather than invent one or borrow a
+   stranger's, the count is a real 0 and the copy next to it says why. If a shared
+   backend ever lands, that is the single line to replace. */
+function initProfile() {
+    const dialog = document.getElementById("profile-dialog");
+    const openBtns = Array.from(document.querySelectorAll("[data-profile-open]"));
+
+    /* career.html has neither a navbar nor this dialog, and community.html's chip
+       is the same markup as the other two pages */
+    if (!dialog || !openBtns.length) return;
+
+    const el = {};
+    ["initial", "email", "following-count", "followers-count", "group-count", "group-hint",
+        "tags", "tags-empty", "following", "following-empty",
+        "groups", "groups-empty", "group-choices"].forEach((key) => {
+        el[key] = dialog.querySelector("[data-profile-" + key + "]");
+    });
+    const closeBtn = dialog.querySelector("[data-profile-close]");
+    const chipName = document.querySelector("[data-profile-chipname]");
+
+    const session = () => readStore(AUTH_SESSION, {}) || {};
+
+    const record = () => userRecord(session().email);
+
+    const followIds = () => {
+        const s = session();
+        const list = s.email ? readStore(FOLLOWS_KEY + s.email, []) : [];
+        return Array.isArray(list) ? list : [];
+    };
+
+    /* groups come from the registry, member names from the people list so a
+       follow id resolves to somebody rather than a slug */
+    let registry = [];
+    let members = {};
+    let label = { interests: {}, skills: {}, groups: {} };
+    let asked = false;
+
+    const getJSON = (url) => fetch(url).then((res) => {
+        if (!res.ok) throw new Error(url + " said " + res.status);
+        return res.json();
+    });
+
+    /* Lazy and once-per-session: the popup is behind a click, and the people
+       payload is the one the profile does not need until then. A failure clears
+       `asked` so reopening retries rather than living with a half-built popup. */
+    const load = () => {
+        if (asked) return Promise.resolve();
+
+        asked = true;
+        return Promise.all([getJSON("/api/groups"), getJSON("/api/people")])
+            .then(([g, p]) => {
+                registry = g.groups || [];
+                label.groups = {};
+                registry.forEach((row) => { label.groups[row.id] = row.label; });
+
+                members = {};
+                (p.people || []).forEach((m) => { members[m.id] = m; });
+
+                label.interests = {};
+                (p.interests || []).forEach((row) => { label.interests[row.id] = row.label; });
+                label.skills = {};
+                (p.skills || []).forEach((row) => { label.skills[row.id] = row.label; });
+            })
+            .catch((err) => {
+                asked = false;
+                throw err;
+            });
+    };
+
+    const groupLabel = (id) => label.groups[id] || id;
+
+    const paintTags = () => {
+        if (!el.tags) return;
+
+        const picks = readStore(PROFILE_KEY, {}) || {};
+        const asList = (v) => (Array.isArray(v) ? v : []);
+        /* interests carry no marker class - the plain chip is the interest
+           look, and only the second kind needs telling apart */
+        const rows = asList(picks.interests)
+            .map((id) => ({ text: label.interests[id] || id, kind: "Interest" }))
+            .concat(asList(picks.skills).map((id) => ({
+                text: label.skills[id] || id, kind: "Skill",
+            })));
+
+        el.tags.innerHTML = rows.map((row) =>
+            '<li' + (row.kind === "Skill" ? ' class="is-skill"' : "") +
+            ' title="' + esc(row.kind) + '">' + esc(row.text) + "</li>").join("");
+
+        if (el["tags-empty"]) el["tags-empty"].hidden = rows.length > 0;
+    };
+
+    const paintFollowing = () => {
+        const ids = followIds();
+
+        if (el["following-count"]) el["following-count"].textContent = ids.length;
+        if (el.following) {
+            el.following.innerHTML = ids.map((id) => {
+                const m = members[id];
+                return "<li><b>" + esc(m ? m.name : id) + "</b>" +
+                    '<span class="prof__listsub">' +
+                    esc(m ? m.handle || "" : "unavailable") + "</span></li>";
+            }).join("");
+        }
+        if (el["following-empty"]) el["following-empty"].hidden = ids.length > 0;
+    };
+
+    const paintGroups = () => {
+        const mine = myGroups();
+
+        if (el["group-count"]) el["group-count"].textContent = mine.length;
+        if (el.groups) {
+            el.groups.innerHTML = mine.map((id) => {
+                const row = registry.filter((g) => g.id === id)[0];
+                return "<li><b>" + esc(groupLabel(id)) + "</b>" +
+                    (row && row.blurb
+                        ? '<span class="prof__listsub">' + esc(row.members) + " members</span>"
+                        : "") + "</li>";
+            }).join("");
+        }
+        if (el["groups-empty"]) el["groups-empty"].hidden = mine.length > 0;
+
+        /* checkboxes are updated in place rather than re-rendered, so clicking
+           one does not throw away the focus ring mid-interaction */
+        if (el["group-choices"]) {
+            Array.prototype.forEach.call(
+                el["group-choices"].querySelectorAll('input[type="checkbox"]'),
+                (box) => { box.checked = mine.indexOf(box.value) !== -1; },
+            );
+        }
+    };
+
+    const paint = () => {
+        const s = session();
+        const me = record();
+        const name = String(me.name || s.name || "").trim();
+        const email = me.email || s.email || "";
+
+        const seed = (name || email || "F").trim();
+        if (el.initial) el.initial.textContent = seed.charAt(0).toUpperCase();
+        if (el.email) el.email.textContent = email;
+        if (chipName) chipName.textContent = name || email || "Profile";
+
+        /* There is no server to attribute another account's follow to, so this is
+           a real zero rather than a placeholder for one. */
+        if (el["followers-count"]) el["followers-count"].textContent = "0";
+
+        paintTags();
+        paintFollowing();
+        paintGroups();
+    };
+
+    const buildChoices = () => {
+        if (!el["group-choices"]) return;
+
+        const mine = myGroups();
+        el["group-choices"].innerHTML = registry.map((row, i) =>
+            '<li class="prof__choice">' +
+            '<input type="checkbox" id="prof-group-' + i + '" value="' + esc(row.id) + '"' +
+            (mine.indexOf(row.id) !== -1 ? " checked" : "") + ">" +
+            '<label for="prof-group-' + i + '">' + esc(row.label) + "</label></li>").join("");
+
+        if (el["group-hint"]) el["group-hint"].textContent = "";
+    };
+
+    const close = () => {
+        if (dialog.open && typeof dialog.close === "function") dialog.close();
+    };
+
+    const open = () => {
+        /* unreachable while signed out - the chip is inside .auth__who - but the
+           guard is what stops an empty profile appearing if that ever changes */
+        if (!session().email) return;
+
+        if (typeof dialog.showModal === "function") {
+            if (!dialog.open) dialog.showModal();
+        }
+
+        const links = document.getElementById("nav-links");
+        const toggle = document.getElementById("nav-toggle");
+        if (links) links.classList.remove("is-open");
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+
+        paint();
+        buildChoices();
+
+        load()
+            .then(() => { paint(); buildChoices(); })
+            .catch((err) => {
+                /* the popup still opens with whatever is in storage: a name, the
+                   follows that were saved, the groups already joined */
+                if (el["group-hint"]) {
+                    el["group-hint"].textContent = "group names unavailable - backend offline";
+                }
+                showProfileError(err);
+            });
+    };
+
+    openBtns.forEach((btn) => btn.addEventListener("click", open));
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    dialog.addEventListener("click", (e) => { if (e.target === dialog) close(); });
+
+    if (el["group-choices"]) {
+        el["group-choices"].addEventListener("change", (e) => {
+            const box = e.target.closest ? e.target.closest('input[type="checkbox"]') : null;
+            if (!box) return;
+
+            const mine = myGroups();
+            const next = box.checked
+                ? (mine.indexOf(box.value) === -1 ? mine.concat([box.value]) : mine)
+                : mine.filter((id) => id !== box.value);
+
+            setMyGroups(next);
+            paint();
+        });
+    }
+
+    /* Signing out must not leave the popup on screen showing the last account's
+       name, and the chip label has to follow the session too. */
+    window.addEventListener("future-era:session", () => {
+        if (!session().email) close();
+        else paint();
+    });
+}
+
+function showProfileError(err) {
+    /* the popup has no dedicated error line, and it is still usable without the
+       two lookups, so this stays in the console rather than inventing markup */
+    if (window.console && console.warn) console.warn("[profile]", err);
+}
+
+/* ---------- community group suggestions ----------
+   Sits under the member slide on the community page. Same picks, same response,
+   same scoring rule as the slide - a group is scored on the tags of everyone in
+   it, so "people like you are in here" is a number the server worked out rather
+   than a guess made here.
+
+   Joining is entirely optional and reversible, and nothing happens until you
+   press Join. It is also local: the membership is written to your account record
+   in this browser, exactly as a follow is, because there is still no write
+   endpoint to put it in. */
+function initCommunityGroups() {
+    const list = document.getElementById("groups-list");
+    const status = document.getElementById("groups-status");
+    if (!list) return;
+
+    let rows = [];
+    let label = { interests: {}, skills: {} };
+
+    const tagText = (ids, kind) => ids
+        .map((id) => label[kind][id] || id)
+        .join(", ");
+
+    const render = () => {
+        const mine = myGroups();
+
+        list.innerHTML = rows.map((g) => {
+            const on = mine.indexOf(g.id) > -1;
+            const m = g.match || {};
+            const shared = []
+                .concat(m.interests ? tagText(m.interests, "interests") : [])
+                .concat(m.skills ? tagText(m.skills, "skills") : [])
+                .filter(Boolean);
+
+            const why = shared.length
+                ? "You have " + esc(shared.join(", ")) + " in common here"
+                : m.score === null || m.score === undefined
+                    ? "Pick your tags above and this will be ranked for you"
+                    : "Nothing in common yet, but it is a lively group";
+
+            /* Only the first few names are worth the line, and the card is laid
+               out for three. The server caps this too, but a layout should not
+               depend on an upstream limit staying where it is, so the cap is
+               applied here and "and more" is judged against what was shown. */
+            const named = (g.names || []).slice(0, 3);
+            const who = g.matches
+                ? '<p class="group__who">' + esc(g.matches) + " of " + esc(g.members) +
+                    " people here match you" +
+                    (named.length
+                        ? " - " + esc(named.join(", ")) +
+                          (g.matches > named.length ? " and more" : "")
+                        : "") + "</p>"
+                : '<p class="group__who">' + esc(g.members) + " people, none of them picked yet</p>";
+
+            return '<li class="group' + (on ? " is-joined" : "") + '" data-group="' + esc(g.id) + '">' +
+                '<div class="group__body">' +
+                '<div class="group__top">' +
+                '<h3 class="group__name">' + esc(g.label) + "</h3>" +
+                '<span class="group__score"' + (m.score === null || m.score === undefined ? ' data-unranked="true"' : "") +
+                ">" + (m.score === null || m.score === undefined ? "not ranked" : m.score + "%") + "</span>" +
+                "</div>" +
+                '<p class="group__blurb">' + esc(g.blurb) + "</p>" +
+                '<p class="group__why">' + why + "</p>" +
+                who +
+                "</div>" +
+                '<button class="group__join" type="button" data-group-join="' + esc(g.id) + '"' +
+                ' aria-pressed="' + (on ? "true" : "false") + '">' +
+                (on ? "Joined" : "Join") + "</button></li>";
+        }).join("");
+    };
+
+    const flipJoin = (id) => {
+        /* Only ever join a group this page was actually sent. The id comes off a
+           button in the DOM, and the list it lands in is stored on the account,
+           so an unrecognised one would sit there forever as a slug with no label
+           and nothing to undo it with. */
+        if (!rows.some((g) => g.id === id)) return;
+
+        if (!sessionOf().email) {
+            /* nobody signed in, and a group joined to nobody is not a membership
+               - ask for an account, the same way a follow does */
+            window.dispatchEvent(new CustomEvent("future-era:open-auth"));
+            return;
+        }
+
+        const mine = myGroups();
+        const at = mine.indexOf(id);
+        const joining = at === -1;
+        const next = joining ? mine.concat([id]) : mine.filter((g) => g !== id);
+
+        setMyGroups(next);
+    };
+
+    const onRanked = (e) => {
+        const data = e.detail || RANKED;
+        if (!data) return;
+
+        rows = data.groups || [];
+        label = {
+            interests: Object.fromEntries((data.interests || []).map((t) => [t.id, t.label])),
+            skills: Object.fromEntries((data.skills || []).map((t) => [t.id, t.label])),
+        };
+
+        if (status) {
+            const picked = (data.mine && (data.mine.interests.length + data.mine.skills.length)) || 0;
+            status.textContent = picked
+                ? rows.length + " groups, ranked by what you picked."
+                : "Pick your interests or skills above and these get ranked for you. Joining is optional.";
+        }
+
+        render();
+    };
+
+    list.addEventListener("click", (e) => {
+        const button = e.target.closest("[data-group-join]");
+        if (button) flipJoin(button.dataset.groupJoin);
+    });
+
+    /* the list is a view of your membership, so it has to follow the account
+       and follow anything else that changes it - signing in, signing out, or
+       ticking a box in the profile popup */
+    window.addEventListener("future-era:session", render);
+    window.addEventListener("future-era:groups-changed", render);
+    window.addEventListener("future-era:ranked", onRanked);
+
+    /* the slide announces its payload after this runs, so catch up on it if it
+       has already arrived rather than waiting for the next pick */
+    if (RANKED) onRanked({ detail: RANKED });
+};
+
 function init() {
     /* The CSS starts the hero, the scroll cue and a few sections at opacity: 0
        so GSAP can fade them in. If we are not going to animate - no GSAP, or
@@ -1051,9 +2126,14 @@ function init() {
     /* Each step is isolated: a throw in one must not take the rest of the
        page's animations down with it. */
     step("nav", initNav);
+    step("auth", initAuth);
     step("intro", initIntro);
     step("about", initAbout);
     step("creators", initCreators);
+    step("community", initCommunity);
+    step("communityFollow", initCommunityFollow);
+    step("communityGroups", initCommunityGroups);
+    step("profile", initProfile);
     step("careerHero", initCareerHero);
     step("footer", initFooter);
 

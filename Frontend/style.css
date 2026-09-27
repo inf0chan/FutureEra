@@ -1,4 +1,4 @@
-﻿* {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -220,7 +220,7 @@ a {
     }
 
     .nav__links.is-open {
-        max-height: 420px;
+        max-height: 500px;
         padding-top: 10px;
         padding-bottom: 18px;
     }
@@ -234,6 +234,21 @@ a {
     .nav__cta {
         margin-top: 12px;
         text-align: center;
+    }
+
+    .auth__nav-trigger {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .auth__who.is-shown {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding: 9px 10px 9px 16px;
+        border: 1px solid rgba(245, 245, 245, 0.28);
+        border-radius: 999px;
     }
 }
 
@@ -541,7 +556,7 @@ a {
     margin-bottom: clamp(40px, 5vw, 68px);
 }
 
-/* open list â€” hairline rows, no boxes */
+/* open list Ã¢â‚¬â€ hairline rows, no boxes */
 .creators__listwrap {
     position: relative;
 }
@@ -617,7 +632,7 @@ a {
     color: #f5f5f5;
 }
 
-/* name is the link â€” the handle slides out of it on hover */
+/* name is the link Ã¢â‚¬â€ the handle slides out of it on hover */
 .creator__link {
     display: inline-flex;
     align-items: center;
@@ -736,7 +751,7 @@ a {
     max-width: 40ch;
 }
 
-/* standalone page â€” clears the fixed navbar */
+/* standalone page Ã¢â‚¬â€ clears the fixed navbar */
 .creators--page {
     min-height: 100svh;
     border-top: 0;
@@ -1505,7 +1520,7 @@ a {
     gap: clamp(32px, 4vw, 48px);
 }
 
-/* oversized statement line â€” the footer's own signature block */
+/* oversized statement line Ã¢â‚¬â€ the footer's own signature block */
 .footer__statement {
     font-family: "Audiowide", sans-serif;
     font-size: clamp(19.5px, 2.6vw, 31.2px);
@@ -1693,4 +1708,1583 @@ a {
 .no-motion .intro__rule span,
 .no-motion .scroll-cue__line i {
     transform: none;
+}
+/* =========================================================
+   LOG IN / SIGN UP MODAL
+   =========================================================
+   Colours and layout are lifted from the home hero on purpose: the panel sits on
+   the same lightseagreen ground as the body, the text is lightcyan, the accent
+   is the same #c8ff3d, the title pairs Audiowide with Marck Script, and the
+   gradient rule under the title is the .intro__rule motif. Everything is
+   centred the way .intro__inner is.
+
+   Built on <dialog>, so the browser handles the top layer, the backdrop and
+   Escape for free. Nothing here depends on GSAP - if the library never loads
+   the dialog still opens and still looks like this. */
+
+.auth__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 245, 245, 0.45);
+    background: transparent;
+    color: #f5f5f5;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11.2px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth__trigger:hover {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #000000;
+}
+
+.auth__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #c8ff3d;
+    color: #000000;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.auth__dialog {
+    /* The browser centres <dialog> with `margin: auto` in its own stylesheet,
+       but the `* { margin: 0 }` reset at the top of this file outranks it, which
+       left the card pinned to the top-left corner. So the centring is done here
+       instead: all four insets at 0, auto margins, and a definite size on both
+       axes is the standard absolute centring. */
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(460px, calc(100vw - 32px));
+    height: max-content;
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    padding: 0;
+    border: 1px solid rgba(245, 245, 245, 0.3);
+    border-radius: 22px;
+    background: lightseagreen;
+    color: lightcyan;
+    box-shadow: 0 30px 90px rgba(0, 60, 55, 0.45);
+    text-align: center;
+}
+
+/* the teal wash keeps the page readable behind it without going grey */
+.auth__dialog::backdrop {
+    background: rgba(32, 168, 160, 0.55);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.auth__close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(245, 245, 245, 0.18);
+    color: lightcyan;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.auth__close:hover {
+    background: #c8ff3d;
+    color: #000000;
+}
+
+.auth__inner {
+    padding: 40px clamp(22px, 5vw, 40px) 32px;
+}
+
+.auth__eyebrow {
+    display: block;
+    margin-bottom: 14px;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: clamp(10.4px, 1vw, 12.8px);
+    font-weight: 400;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.62);
+}
+
+/* the .intro__rule gradient, repeated here at dialog scale */
+.auth__rule {
+    height: 1px;
+    width: min(220px, 60%);
+    margin: 0 auto 24px;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth__rule::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, #c8ff3d, transparent);
+}
+
+.auth__title {
+    margin: 0 0 26px;
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-size: clamp(26px, 4.4vw, 34px);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: lightcyan;
+}
+
+.auth__title em {
+    font-family: "Marck Script", cursive;
+    font-style: normal;
+    color: #c8ff3d;
+}
+
+/* --- tab switch --- */
+.auth__tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    margin: 0 auto 24px;
+    max-width: 320px;
+    border: 1px solid rgba(245, 245, 245, 0.3);
+    border-radius: 999px;
+    background: rgba(245, 245, 245, 0.08);
+}
+
+.auth__tab {
+    padding: 11px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(245, 245, 245, 0.72);
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.auth__tab[aria-selected="true"] {
+    background: #c8ff3d;
+    color: #000000;
+}
+
+.auth__form {
+    display: none;
+    text-align: center;
+}
+
+.auth__form.is-active {
+    display: block;
+}
+
+.auth__row {
+    margin-bottom: 16px;
+}
+
+.auth__label {
+    display: block;
+    margin-bottom: 8px;
+    text-align: center;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.7);
+}
+
+.auth__dialog .inp {
+    max-width: none;
+    text-align: center;
+    background: rgba(245, 245, 245, 0.1);
+    border-color: rgba(245, 245, 245, 0.32);
+    color: #f5f5f5;
+}
+
+.auth__dialog .inp::placeholder {
+    color: rgba(245, 245, 245, 0.45);
+}
+
+.auth__dialog .inp:hover {
+    border-color: rgba(245, 245, 245, 0.55);
+}
+
+.auth__dialog .inp:focus {
+    border-color: #c8ff3d;
+    background: rgba(200, 255, 61, 0.08);
+    color: #f5f5f5;
+}
+
+.auth__submit {
+    width: 100%;
+    margin-top: 8px;
+    padding: 15px 20px;
+}
+
+.auth__note {
+    margin: 18px 0 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: rgba(245, 245, 245, 0.6);
+    text-align: center;
+}
+
+.auth__msg {
+    display: none;
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border: 1px solid #f5f5f5;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 13.5px;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.auth__msg.is-shown {
+    display: block;
+}
+
+.auth__msg--ok {
+    border-color: #c8ff3d;
+    background: rgba(200, 255, 61, 0.18);
+    color: #ffffff;
+}
+
+/* the signed-in chip that replaces the trigger */
+.auth__who {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.auth__who.is-shown {
+    display: inline-flex;
+}
+
+/* scoped to the hook rather than to .auth__nav-trigger, so the call-to-action
+   "Log in" button on the community page hides too once someone signs in */
+[data-auth-open].is-hidden {
+    display: none;
+}
+
+/* =========================================================
+   Profile popup
+   The avatar and name in the signed-in chip are the button that opens this, so
+   it deliberately reuses the auth dialog's palette and centring rather than
+   inventing a second look. Classes are prof__*, not auth__*, because this is
+   its own feature - but auth__who sits directly above it and the two have to
+   agree on what the chip looks like.
+   ========================================================= */
+
+.prof__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 3px 12px 3px 3px;
+    border: 1px solid rgba(245, 245, 245, 0.3);
+    border-radius: 999px;
+    background: transparent;
+    color: lightcyan;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.prof__chip:hover,
+.prof__chip:focus-visible {
+    border-color: rgba(200, 255, 61, 0.85);
+    background: rgba(200, 255, 61, 0.12);
+}
+
+.prof__chipname {
+    max-width: 12ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.prof__dialog {
+    /* same centring contract as .auth__dialog, for the reason documented there */
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(520px, calc(100vw - 32px));
+    height: max-content;
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    padding: 0;
+    border: 1px solid rgba(245, 245, 245, 0.3);
+    border-radius: 22px;
+    background: lightseagreen;
+    color: lightcyan;
+    box-shadow: 0 30px 90px rgba(0, 60, 55, 0.45);
+    text-align: left;
+}
+
+.prof__dialog::backdrop {
+    background: rgba(32, 168, 160, 0.55);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.prof__close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(245, 245, 245, 0.18);
+    color: lightcyan;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.prof__close:hover {
+    background: #c8ff3d;
+    color: #000000;
+}
+
+.prof__inner {
+    padding: 34px clamp(20px, 5vw, 34px) 30px;
+}
+
+.prof__head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-right: 40px;
+    margin-bottom: 22px;
+}
+
+.prof__avatar {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #c8ff3d;
+    color: #000000;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.prof__ident {
+    min-width: 0;
+}
+
+.prof__title {
+    margin: 0 0 3px;
+    font-size: clamp(20px, 3vw, 25px);
+    line-height: 1.15;
+    color: #f5f5f5;
+}
+
+.prof__email {
+    margin: 0;
+    font-size: 13px;
+    color: rgba(245, 245, 245, 0.68);
+    overflow-wrap: anywhere;
+}
+
+/* the three numbers, sized like the community stat row rather than the hero */
+.prof__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 0 24px;
+    padding: 0;
+}
+
+.prof__stat {
+    padding: 13px 10px 12px;
+    border: 1px solid rgba(245, 245, 245, 0.22);
+    border-radius: 14px;
+    background: rgba(0, 77, 73, 0.16);
+    text-align: center;
+}
+
+.prof__statlabel {
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.prof__statvalue {
+    margin: 5px 0 0;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 1;
+    color: #c8ff3d;
+    font-variant-numeric: tabular-nums;
+}
+
+.prof__block {
+    padding-top: 18px;
+    border-top: 1px solid rgba(245, 245, 245, 0.16);
+}
+
+.prof__block + .prof__block {
+    margin-top: 18px;
+}
+
+.prof__blocktitle {
+    margin: 0 0 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.72);
+}
+
+.prof__hint {
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: rgba(245, 245, 245, 0.5);
+}
+
+.prof__tags,
+.prof__list,
+.prof__choices {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.prof__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+/* The [hidden] attribute is the empty-state switch, but the UA rule for it is a
+   stylesheet the author-level `display` above outranks - .prof__list is a flex
+   column, so without these the "no follows yet" message would never hide. */
+.prof__list[hidden],
+.prof__empty[hidden],
+.prof__tags[hidden] {
+    display: none;
+}
+
+.prof__tags li {
+    padding: 5px 11px;
+    border: 1px solid rgba(245, 245, 245, 0.26);
+    border-radius: 999px;
+    background: rgba(245, 245, 245, 0.08);
+    font-size: 12.5px;
+    color: #f5f5f5;
+}
+
+/* skills read as a second kind of tag without needing its own heading */
+.prof__tags li.is-skill {
+    border-style: dashed;
+}
+
+.prof__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.prof__list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 13px;
+    border: 1px solid rgba(245, 245, 245, 0.2);
+    border-left: 3px solid rgba(200, 255, 61, 0.8);
+    border-radius: 12px;
+    background: rgba(0, 77, 73, 0.14);
+    font-size: 14px;
+    color: #f5f5f5;
+}
+
+.prof__list b {
+    font-weight: 600;
+}
+
+.prof__listsub {
+    font-size: 12px;
+    color: rgba(245, 245, 245, 0.6);
+    white-space: nowrap;
+}
+
+.prof__empty {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(245, 245, 245, 0.66);
+}
+
+.prof__choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+/* a real checkbox, so the group picker works without JS and reports itself to
+   assistive tech; the label is what carries the look. Hidden by clipping rather
+   than by opacity: opacity: 0 still leaves the box in the hit-test and in the
+   accessibility tree's way, and a clipped 1px box is the standard way to do this. */
+.prof__choice input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.prof__choice label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 13px;
+    border: 1px solid rgba(245, 245, 245, 0.28);
+    border-radius: 999px;
+    background: rgba(245, 245, 245, 0.06);
+    font-size: 12.5px;
+    color: rgba(245, 245, 245, 0.82);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.prof__choice label:hover {
+    border-color: rgba(245, 245, 245, 0.5);
+    color: #f5f5f5;
+}
+
+.prof__choice input:checked + label {
+    border-color: rgba(200, 255, 61, 0.85);
+    background: rgba(200, 255, 61, 0.16);
+    color: #f5f5f5;
+}
+
+.prof__choice input:focus-visible + label {
+    outline: 2px solid #c8ff3d;
+    outline-offset: 2px;
+}
+
+@media (max-width: 420px) {
+    .prof__stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .prof__chipname {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .prof__chip,
+    .prof__close,
+    .prof__choice label {
+        transition: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .auth__trigger,
+    .auth__close,
+    .auth__tab {
+        transition: none;
+    }
+}
+
+/* =========================================================
+   COMMUNITY
+   =========================================================
+   Built on the same tokens as the creators page so the two sit together
+   without looking copied: lightseagreen ground, lightcyan text, the #c8ff3d
+   accent, Audiowide headings with a Marck Script word, and the scroll rail
+   motif reused for the discussion list.
+
+   The reveals use gsap.from() rather than a CSS opacity: 0, so nothing here
+   depends on the animation library to become visible - which is what keeps
+   .no-motion able to do its job on this page. */
+
+.community {
+    position: relative;
+    background: lightseagreen;
+    padding: clamp(80px, 12vw, 160px) 6vw;
+    border-top: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.community__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.community__eyebrow {
+    display: block;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: clamp(10.4px, 1vw, 12.8px);
+    font-weight: 500;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.55);
+    margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+.community__title {
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-size: clamp(30.4px, 5.4vw, 61.2px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: clamp(20px, 2.4vw, 30px);
+}
+
+.community__title em {
+    font-family: "Marck Script", cursive;
+    font-style: normal;
+    color: #c8ff3d;
+}
+
+.community__lede {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: clamp(15.2px, 1.5vw, 18.4px);
+    line-height: 1.75;
+    color: rgba(245, 245, 245, 0.7);
+    max-width: 54ch;
+    margin-bottom: clamp(40px, 5vw, 68px);
+}
+
+/* ---------- channel cards ---------- */
+.community__channels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    margin-bottom: clamp(56px, 7vw, 96px);
+    background: rgba(245, 245, 245, 0.14);
+    border: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.channel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: clamp(24px, 3vw, 36px);
+    background: lightseagreen;
+    transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.channel:hover {
+    background: rgba(245, 245, 245, 0.05);
+}
+
+.channel__name {
+    margin: 0;
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-size: clamp(17px, 1.9vw, 21px);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: #f5f5f5;
+}
+
+.channel__desc {
+    margin: 0;
+    flex: 1;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 14.6px;
+    line-height: 1.65;
+    color: rgba(245, 245, 245, 0.55);
+}
+
+.channel__count {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c8ff3d;
+}
+
+/* ---------- discussion list ---------- */
+.community__listwrap {
+    position: relative;
+    padding-left: 28px;
+}
+
+.community__listhead {
+    margin: 0 0 clamp(20px, 2.6vw, 30px);
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.5);
+}
+
+.community__rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: rgba(245, 245, 245, 0.14);
+    overflow: hidden;
+}
+
+.community__rail span {
+    position: absolute;
+    inset: 0;
+    background: #c8ff3d;
+    transform: scaleY(0);
+    transform-origin: top;
+}
+
+.community__list {
+    border-top: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.thread {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: clamp(24px, 3vw, 34px) 0;
+    border-bottom: 1px solid rgba(245, 245, 245, 0.14);
+    transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.thread:hover {
+    background: rgba(245, 245, 245, 0.04);
+}
+
+.thread__tag {
+    align-self: flex-start;
+    padding: 5px 12px;
+    border: 1px solid rgba(200, 255, 61, 0.32);
+    border-radius: 999px;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 10.6px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c8ff3d;
+    white-space: nowrap;
+}
+
+.thread__title {
+    margin: 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(18.2px, 2.1vw, 25px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: #f5f5f5;
+    max-width: 46ch;
+    transition: color 0.35s ease;
+}
+
+.thread:hover .thread__title {
+    color: #c8ff3d;
+}
+
+.thread__excerpt {
+    margin: 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 15.2px;
+    line-height: 1.65;
+    color: rgba(245, 245, 245, 0.55);
+    max-width: 62ch;
+}
+
+.thread__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+    margin: 6px 0 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12.4px;
+    letter-spacing: 0.04em;
+    color: rgba(245, 245, 245, 0.45);
+}
+
+.thread__author {
+    color: rgba(245, 245, 245, 0.75);
+}
+
+.thread__replies::before {
+    content: "\00B7";
+    margin-right: 18px;
+    color: rgba(245, 245, 245, 0.28);
+}
+
+/* ---------- closing row ---------- */
+.community__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(20px, 3vw, 40px);
+    margin-top: clamp(40px, 5vw, 64px);
+    padding-top: clamp(28px, 3.6vw, 44px);
+    border-top: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.community__note {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 15.2px;
+    line-height: 1.6;
+    color: rgba(245, 245, 245, 0.7);
+    max-width: 46ch;
+    margin: 0;
+}
+
+.community--page {
+    min-height: 100svh;
+    border-top: 0;
+    padding-top: clamp(130px, 17vw, 210px);
+}
+
+@media (max-width: 900px) {
+
+    .community__listwrap {
+        padding-left: 0;
+    }
+
+    .community__rail {
+        display: none;
+    }
+}
+
+@media (max-width: 620px) {
+
+    .community__foot {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .channel,
+    .thread,
+    .thread__title {
+        transition: none;
+    }
+}
+
+/* =========================================================
+   People you might follow
+   =========================================================
+   A horizontally scrolling suggestion slide, and the tag picker that re-ranks
+   it. Same ground as the rest of the community section: white at varying
+   opacity for body copy, #c8ff3d reserved for things that are live - the accent
+   means "this is a match" or "you are following this", and nothing else, so it
+   keeps its meaning across the page.
+
+   The one thing this section does differently is its edge. The channels and
+   the thread list are panels outlined in a 14% white hairline, and the member
+   cards were doing exactly the same thing - a 1px border, no fill, on the same
+   teal - so twelve of them in a row read as one more block of page rather than
+   as twelve people.
+
+   The card keeps the page's colour exactly, so the border is the only thing
+   doing any work - which is why it has to be dark rather than white.
+   lightseagreen is already a light ground, so a white edge on it lands at
+   1.54:1 and vanishes; no alpha of white ever gets past 2.4:1 here, because
+   the page colour itself is the problem. A dark edge is the only way to draw a
+   line on it, and 55% ink over the teal clears 3:1 at 1.5px.
+
+   The picker stays on the 14% white hairline, so the card edges are the
+   strongest lines in the section and the hierarchy is obvious. */
+.people {
+    /* wide enough that the Groups section below reads as its own band of the
+       page rather than a continuation of this one */
+    margin-bottom: clamp(64px, 8vw, 104px);
+    padding-top: clamp(40px, 5vw, 64px);
+    border-top: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.people__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(20px, 3vw, 40px);
+    margin-bottom: clamp(28px, 3.6vw, 44px);
+}
+
+.people__headtext {
+    min-width: 0;
+}
+
+.people__eyebrow {
+    display: block;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: clamp(10.4px, 1vw, 12.8px);
+    font-weight: 500;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.62);
+    margin-bottom: clamp(16px, 2.4vw, 24px);
+}
+
+.people__title {
+    margin: 0 0 clamp(14px, 1.8vw, 20px);
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-size: clamp(24px, 3.6vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #f5f5f5;
+}
+
+.people__title em {
+    font-family: "Marck Script", cursive;
+    font-style: normal;
+    color: #c8ff3d;
+}
+
+.people__lede {
+    margin: 0;
+    max-width: 52ch;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 15.2px;
+    line-height: 1.7;
+    color: rgba(245, 245, 245, 0.7);
+}
+
+.people__arrows {
+    display: flex;
+    flex: none;
+    gap: 8px;
+}
+
+.people__arrow {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgba(245, 245, 245, 0.2);
+    border-radius: 50%;
+    background: none;
+    color: #f5f5f5;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.4s ease;
+}
+
+.people__arrow:hover:not(:disabled) {
+    border-color: #c8ff3d;
+    color: #c8ff3d;
+}
+
+.people__arrow:disabled {
+    opacity: 0.28;
+    cursor: default;
+}
+
+/* ---------- the tag picker ---------- */
+/* left on the page's 14% hairline on purpose: it is a container, not one of the
+   subjects, so the card edges below stay the strongest lines in the section */
+.people__picker {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: clamp(24px, 3vw, 34px);
+    padding: clamp(20px, 2.6vw, 28px);
+    border: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.people__row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    align-items: start;
+    gap: 10px 18px;
+}
+
+.people__rowlabel {
+    padding-top: 8px;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 10.6px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.62);
+}
+
+.people__filter {
+    grid-column: 2;
+    justify-self: start;
+    width: 100%;
+    max-width: 260px;
+    padding: 8px 12px;
+    border: 1px solid rgba(245, 245, 245, 0.18);
+    background: transparent;
+    color: #f5f5f5;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 13px;
+}
+
+.people__filter::placeholder {
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.people__filter:focus-visible {
+    outline: none;
+    border-color: #c8ff3d;
+}
+
+.people__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    grid-column: 2;
+}
+
+/* 41 skills is a wall, so the skill row scrolls and keeps its own height
+   instead of pushing the slide off the screen */
+#people-skills {
+    max-height: 148px;
+    overflow-y: auto;
+    align-content: flex-start;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(200, 255, 61, 0.45) transparent;
+}
+
+.chip {
+    padding: 7px 14px;
+    border: 1px solid rgba(245, 245, 245, 0.2);
+    border-radius: 999px;
+    background: none;
+    color: rgba(245, 245, 245, 0.75);
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12.6px;
+    line-height: 1.2;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease;
+}
+
+.chip:hover {
+    border-color: rgba(200, 255, 61, 0.55);
+    color: #f5f5f5;
+}
+
+.chip[aria-pressed="true"] {
+    border-color: #c8ff3d;
+    background: rgba(200, 255, 61, 0.12);
+    color: #c8ff3d;
+}
+
+.people__status {
+    grid-column: 2;
+    margin: 0;
+    min-height: 1.2em;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12.4px;
+    letter-spacing: 0.04em;
+    color: rgba(245, 245, 245, 0.62);
+}
+
+.people__status b {
+    color: #c8ff3d;
+    font-weight: 500;
+}
+
+/* ---------- the slide ---------- */
+.people__slide {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 18px;
+    margin-bottom: clamp(20px, 2.6vw, 28px);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(200, 255, 61, 0.45) transparent;
+}
+
+.people__slide::-webkit-scrollbar {
+    height: 3px;
+}
+
+.people__slide::-webkit-scrollbar-track {
+    background: rgba(245, 245, 245, 0.1);
+}
+
+.people__slide::-webkit-scrollbar-thumb {
+    background: rgba(200, 255, 61, 0.45);
+}
+
+.people__loading {
+    margin: 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 14px;
+    color: rgba(245, 245, 245, 0.62);
+}
+
+/* the card: the same lightseagreen as the page behind it, no fill at all, and
+   separated by its edge alone. The border is dark rather than white because a
+   white line on a light ground cannot be seen - see the note above. */
+.person {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 12px;
+    width: 280px;
+    padding: 22px;
+    border: 1.5px solid rgba(0, 0, 0, 0.55);
+    scroll-snap-align: start;
+    transition: border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.person:hover {
+    border-color: rgba(0, 0, 0, 0.82);
+    background: rgba(245, 245, 245, 0.04);
+}
+
+/* following is the one state that turns the edge green, plus a spine down the
+   leading edge. The accent is the page's "this is live" signal, and lime
+   against teal is a hue clash as well as a lightness one, so it reads at a
+   glance in a row of twelve without reading the button text. */
+.person.is-following {
+    border-color: rgba(200, 255, 61, 0.8);
+    box-shadow: inset 3px 0 0 rgba(200, 255, 61, 0.55);
+}
+
+.person__top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.person__avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(245, 245, 245, 0.1);
+    font-family: "Audiowide", sans-serif;
+    font-size: 13px;
+    color: #f5f5f5;
+}
+
+.person.is-following .person__avatar {
+    background: rgba(200, 255, 61, 0.16);
+    color: #c8ff3d;
+}
+
+.person__id {
+    min-width: 0;
+}
+
+.person__name {
+    margin: 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 15.2px;
+    line-height: 1.2;
+    color: #f5f5f5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.person__handle {
+    display: block;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12px;
+    color: rgba(245, 245, 245, 0.6);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.person__role {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 4px 10px;
+    border: 1px solid rgba(245, 245, 245, 0.18);
+    border-radius: 999px;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 10.6px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.person__blurb {
+    margin: 0;
+    flex: 1;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 13.6px;
+    line-height: 1.6;
+    color: rgba(245, 245, 245, 0.62);
+}
+
+/* the reason for the suggestion, so the number is not just an oracle */
+.person__why {
+    margin: 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.person__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    padding: 4px 9px;
+    border: 1px solid rgba(245, 245, 245, 0.14);
+    border-radius: 999px;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 10.6px;
+    letter-spacing: 0.08em;
+    color: rgba(245, 245, 245, 0.62);
+    white-space: nowrap;
+}
+
+.tag--shared {
+    border-color: rgba(200, 255, 61, 0.42);
+    color: #c8ff3d;
+}
+
+.person__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(245, 245, 245, 0.12);
+}
+
+.person__score {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 245, 0.45);
+}
+
+.person__score b {
+    color: #c8ff3d;
+    font-weight: 500;
+}
+
+.follow {
+    flex: none;
+    padding: 8px 16px;
+    border: 1px solid #c8ff3d;
+    border-radius: 999px;
+    background: none;
+    color: #c8ff3d;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+.follow:hover {
+    background: rgba(200, 255, 61, 0.14);
+}
+
+.follow[aria-pressed="true"] {
+    background: rgba(200, 255, 61, 0.14);
+}
+
+.person__followers {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.people__empty {
+    margin: 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.people__note {
+    margin: 0;
+    max-width: 62ch;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12.6px;
+    line-height: 1.6;
+    color: rgba(245, 245, 245, 0.62);
+}
+
+/* =========================================================
+   Group suggestions
+   A grid rather than the horizontal rail the member cards use: there are a
+   handful of these and they are a different thing - a group is something you
+   look at and decide about, not a person you scroll past. Same page background
+   as the person cards, and the same border-as-the-only-difference treatment,
+   so the two read as the same family.
+   ========================================================= */
+
+.groups {
+    /* the gap above is .people' margin-bottom plus this padding - padding does
+       not collapse with a sibling margin the way two margins do, so this is
+       where the extra breathing room actually comes from */
+    padding-top: clamp(36px, 4.5vw, 56px);
+    border-top: 1px solid rgba(245, 245, 245, 0.14);
+}
+
+.groups__head {
+    max-width: 62ch;
+    margin-bottom: 22px;
+}
+
+.groups__list {
+    /* 300px, not the 288px the first draft used: five cards in a 1200px row at
+       288 fit four per line and leave the fifth stranded on its own. 300 keeps
+       it to three, so the row ends two-and-one instead of four-and-one. */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px 20px 18px;
+    /* the page background, carried through like the person cards */
+    border: 1.5px solid rgba(0, 0, 0, 0.55);
+    border-radius: 20px;
+    transition: border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover {
+    border-color: rgba(0, 0, 0, 0.82);
+}
+
+.group.is-joined {
+    border-color: rgba(200, 255, 61, 0.8);
+    box-shadow: inset 3px 0 0 rgba(200, 255, 61, 0.55);
+}
+
+.group__body {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.group__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.group__name {
+    margin: 0;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #f5f5f5;
+}
+
+.group__score {
+    flex: none;
+    padding: 3px 9px;
+    border: 1px solid rgba(200, 255, 61, 0.55);
+    border-radius: 999px;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #c8ff3d;
+    font-variant-numeric: tabular-nums;
+}
+
+/* a group with nothing to rank against says so rather than showing a 0%, which
+   would read as "nothing in common" when it means "you have not picked yet" */
+.group__score[data-unranked] {
+    border-color: rgba(245, 245, 245, 0.28);
+    color: rgba(245, 245, 245, 0.6);
+    font-weight: 400;
+}
+
+.group__blurb {
+    margin: 0;
+    font-size: 13.4px;
+    line-height: 1.55;
+    color: rgba(245, 245, 245, 0.78);
+}
+
+.group__why {
+    margin: 0;
+    font-size: 12.6px;
+    line-height: 1.5;
+    color: rgba(245, 245, 245, 0.9);
+}
+
+.group__who {
+    margin: 0;
+    font-size: 11.6px;
+    line-height: 1.5;
+    color: rgba(245, 245, 245, 0.6);
+}
+
+.group__join {
+    margin-top: auto;
+    align-self: flex-start;
+    padding: 8px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.55);
+    border-radius: 999px;
+    background: transparent;
+    color: #f5f5f5;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 12.6px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.group__join:hover {
+    border-color: #c8ff3d;
+    background: #c8ff3d;
+    color: #000000;
+}
+
+.group.is-joined .group__join {
+    border-color: rgba(200, 255, 61, 0.8);
+    background: rgba(200, 255, 61, 0.16);
+    color: #c8ff3d;
+}
+
+.group__join:focus-visible {
+    outline: 2px solid #c8ff3d;
+    outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+
+    .groups__list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .group,
+    .group__join {
+        transition: none;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .people__row {
+        grid-template-columns: 1fr;
+    }
+
+    .people__rowlabel,
+    .people__chips,
+    .people__filter,
+    .people__status {
+        grid-column: 1;
+    }
+
+    .people__rowlabel {
+        padding-top: 0;
+    }
+}
+
+@media (max-width: 620px) {
+
+    .people__head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .person {
+        width: 240px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .chip,
+    .people__arrow,
+    .person,
+    .follow {
+        transition: none;
+    }
 }

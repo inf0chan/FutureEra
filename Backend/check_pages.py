@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 FRONTEND = Path(__file__).resolve().parent.parent / "Frontend"
-PAGES = ("index.html", "career.html", "creators.html")
+PAGES = ("index.html", "career.html", "creators.html", "community.html")
 
 css = (FRONTEND / "style.css").read_text(encoding="utf-8")
 

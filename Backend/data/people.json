@@ -1,0 +1,297 @@
+{
+  "GROUPS": {
+    "builders": {
+      "label": "The Builders",
+      "blurb": "Shipping code, breaking things, fixing them again. Open to anyone who is actually writing something."
+    },
+    "data-circle": {
+      "label": "Data Circle",
+      "blurb": "Spreadsheets, notebooks and the eternal argument about which chart to use. Beginners very welcome."
+    },
+    "product-clinic": {
+      "label": "Product Clinic",
+      "blurb": "Roadmaps, prioritisation and saying no to things you would rather build."
+    },
+    "design-table": {
+      "label": "Design Table",
+      "blurb": "Pixels, type and the space between. Critiques are kind and specific here."
+    },
+    "front-end": {
+      "label": "Front-End Bench",
+      "blurb": "Interfaces, accessibility and everything that runs in the browser. Ship it, then make it fast."
+    }
+  },
+  "PEOPLE": [
+    {
+      "id": "himanshu-bisht",
+      "name": "Himanshu Bisht",
+      "handle": "@himanshu",
+      "role": "dataanalyst",
+      "blurb": "Six months into a data career and posting the spreadsheet mistakes that cost me a week, so you do not pay for them too.",
+      "interests": [
+        "data",
+        "coding"
+      ],
+      "skills": [
+        "sql",
+        "python",
+        "excel",
+        "stats",
+        "analytics"
+      ],
+      "groups": [
+        "builders",
+        "data-circle"
+      ],
+      "followers": 214
+    },
+    {
+      "id": "dev-sharma",
+      "name": "Dev Sharma",
+      "handle": "@devsharma",
+      "role": "fullstack",
+      "blurb": "Building small tools end to end. Currently one very opinionated habit tracker with a login page that took three weeks.",
+      "interests": [
+        "coding",
+        "product"
+      ],
+      "skills": [
+        "javascript",
+        "react",
+        "node",
+        "restapi",
+        "git"
+      ],
+      "followers": 388,
+      "groups": [
+        "builders",
+        "product-clinic"
+      ]
+    },
+    {
+      "id": "aman-chauhan",
+      "name": "Aman Chauhan",
+      "handle": "@amanch",
+      "role": "frontend",
+      "blurb": "I care about what a page feels like on the cheapest phone someone actually owns. Motion budget goes to the interaction, not the entrance.",
+      "interests": [
+        "design",
+        "coding"
+      ],
+      "skills": [
+        "html",
+        "css",
+        "javascript",
+        "react"
+      ],
+      "followers": 502,
+      "groups": [
+        "builders",
+        "design-table",
+        "front-end"
+      ]
+    },
+    {
+      "id": "harshit-chaurasiya",
+      "name": "Harshit Chaurasiya",
+      "handle": "@harshitc",
+      "role": "productmanager",
+      "blurb": "Shipped a career path tool that reads like a conversation. First version is up and I would genuinely like it torn apart.",
+      "interests": [
+        "product",
+        "coding"
+      ],
+      "skills": [
+        "communication",
+        "product",
+        "agile",
+        "analytics"
+      ],
+      "followers": 176,
+      "groups": [
+        "builders",
+        "product-clinic"
+      ]
+    },
+    {
+      "id": "priya-nair",
+      "name": "Priya Nair",
+      "handle": "@priyanair",
+      "role": "mlengineer",
+      "blurb": "ML engineer. The boring 80 percent is data plumbing and evaluation, and I write about that part more than the notebooks.",
+      "interests": [
+        "ai",
+        "data"
+      ],
+      "skills": [
+        "python",
+        "ml",
+        "pytorch",
+        "sql",
+        "stats"
+      ],
+      "followers": 731,
+      "groups": [
+        "data-circle"
+      ]
+    },
+    {
+      "id": "rohit-verma",
+      "name": "Rohit Verma",
+      "handle": "@rohitv",
+      "role": "devops",
+      "blurb": "Deployments, pipelines and the on-call week nobody warns you about. If it only works on my laptop, I want to hear about it.",
+      "interests": [
+        "cloud",
+        "coding"
+      ],
+      "skills": [
+        "docker",
+        "kubernetes",
+        "aws",
+        "ci",
+        "linux"
+      ],
+      "followers": 445,
+      "groups": [
+        "builders"
+      ]
+    },
+    {
+      "id": "sneha-iyer",
+      "name": "Sneha Iyer",
+      "handle": "@snehai",
+      "role": "uiux",
+      "blurb": "Designing for people who are already tired. My case studies are mostly about what I removed, which is apparently the whole job.",
+      "interests": [
+        "design",
+        "product"
+      ],
+      "skills": [
+        "figma",
+        "uiux",
+        "html",
+        "css",
+        "communication"
+      ],
+      "followers": 358,
+      "groups": [
+        "design-table",
+        "product-clinic"
+      ]
+    },
+    {
+      "id": "arjun-mehta",
+      "name": "Arjun Mehta",
+      "handle": "@arjunm",
+      "role": "cybersecurity",
+      "blurb": "Security analyst. I explain the log line that told you what was wrong three days before it mattered.",
+      "interests": [
+        "security",
+        "data"
+      ],
+      "skills": [
+        "security",
+        "linux",
+        "python",
+        "networking",
+        "testing"
+      ],
+      "followers": 289,
+      "groups": [
+        "data-circle"
+      ]
+    },
+    {
+      "id": "kavya-reddy",
+      "name": "Kavya Reddy",
+      "handle": "@kavyareddy",
+      "role": "mobile",
+      "blurb": "Android and iOS. Shipping one app at a time and writing down what each store review taught me.",
+      "interests": [
+        "mobile",
+        "coding"
+      ],
+      "skills": [
+        "java",
+        "javascript",
+        "restapi",
+        "git",
+        "testing"
+      ],
+      "followers": 267,
+      "groups": [
+        "builders",
+        "front-end"
+      ]
+    },
+    {
+      "id": "devansh-gupta",
+      "name": "Devansh Gupta",
+      "handle": "@devanshg",
+      "role": "marketing",
+      "blurb": "Growth and content. Half my job is finding out which idea nobody wanted, quickly, before a quarter is spent on it.",
+      "interests": [
+        "marketing",
+        "product"
+      ],
+      "skills": [
+        "seo",
+        "content",
+        "social",
+        "ads",
+        "analytics"
+      ],
+      "followers": 312,
+      "groups": [
+        "product-clinic"
+      ]
+    },
+    {
+      "id": "fatima-khan",
+      "name": "Fatima Khan",
+      "handle": "@fatimak",
+      "role": "backend",
+      "blurb": "Backend and the databases underneath it. I like boring technology that is still working five years later.",
+      "interests": [
+        "coding",
+        "data"
+      ],
+      "skills": [
+        "python",
+        "sql",
+        "nosql",
+        "restapi",
+        "linux",
+        "testing"
+      ],
+      "followers": 523,
+      "groups": [
+        "builders",
+        "data-circle"
+      ]
+    },
+    {
+      "id": "vivek-joshi",
+      "name": "Vivek Joshi",
+      "handle": "@vivekj",
+      "role": "dataanalyst",
+      "blurb": "From a non-technical degree into analytics at 27. Writing the honest version of the transition, including the year it was slow.",
+      "interests": [
+        "data",
+        "finance"
+      ],
+      "skills": [
+        "sql",
+        "excel",
+        "stats",
+        "bi",
+        "communication"
+      ],
+      "followers": 341,
+      "groups": [
+        "data-circle"
+      ]
+    }
+  ]
+}

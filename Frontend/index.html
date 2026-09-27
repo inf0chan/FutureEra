@@ -26,7 +26,18 @@
             <a href="#intro" class="nav__link is-active">Home</a>
             <a href="#about" class="nav__link">About</a>
             <a href="creators.html" class="nav__link">Creators</a>
+            <a href="community.html" class="nav__link">Community</a>
             <a href="career.html" class="nav__cta">Enter the Era</a>
+            <button class="auth__trigger auth__nav-trigger" type="button" data-auth-open>
+                Log in
+            </button>
+            <span class="auth__who" data-auth-who>
+                <button class="prof__chip" type="button" data-profile-open aria-haspopup="dialog">
+                    <span class="auth__avatar" data-auth-initial aria-hidden="true">FE</span>
+                    <span class="prof__chipname" data-profile-chipname>Profile</span>
+                </button>
+                <button class="auth__trigger" type="button" data-auth-signout>Sign out</button>
+            </span>
         </nav>
 
         <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false"
@@ -125,6 +136,7 @@
                     <a href="#intro">Home</a>
                     <a href="#about">About</a>
                     <a href="creators.html">Creators</a>
+            <a href="community.html">Community</a>
                 </nav>
 
                 <a href="#intro" class="btn btn--ghost footer__back">Back to top</a>
@@ -143,9 +155,124 @@
         </div>
     </footer>
 
+    <!-- ============ LOG IN / SIGN UP ============ -->
+    <dialog class="auth__dialog" id="auth-dialog" aria-labelledby="auth-title">
+        <button class="auth__close" type="button" data-auth-close aria-label="Close">&times;</button>
+
+        <div class="auth__inner">
+            <span class="auth__eyebrow">Members</span>
+            <h2 class="auth__title" id="auth-title">Join the <em>Era</em></h2>
+            <div class="auth__rule" aria-hidden="true"></div>
+
+            <div class="auth__tabs" role="tablist" aria-label="Account">
+                <button class="auth__tab" type="button" role="tab" id="auth-tab-login" data-auth-tab="login"
+                    aria-selected="true" aria-controls="auth-panel-login">Log in</button>
+                <button class="auth__tab" type="button" role="tab" id="auth-tab-signup" data-auth-tab="signup"
+                    aria-selected="false" aria-controls="auth-panel-signup">Sign up</button>
+            </div>
+
+            <p class="auth__msg" id="auth-msg" role="status" aria-live="polite"></p>
+
+            <form class="auth__form is-active" id="auth-panel-login" role="tabpanel"
+                aria-labelledby="auth-tab-login" novalidate>
+                <div class="auth__row">
+                    <label class="auth__label" for="auth-login-email">Email</label>
+                    <input class="inp" type="email" id="auth-login-email" name="email" autocomplete="email"
+                        placeholder="you@example.com" required>
+                </div>
+                <div class="auth__row">
+                    <label class="auth__label" for="auth-login-pass">Password</label>
+                    <input class="inp" type="password" id="auth-login-pass" name="password"
+                        autocomplete="current-password" placeholder="Your password" required>
+                </div>
+                <button class="btn btn--solid auth__submit" type="submit">Log in</button>
+                <p class="auth__note">No account yet? Switch to <strong>Sign up</strong> above.</p>
+            </form>
+
+            <form class="auth__form" id="auth-panel-signup" role="tabpanel" aria-labelledby="auth-tab-signup"
+                novalidate>
+                <div class="auth__row">
+                    <label class="auth__label" for="auth-signup-name">Name</label>
+                    <input class="inp" type="text" id="auth-signup-name" name="name" autocomplete="name"
+                        placeholder="Your name" required>
+                </div>
+                <div class="auth__row">
+                    <label class="auth__label" for="auth-signup-email">Email</label>
+                    <input class="inp" type="email" id="auth-signup-email" name="email" autocomplete="email"
+                        placeholder="you@example.com" required>
+                </div>
+                <div class="auth__row">
+                    <label class="auth__label" for="auth-signup-pass">Password</label>
+                    <input class="inp" type="password" id="auth-signup-pass" name="password"
+                        autocomplete="new-password" placeholder="At least 6 characters" required>
+                </div>
+                <button class="btn btn--solid auth__submit" type="submit">Create account</button>
+                <p class="auth__note">Already have an account? Switch to <strong>Log in</strong> above.</p>
+            </form>
+        </div>
+    </dialog>
+
+    <dialog class="prof__dialog" id="profile-dialog" aria-labelledby="profile-title">
+        <button class="prof__close" type="button" data-profile-close aria-label="Close">&times;</button>
+
+        <div class="prof__inner">
+            <header class="prof__head">
+                <span class="prof__avatar" data-profile-initial aria-hidden="true">F</span>
+                <div class="prof__ident">
+                    <h2 class="prof__title" id="profile-title">Your <em>profile</em></h2>
+                    <p class="prof__email" data-profile-email></p>
+                </div>
+            </header>
+
+            <dl class="prof__stats">
+                <div class="prof__stat">
+                    <dt class="prof__statlabel">Following</dt>
+                    <dd class="prof__statvalue" data-profile-following-count>0</dd>
+                </div>
+                <div class="prof__stat">
+                    <dt class="prof__statlabel">Followers</dt>
+                    <dd class="prof__statvalue" data-profile-followers-count>0</dd>
+                </div>
+                <div class="prof__stat">
+                    <dt class="prof__statlabel">Groups</dt>
+                    <dd class="prof__statvalue" data-profile-group-count>0</dd>
+                </div>
+            </dl>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Your data</h3>
+                <ul class="prof__tags" data-profile-tags></ul>
+                <p class="prof__empty" data-profile-tags-empty>Pick interests and skills on the
+                    Community page and they show up here.</p>
+            </section>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Following</h3>
+                <ul class="prof__list" data-profile-following></ul>
+                <p class="prof__empty" data-profile-following-empty>You are not following anyone
+                    yet. Find people on the Community page.</p>
+            </section>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Followers</h3>
+                <p class="prof__empty">No one follows you yet, and that number is honest rather than
+                    broken. Accounts and follows live in this browser only, with no shared server, so
+                    nobody else's follow can reach your profile. Your following list above is real.</p>
+            </section>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle">Groups <span class="prof__hint" data-profile-group-hint></span></h3>
+                <ul class="prof__list" data-profile-groups></ul>
+                <p class="prof__empty" data-profile-groups-empty>You are not in any groups yet. Pick
+                    some below and they are saved to your account.</p>
+                <ul class="prof__choices" data-profile-group-choices></ul>
+            </section>
+        </div>
+    </dialog>
+
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=8"></script>
 </body>
 
 </html>

@@ -13,7 +13,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 FRONTEND = HERE.parent / "Frontend"
-PAGES = ("index.html", "career.html", "creators.html")
+PAGES = ("index.html", "career.html", "creators.html", "community.html")
 
 # The career data moved out of Frontend/ and is served by this backend now, so
 # the data is read from here - the same file the API loads.
@@ -26,6 +26,11 @@ D = json.loads(DATA_FILE.read_text(encoding="utf-8"))
 
 problems: list[str] = []
 notes: list[str] = []
+
+
+def strip_query(href: str) -> str:
+    """The path part of a src/href, without any ?v= cache buster."""
+    return href.split("?", 1)[0].split("#", 1)[0]
 
 
 def slice_element(source: str, marker: str, tag: str = "div") -> str:
@@ -59,32 +64,61 @@ for m in re.findall(r'class="([^"]+)"', html):
     html_classes.update(c for c in m.split() if c)
 
 # ---- classes created at runtime in script.js ----
+# The community member cards are assembled by string concatenation, so class="..."
+# cannot simply be read out: the captured run continues past the attribute into
+# the expression that follows it. Reading it naively invented classes nobody
+# wrote - "(followed", "tag'" - and failed the build. So for each attribute the
+# part before the first quote is taken, plus any literals quoted inside the rest,
+# which is where the conditional classes live.
 js_classes: set[str] = set()
-for m in re.findall(r"className\s*=\s*'([^']+)'", js):
+
+
+def add_classes(text: str) -> None:
+    for word in text.split():
+        if re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]*", word):
+            js_classes.add(word)
+
+
+for chunk in re.findall(r'class="([^"\n]*)', js):
+    add_classes(chunk.split("'")[0])
+    for nested in re.findall(r'"([^"\n]*)"', chunk):
+        add_classes(nested)
+
+for m in re.findall(r"""className\s*=\s*["']([^"']+)["']""", js):
     js_classes.update(c for c in m.split() if c)
-js_classes.update(re.findall(r"classList\.(?:add|toggle|remove)\('([^']+)'", js))
-for m in re.findall(r'class="([^"]+)"', js):
-    js_classes.update(c for c in m.split() if c)
+js_classes.update(re.findall(r"""classList\.(?:add|toggle|remove)\(\s*["']([\w-]+)["']""", js))
 
 used_classes = html_classes | js_classes
 for c in sorted(used_classes):
     if c not in css_classes:
         problems.append(f'class "{c}" used but never styled')
 
-# ---- ids referenced by script.js must exist in career.html ----
+# ---- ids declared anywhere in the site ----
+# script.js and style.css are shared by every page, so a reference only has to
+# exist on the page that actually uses it. Checking them all against career.html
+# alone flagged community.html's hooks as missing, and - worse - the getElementById
+# pattern only matched single quotes, so the community hooks went unchecked.
 html_ids = set(re.findall(r'id="([^"]+)"', html))
-for m in re.findall(r"getElementById\('([^']+)'\)", js):
-    if m not in html_ids:
-        problems.append(f"script.js getElementById('{m}') but no such id in career.html")
+all_html_ids = set(html_ids)
+for page in PAGES:
+    if page != "career.html":
+        all_html_ids.update(
+            re.findall(r'id="([^"]+)"', (FRONTEND / page).read_text(encoding="utf-8"))
+        )
+
+# ---- ids referenced by script.js must exist on some page ----
+for m in re.findall(r"""getElementById\(\s*["']([\w-]+)["']\s*\)""", js):
+    if m not in all_html_ids:
+        problems.append(f'script.js getElementById("{m}") but no page declares id="{m}"')
 
 # ---- ids referenced by CSS must exist ----
 for m in re.finditer(r"#([a-zA-Z][\w-]*)", css):
     ident = m.group(1)
     if re.fullmatch(r"[0-9a-fA-F]{3,8}", ident):  # a colour
         continue
-    if ident in html_ids:
+    if ident in all_html_ids:
         continue
-    notes.append(f"css references #{ident}, not an id in career.html (may be on another page)")
+    notes.append(f"css references #{ident}, not an id on any page (may be dead)")
 
 # ---- anything left over from the old quiz? ----
 for needle in (
@@ -113,16 +147,20 @@ for href in re.findall(r'href="([^"#][^"]*)"', html):
 # there is no data <script> to order. We check the opposite - that nothing is
 # still pointing at the deleted file, and that the fetch actually exists.
 order = re.findall(r'<script src="([^"]+)"', html)
-if any(re.search(r"career-data\.js$", s) for s in order):
+if any(re.search(r"career-data\.js$", strip_query(s)) for s in order):
     problems.append("career.html still loads career-data.js, which was moved into the API")
 if not re.search(r"fetch\(\s*[\"'`]/api/career-data[\"'`]", js):
     problems.append("script.js no longer fetches /api/career-data")
 
 # script.js must still come after GSAP, or gsap is undefined when init() runs
-i_gsap = next((i for i, s in enumerate(order) if re.search(r"gsap\.min\.js$", s)), -1)
+i_gsap = next((i for i, s in enumerate(order) if re.search(r"gsap\.min\.js$", strip_query(s))), -1)
 try:
-    i_main = order.index("script.js")
-except ValueError:
+    # matched on the path, not the whole string: a cache-busting ?v= on the tag
+    # must not read as "the page no longer loads script.js"
+    i_main = next(
+        i for i, s in enumerate(order) if strip_query(s) == "script.js"
+    )
+except StopIteration:
     problems.append("career.html does not load script.js")
     i_main = -1
 if i_main >= 0 and i_gsap > i_main:
@@ -141,11 +179,45 @@ for page in PAGES:
                 f"{page} loads {href} from a CDN; GSAP must be vendored in Frontend/vendor"
             )
             continue
-        if not (FRONTEND / href).exists():
+        # the ?v= is a cache buster and is not part of the filename - resolving
+        # the whole string would report a script that plainly exists as missing
+        if not (FRONTEND / strip_query(href)).exists():
             problems.append(f"{page} loads missing script: {href}")
 for vendor in ("vendor/gsap.min.js", "vendor/ScrollTrigger.min.js"):
     if not (FRONTEND / vendor).exists():
         problems.append(f"GSAP is not vendored: Frontend/{vendor} is missing")
+
+# ---- script.js must carry a cache buster, and the same one everywhere ----
+# This one is here because of a bug that actually happened. Every page loaded
+# "script.js" with no query string, so the browser served its own cached copy
+# and kept running the old code after the file on disk had changed - the sign in
+# redirect was in the file, and the page still did not do it. Nothing in the
+# project could tell the difference, because the checks read the file rather
+# than what a browser would fetch.
+#
+# So the ?v= has to be there, and all four pages have to agree on the number, or
+# one page quietly keeps serving a stale script for as long as that version is
+# cached. Bump it in all four when script.js changes.
+versions: dict[str, str] = {}
+for page in PAGES:
+    src = (FRONTEND / page).read_text(encoding="utf-8")
+    for tag in re.findall(r'<script src="([^"]*script\.js[^"]*)"', src):
+        version = tag.split("?", 1)[1] if "?" in tag else ""
+        versions.setdefault(page, version)
+        if not version:
+            problems.append(
+                f"{page} loads script.js with no ?v= cache buster, so a browser "
+                "will keep running its cached copy after the file changes"
+            )
+
+distinct = set(versions.values())
+if len(distinct) > 1:
+    shown = ", ".join(f"{p}={v or 'none'}" for p, v in sorted(versions.items()))
+    problems.append(
+        f"the script.js cache buster differs between pages ({shown}) - one page "
+        "will be serving a stale script"
+    )
+cache_buster = sorted(distinct)[0] if distinct else "none"
 
 # ---- the motion fallback must exist ----
 # Several hero elements sit at opacity: 0 in the CSS and are only revealed by
@@ -214,8 +286,9 @@ for key in D["ROLES"]:
     ):
         problems.append(f"role {key} unreachable from any interest")
 
-print(f"classes used: {len(used_classes)}   defined in css: {len(css_classes)}   ids in html: {len(html_ids)}")
+print(f"classes used: {len(used_classes)}   defined in css: {len(css_classes)}   ids in html: {len(all_html_ids)}")
 print(f"resources: {len(D['RESOURCES'])}  skills: {len(D['SKILLS'])}  roles: {len(D['ROLES'])}")
+print(f"script cache buster: {cache_buster} (identical on all {len(versions)} pages)")
 if notes:
     print(f"\nnotes ({len(notes)}):")
     for n in sorted(set(notes)):

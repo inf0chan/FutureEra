@@ -9,7 +9,12 @@ page just quietly stops moving and the text stays invisible.
 So this checks the animation source statically, in Python:
 
   * every page loads the vendored GSAP and ScrollTrigger, in the right order
-  * init() still calls all six animation sections
+  * init() still calls all of its steps, so a rename that drops one from init()
+    is still noticed. Nine of them animate; initCommunityFollow, which builds the
+    suggestion slide, initProfile, which builds the profile popup, and
+    initCommunityGroups, which builds the group suggestion list, are listed here
+    only for that same reason - none of the three is an animation section, and
+    none is allowed to be hidden at opacity 0 while claiming to be one
   * each of them is gated on MOTION.ok, and .no-motion is set when it is not
   * the scroll-cue loop is a fromTo and not a repeating .to()
   * nothing is set to opacity 0 in a section without being returned to 1
@@ -24,7 +29,7 @@ import sys
 from pathlib import Path
 
 FRONTEND = Path(__file__).resolve().parent.parent / "Frontend"
-PAGES = ("index.html", "career.html", "creators.html")
+PAGES = ("index.html", "career.html", "creators.html", "community.html")
 
 js = (FRONTEND / "script.js").read_text(encoding="utf-8")
 
@@ -85,10 +90,15 @@ for page in PAGES:
     src = (FRONTEND / page).read_text(encoding="utf-8")
     order = re.findall(r'<script src="([^"]+)"', src)
 
-    if "script.js" not in order:
+    # matched on the path with any ?v= cache buster removed, not on the raw
+    # attribute - an exact match reads "script.js?v=6" as a page that no longer
+    # loads the script, which is how this check got a false alarm the moment the
+    # cache buster was added
+    paths = [s.split("?", 1)[0].split("#", 1)[0] for s in order]
+    if "script.js" not in paths:
         problems.append(f"{page} does not load script.js")
         continue
-    i_main = order.index("script.js")
+    i_main = paths.index("script.js")
 
     for needed, pattern in (
         ("gsap", r"vendor/gsap\.min\.js$"),
@@ -105,7 +115,7 @@ init_body = slice_function(code, "init")
 if not init_body:
     problems.append("script.js has no init() function")
 else:
-    for section in ("nav", "intro", "about", "creators", "careerHero", "footer"):
+    for section in ("nav", "auth", "intro", "about", "creators", "community", "careerHero", "footer"):
         if f'step("{section}"' not in init_body:
             problems.append(f"init() no longer runs the {section} animation section")
 
@@ -118,7 +128,7 @@ else:
         problems.append("the career hero animation is wired behind the API fetch; it must run on its own")
 
 # ---------- 3. every animation section is gated on MOTION.ok ----------
-for name in ("initIntro", "initAbout", "initCreators", "initCareerHero"):
+for name in ("initIntro", "initAbout", "initCreators", "initCommunity", "initCareerHero"):
     body = slice_function(code, name)
     if not body:
         problems.append(f"script.js has no {name}() function")
