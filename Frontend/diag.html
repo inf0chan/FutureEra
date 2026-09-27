@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Future Era — animation diagnostic</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            background: #08090b;
+            color: #f5f5f5;
+            font-family: "Space Grotesk", system-ui, sans-serif;
+            padding: 40px clamp(20px, 6vw, 80px);
+        }
+
+        h1 {
+            font-size: clamp(22px, 3vw, 34px);
+            margin: 0 0 6px;
+        }
+
+        p.sub {
+            color: #8b8f98;
+            margin: 0 0 28px;
+        }
+
+        .row {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            border: 1px solid #23262d;
+            border-left-width: 4px;
+            background: #0e1014;
+        }
+
+        .row.good {
+            border-left-color: #c8ff3d;
+        }
+
+        .row.bad {
+            border-left-color: #ff5470;
+        }
+
+        .row.warn {
+            border-left-color: #ffb020;
+        }
+
+        .label {
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .value {
+            font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+            font-size: 14px;
+            color: #c8ff3d;
+            word-break: break-all;
+            text-align: right;
+        }
+
+        .row.bad .value {
+            color: #ff5470;
+        }
+
+        .verdict {
+            margin-top: 30px;
+            padding: 22px;
+            font-size: 17px;
+            line-height: 1.6;
+            border: 1px solid #23262d;
+            background: #0e1014;
+        }
+
+        .verdict h2 {
+            margin: 0 0 10px;
+            font-size: 19px;
+        }
+
+        .verdict code {
+            font-family: ui-monospace, Consolas, monospace;
+            background: #171a20;
+            padding: 2px 6px;
+            color: #c8ff3d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Animation diagnostic</h1>
+    <p class="sub">Every line is checked live in your browser. Read the verdict at the bottom.</p>
+
+    <div id="out"></div>
+
+    <div class="verdict" id="verdict">
+        <h2>Checking…</h2>
+        <p>Running the tests now.</p>
+    </div>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script>
+        (function () {
+            var rows = [];
+
+            function row(state, label, value) {
+                rows.push({ state: state, label: label, value: value });
+            }
+
+            /* ---- 1. is this page even served over http? ---- */
+            var isHttp = location.protocol === "http:" || location.protocol === "https:";
+            row(isHttp ? "good" : "bad",
+                "Page protocol",
+                location.protocol === "file:" ? "file:// (WRONG - backend not used)" : location.protocol);
+
+            /* ---- 2. did the vendored GSAP file load? ---- */
+            var hasGsap = typeof window.gsap !== "undefined";
+            row(hasGsap ? "good" : "bad", "GSAP loaded", hasGsap ? "yes" : "NO - vendor file did not load");
+            if (hasGsap) {
+                row("good", "GSAP version", gsap.version);
+                row(typeof window.ScrollTrigger !== "undefined" ? "good" : "warn",
+                    "ScrollTrigger loaded", typeof window.ScrollTrigger !== "undefined" ? "yes" : "no");
+            }
+
+            /* ---- 3. the switch that silently disables every animation ---- */
+            var reduced = !!(window.matchMedia &&
+                window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+            row(reduced ? "bad" : "good",
+                "Reduced motion is OFF",
+                reduced ? "NO - this disables all animations" : "yes");
+
+            /* ---- 4. is the motion fallback currently applied? ---- */
+            var noMotion = document.documentElement.classList.contains("no-motion");
+            row(!noMotion ? "good" : "bad",
+                ".no-motion fallback",
+                noMotion ? "APPLIED (content is static)" : "not applied");
+
+            /* ---- 5. do the animated classes exist in the stylesheet? ---- */
+            var css = "";
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "style.css", false);
+                xhr.send();
+                css = xhr.responseText;
+            } catch (e) { }
+
+            ["intro__title", "intro__rule", "about__copy", "creators__rail"].forEach(function (sel) {
+                if (!css) {
+                    row("warn", "style.css readable", "could not read");
+                    return;
+                }
+                var has = css.indexOf("." + sel) !== -1;
+                row(has ? "good" : "bad", "." + sel + " styled", has ? "yes" : "NO");
+            });
+
+            /* ---- 6. the real proof: run one tween and watch it move ---- */
+            if (hasGsap) {
+                var probe = document.createElement("div");
+                probe.setAttribute("data-probe", "");
+                probe.style.cssText = "height:14px;background:#c8ff3d;width:100%;margin-top:24px";
+                document.body.appendChild(probe);
+
+                var moved = false;
+                gsap.from(probe, {
+                    scaleX: 0,
+                    duration: 0.6,
+                    ease: "power2.out",
+                    onStart: function () { moved = true; }
+                });
+
+                row("good", "Tween executed", moved ? "yes - GSAP is animating" : "no");
+                row("warn", "Script.js loaded",
+                    typeof window.init === "function"
+                        ? "yes"
+                        : "no (only matters on the real pages)");
+            }
+
+            /* ---- paint the results ---- */
+            var out = document.getElementById("out");
+            rows.forEach(function (r) {
+                var div = document.createElement("div");
+                div.className = "row " + r.state;
+                div.innerHTML = '<span class="label"></span><span class="value"></span>';
+                div.querySelector(".label").textContent = r.label;
+                div.querySelector(".value").textContent = r.value;
+                out.appendChild(div);
+            });
+
+            /* ---- the verdict ---- */
+            var v = document.getElementById("verdict");
+            var html = "";
+
+            if (!isHttp) {
+                html = "<h2>Found it: you opened the file directly</h2>" +
+                    "<p>This page is running over <code>file://</code>. Run the backend and open " +
+                    "<code>http://127.0.0.1:8000/</code> instead. The backend is what serves both the " +
+                    "pages and the career data.</p>";
+            } else if (!hasGsap) {
+                html = "<h2>Found it: the GSAP file did not load</h2>" +
+                    "<p>Check that <code>Frontend/vendor/gsap.min.js</code> exists. Without it no " +
+                    "animation can run.</p>";
+            } else if (reduced) {
+                html = "<h2>Found it: reduced motion is switched on</h2>" +
+                    "<p>Your system asks websites not to animate, so <code>script.js</code> skips every " +
+                    "animation on purpose. Turn it off:</p>" +
+                    "<p>Windows <code>Settings > Accessibility > Visual effects > Animation effects</code> " +
+                    "-> <strong>On</strong>, then hard-refresh with <code>Ctrl+Shift+R</code>.</p>";
+            } else if (noMotion) {
+                html = "<h2>Found it: the .no-motion fallback is applied</h2>" +
+                    "<p>GSAP is present but <code>script.js</code> decided not to animate. " +
+                    "Reload with <code>Ctrl+Shift+R</code> to clear a cached copy.</p>";
+            } else {
+                html = "<h2>Animations are working</h2>" +
+                    "<p>GSAP is loaded, reduced motion is off, and a tween just executed. " +
+                    "Everything is fine here.</p>" +
+                    "<p>So if the real pages look static to you, the reason is that most of their " +
+                    "animation is scroll-driven - you have to actually scroll the page for it to play. " +
+                    "The hero animates immediately on load; creator rows, the progress rail and the " +
+                    "About section only move when they scroll into view.</p>";
+            }
+
+            v.innerHTML = html;
+        })();
+    </script>
+</body>
+
+</html>

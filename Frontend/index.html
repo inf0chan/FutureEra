@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Future Era — The GenX Era</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Asimovian&family=Audiowide&family=Marck+Script&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- ============ NAVBAR ============ -->
+    <header class="nav" id="nav">
+        <a href="#intro" class="nav__logo" aria-label="Future Era — home">
+            <span class="nav__mark" aria-hidden="true">FE</span>
+            <span class="nav__word">Future<em>Era</em></span>
+        </a>
+
+        <nav class="nav__links" id="nav-links" aria-label="Main">
+            <a href="#intro" class="nav__link is-active">Home</a>
+            <a href="#about" class="nav__link">About</a>
+            <a href="creators.html" class="nav__link">Creators</a>
+            <a href="career.html" class="nav__cta">Enter the Era</a>
+        </nav>
+
+        <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false"
+            aria-controls="nav-links">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <!-- ============ PAGE 1 : INTRO ============ -->
+    <section class="intro" id="intro">
+        <div class="intro__grain" aria-hidden="true"></div>
+
+        <div class="intro__inner">
+
+            <span class="intro__eyebrow">Built by setu</span>
+
+            <div class="intro__rule" aria-hidden="true"><span></span></div>
+
+            <h1 class="intro__title">Welcome to</h1>
+            <h1 class="intro__title1">Future Era</h1>
+
+            <p class="intro__subtitle">The GenX Era</p>
+
+            <div class="intro__actions">
+                <a href="career.html" class="btn btn--solid">Enter the Era</a>
+                <a href="#about" class="btn btn--ghost">Explore</a>
+            </div>
+        </div>
+
+        
+    </section>
+
+    <!-- ============ PAGE 2 : ABOUT ============ -->
+    <section class="about" id="about">
+        <div class="about__inner">
+
+            <span class="about__eyebrow" data-reveal>About this site</span>
+
+            <h2 class="about__title" data-reveal>
+                Built by GenX, for the ones<br />who come <em>after</em>.
+            </h2>
+
+            <div class="about__body">
+                <div class="about__copy">
+                    <p>
+                        Future Era is a home for the generation that stopped waiting for the future
+                        to arrive. It is a place where ideas, tools and people land in the same room
+                        — and where the work gets finished, not just discussed.
+                    </p>
+                    <p>
+                        Everything here is shaped around one belief: timelines should match how fast
+                        this generation actually moves. So the interface is fast, the writing is
+                        plain, and nothing is padded out to look bigger than it is.
+                    </p>
+                    <p>
+                        It is a spot for builders, artists and minds who would rather ship the thing
+                        than wait for permission to start. Come for the vision, stay for the people
+                        who are already making it real.
+                    </p>
+                </div>
+
+                <ul class="about__facts" data-reveal>
+                    <li>
+                        <strong>01</strong>
+                        <span>Ideas, tools and timelines that match how fast this generation actually moves.</span>
+                    </li>
+                    <li>
+                        <strong>02</strong>
+                        <span>Motion, contrast and intent — design that serves the work, not itself.</span>
+                    </li>
+                    <li>
+                        <strong>03</strong>
+                        <span>Measurable outcomes for the communities the future is already here for.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer" id="footer">
+        <div class="footer__inner">
+
+            <p class="footer__statement">
+                The future is already here for<br />whoever is <em>willing to build it</em>.
+            </p>
+
+            <div class="footer__top">
+                <a href="#intro" class="footer__logo" aria-label="Future Era — back to top">
+                    <span class="footer__mark">FE</span>
+                    <span class="footer__word">Future<em>Era</em></span>
+                </a>
+
+                <nav class="footer__links" aria-label="Footer">
+                    <a href="#intro">Home</a>
+                    <a href="#about">About</a>
+                    <a href="creators.html">Creators</a>
+                </nav>
+
+                <a href="#intro" class="btn btn--ghost footer__back">Back to top</a>
+            </div>
+
+            <div class="footer__bottom">
+                <p class="footer__copy">
+                    © <span id="year"></span> Future Era — The GenX Era. All rights reserved.
+                </p>
+
+                <p class="footer__tagline">
+                    Built for the ones who come after — made to ship, not just show.
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

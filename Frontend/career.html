@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enter the Era — Future Era</title>
+  <meta name="description"
+    content="Pick your path, fill in what applies to you, and get a full career blueprint — what you can do, how to do it, and where to start." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Audiowide&family=Marck+Script&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="page-career">
+
+  <!-- ============ BACK ============ -->
+  <div class="career__top">
+    <a href="index.html#intro" class="backlink">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill="currentColor"
+          d="M14.7 5.3a1 1 1 0 0 1 0 1.4L9.4 12l5.3 5.3a1 1 1 0 1-1.4 1.4l-6-6a1 1 1 0 0 1 0-1.4l6-6a1 1 1 0 0 1 1.4 0Z" />
+      </svg>
+      Back to Home
+    </a>
+  </div>
+
+  <main>
+    <section class="career" id="career">
+      <div class="career__inner">
+
+        <span class="career__eyebrow" data-reveal>Enter the Era</span>
+
+        <h1 class="career__title" data-reveal>
+          Two doors.<br>One of them<br>is <em>yours</em>.
+        </h1>
+
+        <p class="career__lede" data-reveal>
+          Fill in what applies to you and the blueprint builds itself — what you can do,
+          how to do it, and where to start.
+        </p>
+
+        <form class="cform" id="pathform" novalidate data-reveal>
+
+          <!-- --- path --- -->
+          <fieldset class="fset">
+            <legend class="fset__label">Path</legend>
+            <div class="opts opts--stack" id="path-opts"></div>
+          </fieldset>
+
+          <!-- ================= 12th PASS ================= -->
+          <div class="cform__group" id="group-student" hidden>
+
+            <fieldset class="fset">
+              <legend class="fset__label">Stream</legend>
+              <div class="opts" id="stu-stream"></div>
+            </fieldset>
+
+            <fieldset class="fset">
+              <legend class="fset__label">Interest</legend>
+              <div class="opts" id="stu-interest"></div>
+              <div class="fset__extra">
+                <label class="fset__mini" for="stu-interest-other">Other</label>
+                <input class="inp" id="stu-interest-other" type="text" maxlength="60"
+                  placeholder="Something not listed" autocomplete="off" />
+              </div>
+            </fieldset>
+
+            <fieldset class="fset">
+              <legend class="fset__label">Hobbies</legend>
+              <div class="opts" id="stu-hobbies"></div>
+              <div class="fset__extra">
+                <label class="fset__mini" for="stu-hobby-other">Other</label>
+                <input class="inp" id="stu-hobby-other" type="text" maxlength="60"
+                  placeholder="Something not listed" autocomplete="off" />
+              </div>
+            </fieldset>
+
+            <div class="fset">
+              <label class="fset__label" for="stu-degree">Planned degree</label>
+              <select class="sel" id="stu-degree"></select>
+              <p class="fset__hint" id="stu-degree-hint">Pick a stream first.</p>
+            </div>
+
+            <fieldset class="fset">
+              <legend class="fset__label">Duration</legend>
+              <div class="opts" id="stu-duration"></div>
+            </fieldset>
+
+          </div>
+
+          <!-- ================= GRADUATED ================= -->
+          <div class="cform__group" id="group-grad" hidden>
+
+            <div class="fset">
+              <label class="fset__label" for="grad-degree">Degree</label>
+              <select class="sel" id="grad-degree"></select>
+              <p class="fset__hint" id="grad-degree-hint">Choose a degree.</p>
+            </div>
+
+            <fieldset class="fset">
+              <legend class="fset__label">Skills</legend>
+              <div class="opts" id="grad-skills"></div>
+              <p class="fset__hint" id="grad-skills-hint">Pick a degree to narrow this list down.</p>
+              <div class="fset__extra">
+                <label class="fset__mini" for="grad-skill-quick">Extra skills</label>
+                <div class="addrow">
+                  <input class="inp" id="grad-skill-quick" type="text" maxlength="60"
+                    placeholder="Anything not listed — type it, press Enter" autocomplete="off" />
+                  <button class="btn btn--ghost btn--sm" type="button" id="grad-skill-add">Add</button>
+                </div>
+                <div class="chips" id="grad-skill-chips"></div>
+              </div>
+            </fieldset>
+
+            <div class="fset">
+              <label class="fset__label" for="grad-role">Target career role</label>
+              <input class="inp" id="grad-role" type="text" maxlength="70"
+                placeholder="e.g. Frontend Developer" autocomplete="off" />
+            </div>
+
+          </div>
+
+          <div class="cform__foot">
+            <p class="cform__missing" id="form-missing" role="status"></p>
+            <button class="btn btn--solid" type="submit" id="generate" disabled>Generate blueprint</button>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ BLUEPRINT ============ -->
+    <section class="bp" id="blueprint" hidden>
+      <div class="bp__inner">
+
+        <div class="bp__head" id="bp-head"></div>
+
+        <div class="bp__block">
+          <h2 class="bp__blockTitle">What you can do, how, and from where</h2>
+          <p class="bp__blockLede">One card for every option you selected.</p>
+          <div class="bp__cards" id="bp-cards"></div>
+        </div>
+
+        <div class="bp__block">
+          <h2 class="bp__blockTitle">Skills to add</h2>
+          <p class="bp__blockLede" id="bp-skills-lede"></p>
+          <div class="bp__skills" id="bp-skills"></div>
+        </div>
+
+        <div class="bp__block">
+          <h2 class="bp__blockTitle">Your timeline</h2>
+          <p class="bp__blockLede" id="bp-timeline-lede"></p>
+          <ol class="bp__timeline" id="bp-timeline"></ol>
+        </div>
+
+        <div class="bp__actions">
+          <a href="creators.html" class="btn btn--ghost">Meet the creators</a>
+          <button class="btn btn--ghost" type="button" id="bp-print">Print</button>
+          <button class="btn btn--solid" type="button" id="bp-restart">Start over</button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="footer">
+    <div class="footer__inner">
+
+      <p class="footer__statement">
+        The future is already here for<br />whoever is <em>willing to build it</em>.
+      </p>
+
+      <div class="footer__top">
+        <a href="index.html#intro" class="footer__logo" aria-label="Future Era — back to top">
+          <span class="footer__mark">FE</span>
+          <span class="footer__word">Future<em>Era</em></span>
+        </a>
+
+        <nav class="footer__links" aria-label="Footer">
+          <a href="index.html#intro">Home</a>
+          <a href="index.html#about">About</a>
+          <a href="creators.html">Creators</a>
+        </nav>
+
+        <a href="index.html#intro" class="btn btn--ghost footer__back">Back to top</a>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">
+          © <span id="year"></span> Future Era — The GenX Era. All rights reserved.
+        </p>
+
+        <p class="footer__tagline">
+          Built for the ones who come after — made to ship, not just show.
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

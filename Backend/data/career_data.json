@@ -1,0 +1,2294 @@
+{
+  "RESOURCES": {
+    "mdn": {
+      "label": "MDN Web Docs",
+      "url": "https://developer.mozilla.org",
+      "kind": "docs"
+    },
+    "devdocs": {
+      "label": "DevDocs",
+      "url": "https://devdocs.io",
+      "kind": "docs"
+    },
+    "caniuse": {
+      "label": "Can I Use",
+      "url": "https://caniuse.com",
+      "kind": "docs"
+    },
+    "postgresql": {
+      "label": "PostgreSQL Tutorial",
+      "url": "https://www.postgresqltutorial.com",
+      "kind": "docs"
+    },
+    "cpref": {
+      "label": "cppreference",
+      "url": "https://en.cppreference.com",
+      "kind": "docs"
+    },
+    "rustbook": {
+      "label": "The Rust Book",
+      "url": "https://doc.rust-lang.org/book/",
+      "kind": "docs"
+    },
+    "so": {
+      "label": "Stack Overflow",
+      "url": "https://stackoverflow.com",
+      "kind": "community"
+    },
+    "devto": {
+      "label": "DEV Community",
+      "url": "https://dev.to",
+      "kind": "community"
+    },
+    "freecodecamp": {
+      "label": "freeCodeCamp",
+      "url": "https://www.freecodecamp.org",
+      "kind": "course"
+    },
+    "codecademy": {
+      "label": "Codecademy",
+      "url": "https://www.codecademy.com",
+      "kind": "course"
+    },
+    "coursera": {
+      "label": "Coursera",
+      "url": "https://www.coursera.org",
+      "kind": "course"
+    },
+    "edx": {
+      "label": "edX",
+      "url": "https://www.edx.org",
+      "kind": "course"
+    },
+    "khanacademy": {
+      "label": "Khan Academy",
+      "url": "https://www.khanacademy.org",
+      "kind": "course"
+    },
+    "nptel": {
+      "label": "NPTEL",
+      "url": "https://nptel.ac.in",
+      "kind": "course"
+    },
+    "swayam": {
+      "label": "SWAYAM",
+      "url": "https://swayam.gov.in",
+      "kind": "course"
+    },
+    "sololearn": {
+      "label": "SoloLearn",
+      "url": "https://www.sololearn.com",
+      "kind": "course"
+    },
+    "odin": {
+      "label": "The Odin Project",
+      "url": "https://www.theodinproject.com",
+      "kind": "course"
+    },
+    "fso": {
+      "label": "Full Stack Open",
+      "url": "https://fullstackopen.com",
+      "kind": "course"
+    },
+    "cs50": {
+      "label": "Harvard CS50",
+      "url": "https://cs50.harvard.edu",
+      "kind": "course"
+    },
+    "py4e": {
+      "label": "Python for Everybody",
+      "url": "https://www.py4e.com",
+      "kind": "course"
+    },
+    "atbs": {
+      "label": "Automate the Boring Stuff",
+      "url": "https://automatetheboringstuff.com",
+      "kind": "course"
+    },
+    "exercism": {
+      "label": "Exercism",
+      "url": "https://exercism.org",
+      "kind": "practice"
+    },
+    "leetcode": {
+      "label": "LeetCode",
+      "url": "https://leetcode.com",
+      "kind": "practice"
+    },
+    "hackerrank": {
+      "label": "HackerRank",
+      "url": "https://www.hackerrank.com",
+      "kind": "practice"
+    },
+    "codechef": {
+      "label": "CodeChef",
+      "url": "https://www.codechef.com",
+      "kind": "practice"
+    },
+    "sqlbolt": {
+      "label": "SQLBolt",
+      "url": "https://sqlbolt.com",
+      "kind": "practice"
+    },
+    "w3schools": {
+      "label": "W3Schools",
+      "url": "https://www.w3schools.com",
+      "kind": "practice"
+    },
+    "kaggle": {
+      "label": "Kaggle",
+      "url": "https://www.kaggle.com",
+      "kind": "practice"
+    },
+    "devpost": {
+      "label": "Devpost",
+      "url": "https://devpost.com",
+      "kind": "hackathon"
+    },
+    "unstop": {
+      "label": "Unstop",
+      "url": "https://unstop.com",
+      "kind": "hackathon"
+    },
+    "internshala": {
+      "label": "Internshala",
+      "url": "https://internshala.com",
+      "kind": "career"
+    },
+    "tryhackme": {
+      "label": "TryHackMe",
+      "url": "https://tryhackme.com",
+      "kind": "practice"
+    },
+    "hackthebox": {
+      "label": "Hack The Box",
+      "url": "https://www.hackthebox.com",
+      "kind": "practice"
+    },
+    "owasp": {
+      "label": "OWASP",
+      "url": "https://owasp.org",
+      "kind": "docs"
+    },
+    "hubspotacademy": {
+      "label": "HubSpot Academy",
+      "url": "https://academy.hubspot.com",
+      "kind": "course"
+    },
+    "skillshop": {
+      "label": "Google Skill Shop",
+      "url": "https://skillshop.withgoogle.com",
+      "kind": "course"
+    },
+    "awssb": {
+      "label": "AWS Skill Builder",
+      "url": "https://skillbuilder.aws",
+      "kind": "course"
+    },
+    "mslearn": {
+      "label": "Microsoft Learn",
+      "url": "https://learn.microsoft.com",
+      "kind": "course"
+    },
+    "gcpsb": {
+      "label": "Google Cloud Skills Boost",
+      "url": "https://www.cloudskillsboost.google",
+      "kind": "course"
+    },
+    "figma": {
+      "label": "Figma",
+      "url": "https://www.figma.com",
+      "kind": "tool"
+    },
+    "github": {
+      "label": "GitHub",
+      "url": "https://github.com",
+      "kind": "tool"
+    },
+    "ghstudent": {
+      "label": "GitHub Student Pack",
+      "url": "https://education.github.com",
+      "kind": "tool"
+    },
+    "replit": {
+      "label": "Replit",
+      "url": "https://replit.com",
+      "kind": "tool"
+    },
+    "vercel": {
+      "label": "Vercel",
+      "url": "https://vercel.com",
+      "kind": "tool"
+    },
+    "netlify": {
+      "label": "Netlify",
+      "url": "https://www.netlify.com",
+      "kind": "tool"
+    },
+    "supabase": {
+      "label": "Supabase",
+      "url": "https://supabase.com",
+      "kind": "tool"
+    },
+    "mongodbatlas": {
+      "label": "MongoDB Atlas",
+      "url": "https://www.mongodb.com/atlas",
+      "kind": "tool"
+    },
+    "postman": {
+      "label": "Postman",
+      "url": "https://www.postman.com",
+      "kind": "tool"
+    },
+    "canva": {
+      "label": "Canva",
+      "url": "https://www.canva.com",
+      "kind": "tool"
+    },
+    "blender": {
+      "label": "Blender",
+      "url": "https://www.blender.org",
+      "kind": "tool"
+    },
+    "davinci": {
+      "label": "DaVinci Resolve",
+      "url": "https://www.blackmagicdesign.com/products/davinciresolve",
+      "kind": "tool"
+    },
+    "behance": {
+      "label": "Behance",
+      "url": "https://www.behance.net",
+      "kind": "community"
+    },
+    "hashnode": {
+      "label": "Hashnode",
+      "url": "https://hashnode.com",
+      "kind": "community"
+    },
+    "youtube": {
+      "label": "YouTube",
+      "url": "https://www.youtube.com",
+      "kind": "course"
+    },
+    "jsinfo": {
+      "label": "javascript.info",
+      "url": "https://javascript.info",
+      "kind": "docs"
+    },
+    "nodedocs": {
+      "label": "Node.js Docs",
+      "url": "https://nodejs.org/en/docs",
+      "kind": "docs"
+    },
+    "howtodoinjava": {
+      "label": "HowToDoInJava",
+      "url": "https://howtodoinjava.com",
+      "kind": "docs"
+    },
+    "atlassian": {
+      "label": "Atlassian Agile Guides",
+      "url": "https://www.atlassian.com/agile",
+      "kind": "docs"
+    }
+  },
+  "STREAMS": [
+    {
+      "id": "science",
+      "label": "Science",
+      "blurb": "Maths, physics, chemistry or biology at the 12th level.",
+      "what": "Science opens the widest set of technical doors in India, because most engineering, data and medicine entrance exams sit inside it.",
+      "how": "Keep one subject deep rather than all of them shallow. Pick the one you would still read about at 1am and build the rest around it.",
+      "where": [
+        "khanacademy",
+        "nptel",
+        "freecodecamp"
+      ]
+    },
+    {
+      "id": "commerce",
+      "label": "Commerce",
+      "blurb": "Accounts, business, economics or finance.",
+      "what": "Commerce leads to finance, accounting, banking, taxation and business analysis roles, all of which hire heavily in Indian metros.",
+      "how": "Get genuinely good at one spreadsheet or accounting tool before you start applying. Most commerce jobs are decided in the first two rounds by how you read a number.",
+      "where": [
+        "khanacademy",
+        "internshala",
+        "hubspotacademy"
+      ]
+    },
+    {
+      "id": "arts",
+      "label": "Arts / Humanities",
+      "blurb": "History, literature, economics, psychology or fine arts.",
+      "what": "Arts gives you writing, research, law, teaching, design and communication skills that most other streams never practise.",
+      "how": "Treat writing as a technical skill, not a personality trait. Write a lot on a schedule and get it in front of people who will criticise it.",
+      "where": [
+        "nptel",
+        "swayam",
+        "edx"
+      ]
+    },
+    {
+      "id": "vocational",
+      "label": "Vocational / ITI",
+      "blurb": "A trade qualification, ITI, or a hands-on polytechnic line.",
+      "what": "Skilled trades, operations, technicians and field engineering are in real shortage, and many of these roles pay better than a default graduate degree.",
+      "how": "Pair the trade with one digital skill. Electricity plus an IoT toolkit, or a mechanical diploma plus CAD, is worth more than either alone.",
+      "where": [
+        "nptel",
+        "swayam",
+        "khanacademy"
+      ]
+    },
+    {
+      "id": "technology",
+      "label": "Technology / Polytechnic",
+      "blurb": "Polytechnic, diploma in engineering, or already into ITI-level tech.",
+      "what": "You are closest to the work already. A diploma holder who can code or handle networks skips the two years most people spend repeating a syllabus.",
+      "how": "Turn the syllabus into portfolio work. Same concepts, but as something you built and can demo rather than a mark you received.",
+      "where": [
+        "nptel",
+        "freecodecamp",
+        "github"
+      ]
+    },
+    {
+      "id": "other",
+      "label": "Something else",
+      "blurb": "A mix, a gap year, or a stream that does not fit the usual boxes.",
+      "what": "There is no stream that locks the door. Hiring in India is far more interested in what you can show than which box you ticked at 16.",
+      "how": "Skip the self-analysis and start building one small finished thing this month. Finished work is the only thing that settles this question.",
+      "where": [
+        "freecodecamp",
+        "devto",
+        "unstop"
+      ]
+    }
+  ],
+  "DURATIONS": [
+    {
+      "id": "1y",
+      "label": "1 year",
+      "note": "Under a year, fast and focused.",
+      "what": "A single year is only enough if you already know roughly what you are aiming at, and you spend nearly all of it building rather than watching.",
+      "how": "Pick one role, one stack, and go deep on it. Breadth costs you the year, depth is what makes it worth something.",
+      "where": [
+        "odin",
+        "codecademy",
+        "freecodecamp"
+      ]
+    },
+    {
+      "id": "2y",
+      "label": "2 years",
+      "note": "The classic MCA / MBA / MTech window.",
+      "what": "Two years fits one serious specialisation with a project at the end, which is exactly the shape most hiring managers expect.",
+      "how": "Front-load fundamentals, then spend the second half on one substantial project you can defend in an interview.",
+      "where": [
+        "fso",
+        "nptel",
+        "swayam"
+      ]
+    },
+    {
+      "id": "3y",
+      "label": "3 years",
+      "note": "Standard undergraduate degree length.",
+      "what": "Three years gives you time to switch direction once without losing much, which matters more than landing on the perfect choice immediately.",
+      "how": "Use the first year to explore broadly, then commit by the end of year two so the final year produces real work.",
+      "where": [
+        "fso",
+        "cs50",
+        "coursera"
+      ]
+    },
+    {
+      "id": "4y",
+      "label": "4 years",
+      "note": "B.Tech / B.Des and most professional degrees.",
+      "what": "Four years is the norm in India for technical roles, and it is the only one of these windows where a college placement system meaningfully works for you.",
+      "how": "Keep the first two years for fundamentals, use the third for internships, and make the fourth year a job hunt with a portfolio behind it.",
+      "where": [
+        "nptel",
+        "internshala",
+        "unstop"
+      ]
+    },
+    {
+      "id": "5y",
+      "label": "5+ years",
+      "note": "Integrated degrees and the long game.",
+      "what": "Five years is worth it when the destination genuinely needs it, such as MBBS, integrated law, or a masters stacked on a B.Tech.",
+      "how": "Only take the extra years if you can name the specific job at the end. Vague long horizons lose money and motivation both.",
+      "where": [
+        "nptel",
+        "edx",
+        "swayam"
+      ]
+    }
+  ],
+  "DEGREES": [
+    {
+      "id": "btech",
+      "label": "B.Tech / B.E",
+      "streams": [
+        "science",
+        "technology",
+        "other"
+      ],
+      "durations": [
+        "4y",
+        "5y"
+      ],
+      "what": "The broadest engineering entry point in India, and the one with the most hiring partners attached to campus placement.",
+      "how": "Specialise only in the final year. Until then, fundamentals plus one language done properly beats six languages done badly.",
+      "where": [
+        "nptel",
+        "github",
+        "internshala"
+      ]
+    },
+    {
+      "id": "bsc",
+      "label": "B.Sc",
+      "streams": [
+        "science",
+        "other"
+      ],
+      "durations": [
+        "3y",
+        "4y"
+      ],
+      "what": "A science degree that pairs well with data, teaching, research and the many regulated science roles that need one on paper.",
+      "how": "Add computing early. A B.Sc plus real programming lands you in far more places than the degree alone.",
+      "where": [
+        "nptel",
+        "khanacademy",
+        "coursera"
+      ]
+    },
+    {
+      "id": "ba",
+      "label": "B.A",
+      "streams": [
+        "arts",
+        "commerce",
+        "other"
+      ],
+      "durations": [
+        "3y",
+        "4y"
+      ],
+      "what": "A liberal arts degree that builds the writing, research and argument skills most people never develop on their own.",
+      "how": "Pair it with a specialisation, such as economics, psychology or English, so the degree says something specific on paper.",
+      "where": [
+        "nptel",
+        "swayam",
+        "edx"
+      ]
+    },
+    {
+      "id": "bcom",
+      "label": "B.Com",
+      "streams": [
+        "commerce",
+        "arts",
+        "other"
+      ],
+      "durations": [
+        "3y",
+        "4y"
+      ],
+      "what": "The direct route into accounting, taxation, banking and financial operations, most of which hire in bulk every year.",
+      "how": "Get certified in one real tool, Excel at an advanced level or a Tally or SAP track, and apply early rather than after a gap year.",
+      "where": [
+        "khanacademy",
+        "internshala",
+        "hubspotacademy"
+      ]
+    },
+    {
+      "id": "bca",
+      "label": "B.C.A",
+      "streams": [
+        "science",
+        "commerce",
+        "vocational",
+        "other"
+      ],
+      "durations": [
+        "3y",
+        "4y"
+      ],
+      "what": "The fastest conventional route into software work in India, and heavily recruited by campus hiring programmes.",
+      "how": "DSA is the whole game for placements. Start in the second year and treat interview prep as part of the degree, not a separate phase.",
+      "where": [
+        "freecodecamp",
+        "leetcode",
+        "unstop"
+      ]
+    },
+    {
+      "id": "mca",
+      "label": "M.C.A",
+      "streams": [
+        "science",
+        "commerce",
+        "arts",
+        "vocational",
+        "technology",
+        "other"
+      ],
+      "durations": [
+        "2y"
+      ],
+      "what": "The standard upgrade from any non-B.Tech degree into software roles, and a strong recruiter signal in India.",
+      "how": "Use the two years for a specialisation plus a real internship. An MCA with no internship is a weaker card than a B.Tech with one.",
+      "where": [
+        "fso",
+        "nptel",
+        "internshala"
+      ]
+    },
+    {
+      "id": "msc",
+      "label": "M.Sc",
+      "streams": [
+        "science",
+        "other"
+      ],
+      "durations": [
+        "2y"
+      ],
+      "what": "Deep specialisation in one science, which is the route into research, academia and the R&D roles that a general degree will not reach.",
+      "how": "Pair the specialisation with computation. Research-adjacent work in India increasingly expects you to model, not just measure.",
+      "where": [
+        "nptel",
+        "swayam",
+        "kaggle"
+      ]
+    },
+    {
+      "id": "mba",
+      "label": "M.B.A",
+      "streams": [
+        "science",
+        "commerce",
+        "arts",
+        "vocational",
+        "technology",
+        "other"
+      ],
+      "durations": [
+        "2y"
+      ],
+      "what": "The strongest reset button in India for switching tracks late, and the shortest path into management and product roles.",
+      "how": "Go in with a goal and a project, not just to collect the letters. Recruitment here runs almost entirely on what you did during the two years.",
+      "where": [
+        "hubspotacademy",
+        "coursera",
+        "edx"
+      ]
+    },
+    {
+      "id": "bdes",
+      "label": "B.Des",
+      "streams": [
+        "arts",
+        "vocational",
+        "other"
+      ],
+      "durations": [
+        "4y"
+      ],
+      "what": "A professional design degree that covers product, UI, graphic and interaction design as a job, not as a hobby.",
+      "how": "Build a portfolio of four deep projects rather than twenty thin ones. Admissions and hiring both read the depth first.",
+      "where": [
+        "figma",
+        "behance",
+        "canva"
+      ]
+    },
+    {
+      "id": "llb",
+      "label": "LLB",
+      "streams": [
+        "arts",
+        "commerce",
+        "other"
+      ],
+      "durations": [
+        "3y",
+        "5y"
+      ],
+      "what": "The route to legal practice in India, and also one of the most general-useful degrees for negotiation, compliance and contract work.",
+      "how": "Clinic work and internships matter more than marks here. Take every moot you can and write properly.",
+      "where": [
+        "nptel",
+        "swayam",
+        "so"
+      ]
+    },
+    {
+      "id": "bed",
+      "label": "B.Ed",
+      "streams": [
+        "arts",
+        "commerce",
+        "other"
+      ],
+      "durations": [
+        "2y"
+      ],
+      "what": "The teaching qualification, and one of the few degrees with genuinely guaranteed demand in smaller cities and villages.",
+      "how": "Add one digital skill, such as curriculum design or edtech tooling, and you become the teacher everyone insists on hiring.",
+      "where": [
+        "nptel",
+        "swayam",
+        "khanacademy"
+      ]
+    },
+    {
+      "id": "dip",
+      "label": "Diploma",
+      "streams": [
+        "vocational",
+        "technology",
+        "other"
+      ],
+      "durations": [
+        "1y",
+        "2y",
+        "3y"
+      ],
+      "what": "A focused, cheaper and often faster route to a specific trade, with strong lateral entry into industry in India.",
+      "how": "Do not stop at the diploma. Add one digital capability to it and you become a technician who can be sent anywhere.",
+      "where": [
+        "nptel",
+        "swayam",
+        "khanacademy"
+      ]
+    },
+    {
+      "id": "bvoc",
+      "label": "B.Voc",
+      "streams": [
+        "vocational",
+        "technology",
+        "other"
+      ],
+      "durations": [
+        "3y",
+        "4y"
+      ],
+      "what": "A skilling-first degree that is industry-linked and built around practical assessment rather than long theory papers.",
+      "how": "Use the on-the-job training slot properly. That industry contact is the entire point of the degree.",
+      "where": [
+        "nptel",
+        "swayam",
+        "internshala"
+      ]
+    },
+    {
+      "id": "unsure",
+      "label": "Not decided yet",
+      "streams": [
+        "science",
+        "commerce",
+        "arts",
+        "vocational",
+        "technology",
+        "other"
+      ],
+      "durations": [
+        "1y",
+        "2y",
+        "3y",
+        "4y",
+        "5y"
+      ],
+      "what": "Not having a degree picked yet is completely normal at this stage, and plenty of strong careers do not need one.",
+      "how": "Spend two weeks on each of the two or three options that keep coming to mind, then commit. Deciding slowly is fine, not deciding is not.",
+      "where": [
+        "nptel",
+        "edx",
+        "unstop"
+      ]
+    }
+  ],
+  "INTERESTS": [
+    {
+      "id": "coding",
+      "label": "Coding & building",
+      "role": "fullstack",
+      "also": [
+        "frontend",
+        "backend"
+      ],
+      "what": "Turning an idea into something a person can actually click. This is the shortest distance from no experience to a hireable portfolio.",
+      "how": "Learn one language properly, then build four small full projects that solve a real problem for someone you know. Finished beats perfect every time.",
+      "where": [
+        "freecodecamp",
+        "odin",
+        "github"
+      ]
+    },
+    {
+      "id": "data",
+      "label": "Data & numbers",
+      "role": "dataanalyst",
+      "also": [
+        "datascience"
+      ],
+      "what": "Turning messy records into a decision someone can act on. The most transferable skill in the job market right now.",
+      "how": "SQL first, because it is the one that is genuinely required everywhere. Then one BI tool and a spreadsheet discipline.",
+      "where": [
+        "sqlbolt",
+        "kaggle",
+        "coursera"
+      ]
+    },
+    {
+      "id": "design",
+      "label": "Design & visuals",
+      "role": "uiux",
+      "what": "Deciding how something looks and feels so that people can use it without being taught.",
+      "how": "Redesign three apps that already exist and write the reasoning out. Design judgement is shown, not claimed.",
+      "where": [
+        "figma",
+        "canva",
+        "behance"
+      ]
+    },
+    {
+      "id": "ai",
+      "label": "AI & machine learning",
+      "role": "mlengineer",
+      "also": [
+        "datascience"
+      ],
+      "what": "Building systems that learn from data rather than following rules someone wrote by hand.",
+      "how": "Get the maths and Python genuinely solid before touching a framework. Most AI tutorials skip the part that makes it work.",
+      "where": [
+        "cs50",
+        "kaggle",
+        "swayam"
+      ]
+    },
+    {
+      "id": "security",
+      "label": "Cyber security",
+      "role": "cybersecurity",
+      "what": "Finding the holes in systems before someone else does, and getting paid to be the reason that does not happen.",
+      "how": "Do the free labs first, then get hands on deliberately vulnerable machines. This field punishes theory-only study hardest of all.",
+      "where": [
+        "tryhackme",
+        "hackthebox",
+        "owasp"
+      ]
+    },
+    {
+      "id": "marketing",
+      "label": "Marketing & growth",
+      "role": "marketing",
+      "what": "Understanding what people want, what makes them act, and what makes them keep doing it.",
+      "how": "Run one real campaign for a small business or your own project, even on a tiny budget, and measure it properly.",
+      "where": [
+        "hubspotacademy",
+        "skillshop",
+        "internshala"
+      ]
+    },
+    {
+      "id": "mobile",
+      "label": "Apps & mobile",
+      "role": "mobile",
+      "what": "Building the software people carry in their pocket all day, which is where a huge share of daily use actually happens.",
+      "how": "Ship one app to a store. The deployment step teaches more than months of tutorials, and it is the step most people avoid.",
+      "where": [
+        "replit",
+        "github",
+        "mdn"
+      ]
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud & infrastructure",
+      "role": "devops",
+      "what": "Keeping systems running, scaled and reliable, including the parts nobody is supposed to notice.",
+      "how": "Break your own environment on purpose, then fix it and write down what happened. That loop is the whole job.",
+      "where": [
+        "awssb",
+        "gcpsb",
+        "fso"
+      ]
+    },
+    {
+      "id": "product",
+      "label": "Product & strategy",
+      "role": "productmanager",
+      "what": "Deciding what gets built, in what order, and why. The role that sits between users, design and engineering.",
+      "how": "Analyse one product you use every day and argue for a change with evidence. This is a thinking job, not a tools job.",
+      "where": [
+        "coursera",
+        "edx",
+        "devto"
+      ]
+    },
+    {
+      "id": "finance",
+      "label": "Money & markets",
+      "role": "dataanalyst",
+      "what": "Reading numbers to make decisions about money, whether that is a company budget or a market.",
+      "how": "Learn statistics properly and use it on real data you care about. The maths is the differentiator, not the terminology.",
+      "where": [
+        "khanacademy",
+        "kaggle",
+        "coursera"
+      ]
+    }
+  ],
+  "HOBBIES": [
+    {
+      "id": "gaming",
+      "label": "Gaming",
+      "what": "Design, logic, systems thinking and teamwork under pressure. Game jams turn a hobby into a portfolio instantly.",
+      "how": "Enter one jam with people you do not know. The deadline and the constraints do more for you than any amount of solo practice.",
+      "where": [
+        "devpost",
+        "unstop",
+        "github"
+      ]
+    },
+    {
+      "id": "sports",
+      "label": "Sports",
+      "what": "Discipline, teamwork, and a body of people who will vouch for you in ways a resume cannot.",
+      "how": "Compete in something with rankings. People who have trained under pressure are noticeably harder to fake in an interview.",
+      "where": [
+        "devto",
+        "so",
+        "unstop"
+      ]
+    },
+    {
+      "id": "music",
+      "label": "Music",
+      "what": "Deep pattern recognition, sustained practice, and the ability to work on something for years without an audience.",
+      "how": "Record and release something. Finishing is a rare skill and it transfers straight into shipping software.",
+      "where": [
+        "devto",
+        "github",
+        "so"
+      ]
+    },
+    {
+      "id": "art",
+      "label": "Drawing & art",
+      "what": "Visual thinking and the ability to notice proportion, layout and detail, which is a real professional skill.",
+      "how": "Draw a page every day for a month. It builds the eye faster than any tutorial on design history.",
+      "where": [
+        "figma",
+        "blender",
+        "canva"
+      ]
+    },
+    {
+      "id": "writing",
+      "label": "Writing",
+      "what": "The ability to think clearly and persuade on paper, which is the rarest technical skill there is.",
+      "how": "Publish every week for three months. One piece becomes documentation, a blog, or interview evidence.",
+      "where": [
+        "devto",
+        "so",
+        "hashnode"
+      ]
+    },
+    {
+      "id": "photography",
+      "label": "Photography",
+      "what": "Composition, patience, and a trained eye for light that transfers straight into visual and product work.",
+      "how": "Shoot one project with a brief and a deadline, then present it as a series rather than a folder of snapshots.",
+      "where": [
+        "canva",
+        "blender",
+        "davinci"
+      ]
+    },
+    {
+      "id": "video",
+      "label": "Video editing",
+      "what": "Storytelling, precision, and a genuinely rare ability that most graduates simply do not have.",
+      "how": "Make three finished videos on real deadlines. Edit for someone else for a month and the learning accelerates sharply.",
+      "where": [
+        "davinci",
+        "canva",
+        "youtube"
+      ]
+    },
+    {
+      "id": "reading",
+      "label": "Reading",
+      "what": "Context, vocabulary, and the habit of forming a view before you argue it. It shows in how you write.",
+      "how": "Keep a note on one idea per chapter and publish the notes. Reading becomes visible output.",
+      "where": [
+        "so",
+        "devto",
+        "edx"
+      ]
+    },
+    {
+      "id": "travel",
+      "label": "Travel",
+      "what": "Adaptability, cultural reading, and the habit of navigating systems that are not documented.",
+      "how": "Go somewhere with almost no planning and no English support. It is a genuine and unusually good skill test.",
+      "where": [
+        "devto",
+        "so",
+        "internshala"
+      ]
+    },
+    {
+      "id": "cooking",
+      "label": "Cooking",
+      "what": "Process discipline, timing, quality control, and a genuine sense of what good output feels like.",
+      "how": "Cook one unfamiliar cuisine from scratch each month and write down the method as you go.",
+      "where": [
+        "so",
+        "devto",
+        "youtube"
+      ]
+    },
+    {
+      "id": "volunteering",
+      "label": "Volunteering",
+      "what": "Real-world experience with people, and evidence of character that a technical interview actively looks for.",
+      "how": "Commit to one organisation for a full season. Continuity is worth more on a form than five one-off days.",
+      "where": [
+        "internshala",
+        "nptel",
+        "devto"
+      ]
+    },
+    {
+      "id": "making",
+      "label": "Making & hardware",
+      "what": "Physical problem solving, and the rare ability to think outside the screen when something breaks.",
+      "how": "Build one thing that exists in the world. Breadboards, sensors and 3D printing all teach the same lesson.",
+      "where": [
+        "blender",
+        "github",
+        "khanacademy"
+      ]
+    }
+  ],
+  "SKILLS": [
+    {
+      "id": "html",
+      "label": "HTML",
+      "aliases": [
+        "html5"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "bvoc",
+        "dip",
+        "unsure"
+      ],
+      "what": "The structure every web page is built from, and the first thing to learn if anything will be viewed in a browser.",
+      "how": "Build three real pages by hand before using a framework. You should be able to explain every tag you used.",
+      "where": [
+        "mdn",
+        "freecodecamp"
+      ]
+    },
+    {
+      "id": "css",
+      "label": "CSS",
+      "aliases": [
+        "css3",
+        "flexbox",
+        "grid"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "bvoc",
+        "dip",
+        "unsure"
+      ],
+      "what": "Everything about how a page looks, lays out and responds to screen size.",
+      "how": "Recreate two existing sites pixel-close, then break them on purpose to see what holds.",
+      "where": [
+        "mdn",
+        "w3schools",
+        "caniuse"
+      ]
+    },
+    {
+      "id": "javascript",
+      "label": "JavaScript",
+      "aliases": [
+        "js",
+        "ecmascript"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "bvoc",
+        "dip",
+        "mca",
+        "unsure"
+      ],
+      "what": "The programming language that runs in every browser and most servers. The one language that is genuinely everywhere.",
+      "how": "Do the exercises, then build something with no tutorial running beside you. The gap between those two is the whole learning curve.",
+      "where": [
+        "jsinfo",
+        "freecodecamp",
+        "odin"
+      ]
+    },
+    {
+      "id": "typescript",
+      "label": "TypeScript",
+      "aliases": [
+        "ts"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "JavaScript with types, which catches whole categories of bugs before the code ever runs.",
+      "how": "Add it to a project you have already finished rather than starting from it.",
+      "where": [
+        "mdn",
+        "odin"
+      ]
+    },
+    {
+      "id": "react",
+      "label": "React",
+      "aliases": [
+        "reactjs",
+        "react.js"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "The dominant way to build interactive interfaces in JavaScript today.",
+      "how": "Build one interface with three components, then refactor until the state actually feels like it belongs somewhere obvious.",
+      "where": [
+        "odin",
+        "fso",
+        "devto"
+      ]
+    },
+    {
+      "id": "node",
+      "label": "Node.js",
+      "aliases": [
+        "nodejs",
+        "node.js"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "Running JavaScript on the server, which is what turns a front end into a full application.",
+      "how": "Build one API and put it in front of a real front end before touching a database.",
+      "where": [
+        "nodedocs",
+        "fso",
+        "postman"
+      ]
+    },
+    {
+      "id": "python",
+      "label": "Python",
+      "aliases": [
+        "py",
+        "python3"
+      ],
+      "degrees": [
+        "btech",
+        "bsc",
+        "mca",
+        "msc",
+        "bvoc",
+        "dip",
+        "unsure"
+      ],
+      "what": "The most broadly useful language for data, automation, backend work and scripting.",
+      "how": "Automate one small annoyance in your own week. Automation is the concept that makes Python stick.",
+      "where": [
+        "py4e",
+        "atbs",
+        "kaggle"
+      ]
+    },
+    {
+      "id": "java",
+      "label": "Java",
+      "aliases": [],
+      "degrees": [
+        "btech",
+        "bca",
+        "bvoc",
+        "mca",
+        "unsure"
+      ],
+      "what": "Still the backbone of large Indian enterprise and banking systems, and the standard for core backend campus hiring.",
+      "how": "Get collections, streams and concurrency genuinely right. Interviews here are unusually deep on exactly those.",
+      "where": [
+        "howtodoinjava",
+        "codecademy",
+        "hackerrank"
+      ]
+    },
+    {
+      "id": "cplusplus",
+      "label": "C / C++",
+      "aliases": [
+        "c",
+        "c++",
+        "cpp"
+      ],
+      "degrees": [
+        "btech",
+        "bvoc",
+        "unsure"
+      ],
+      "what": "Low-level performance, and what competitive programming and much of core infrastructure are built on.",
+      "how": "Solve problems, not toy programs. This language only makes sense once you are reasoning about memory and time.",
+      "where": [
+        "cpref",
+        "codechef",
+        "leetcode"
+      ]
+    },
+    {
+      "id": "sql",
+      "label": "SQL",
+      "aliases": [
+        "mysql",
+        "postgresql",
+        "plsql"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "bcom",
+        "bsc",
+        "msc",
+        "mba",
+        "unsure"
+      ],
+      "what": "Asking databases questions, which is required in almost every technical and most business role.",
+      "how": "Query a real public dataset until joins stop being scary. Reading data is a hireable skill on its own.",
+      "where": [
+        "sqlbolt",
+        "postgresql",
+        "w3schools"
+      ]
+    },
+    {
+      "id": "nosql",
+      "label": "NoSQL & data modelling",
+      "aliases": [
+        "mongodb",
+        "dynamodb",
+        "data modelling"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "Storing data that does not fit neatly in rows, which is most data users do not see or think about.",
+      "how": "Model a real domain, like a bookstore or a hospital system, and defend the relationships you chose.",
+      "where": [
+        "mongodbatlas",
+        "supabase",
+        "devdocs"
+      ]
+    },
+    {
+      "id": "git",
+      "label": "Git & GitHub",
+      "aliases": [
+        "git",
+        "github",
+        "version control"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "bvoc",
+        "mca",
+        "dip",
+        "unsure"
+      ],
+      "what": "Tracking and collaborating on code, and effectively the shared language of every technical team.",
+      "how": "Use branches, commits and pull requests from day one, even on solo projects. It is much harder to retrofit.",
+      "where": [
+        "github",
+        "ghstudent",
+        "devdocs"
+      ]
+    },
+    {
+      "id": "restapi",
+      "label": "REST APIs",
+      "aliases": [
+        "rest",
+        "api",
+        "apis",
+        "restful"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "How one piece of software asks another for data, which is the basic contract of all modern software.",
+      "how": "Build a small service, document it in Postman, and have something other than your own code consume it.",
+      "where": [
+        "postman",
+        "mdn",
+        "fso"
+      ]
+    },
+    {
+      "id": "linux",
+      "label": "Linux & command line",
+      "aliases": [
+        "unix",
+        "bash",
+        "shell"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "bvoc",
+        "mca",
+        "unsure"
+      ],
+      "what": "The environment most servers actually run, and where every developer eventually becomes their own support desk.",
+      "how": "Run a bare Ubuntu box and administer it for a month. Do not stay in the graphical desktop.",
+      "where": [
+        "fso",
+        "devdocs",
+        "mdn"
+      ]
+    },
+    {
+      "id": "docker",
+      "label": "Docker",
+      "aliases": [
+        "containers",
+        "containerization"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "Shipping software in a fixed environment so it works on every machine, which removes an entire class of problems.",
+      "how": "Containerise something you built, then deliberately break it in one place to see the value.",
+      "where": [
+        "fso",
+        "mslearn",
+        "devdocs"
+      ]
+    },
+    {
+      "id": "kubernetes",
+      "label": "Kubernetes",
+      "aliases": [
+        "k8s"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "Running and repairing many containers at once, once manual management stops scaling.",
+      "how": "Do not start here. Get Docker and Linux solid first, or this will be vocabulary with no meaning attached.",
+      "where": [
+        "gcpsb",
+        "awssb",
+        "fso"
+      ]
+    },
+    {
+      "id": "aws",
+      "label": "AWS",
+      "aliases": [
+        "amazon web services",
+        "cloud"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "bvoc",
+        "unsure"
+      ],
+      "what": "The largest cloud platform and the one most Indian job listings mention by name.",
+      "how": "Use the free tier and build one real deployment. Certifications matter far less than having hosted something.",
+      "where": [
+        "awssb",
+        "gcpsb",
+        "mslearn"
+      ]
+    },
+    {
+      "id": "ci",
+      "label": "CI/CD",
+      "aliases": [
+        "ci/cd",
+        "cicd",
+        "github actions",
+        "jenkins",
+        "continuous integration"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "Automating testing and deployment so that shipping stops being an event and starts being routine.",
+      "how": "Put one project behind a pipeline that runs its tests and deploys on every push.",
+      "where": [
+        "github",
+        "mslearn",
+        "fso"
+      ]
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "aliases": [
+        "unit testing",
+        "qa",
+        "jest",
+        "cypress"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "unsure"
+      ],
+      "what": "Proving your code does what you think before other people find out what it actually does.",
+      "how": "Test the logic you were least sure about, not the logic that is obviously right.",
+      "where": [
+        "freecodecamp",
+        "odin",
+        "devto"
+      ]
+    },
+    {
+      "id": "dsa",
+      "label": "DSA & problem solving",
+      "aliases": [
+        "data structures",
+        "algorithms",
+        "problem solving",
+        "competitive programming"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "bsc",
+        "msc",
+        "dip",
+        "unsure"
+      ],
+      "what": "The single biggest filter in Indian technical interviews, and the reason a lot of good developers get rejected.",
+      "how": "Solve a few problems every day for two months rather than cramming for a week before an interview.",
+      "where": [
+        "leetcode",
+        "codechef",
+        "hackerrank"
+      ]
+    },
+    {
+      "id": "figma",
+      "label": "Figma",
+      "aliases": [],
+      "degrees": [
+        "bdes",
+        "bca",
+        "ba",
+        "unsure"
+      ],
+      "what": "The industry-standard tool for designing interfaces, used by both designers and developers.",
+      "how": "Learn auto-layout and components, because those two save hours on every file after the first week.",
+      "where": [
+        "figma"
+      ]
+    },
+    {
+      "id": "uiux",
+      "label": "UI/UX design",
+      "aliases": [
+        "ux",
+        "ui/ux",
+        "user research",
+        "user experience"
+      ],
+      "degrees": [
+        "bdes",
+        "bca",
+        "ba",
+        "unsure"
+      ],
+      "what": "Deciding not just what something looks like but whether it can be used by a tired person on a bad connection.",
+      "how": "Run three usability tests on people outside tech and actually change your design because of what they say.",
+      "where": [
+        "figma",
+        "coursera",
+        "devto"
+      ]
+    },
+    {
+      "id": "photoshop",
+      "label": "Photoshop",
+      "aliases": [
+        "ps"
+      ],
+      "degrees": [
+        "bdes",
+        "ba",
+        "bcom",
+        "unsure"
+      ],
+      "what": "Raster image editing, and still a hard requirement in print, e-commerce and marketing work.",
+      "how": "Learn retouching and layer basics, then move to something that produces results rather than just effects.",
+      "where": [
+        "canva",
+        "devto"
+      ]
+    },
+    {
+      "id": "illustrator",
+      "label": "Illustrator",
+      "aliases": [
+        "vector graphics"
+      ],
+      "degrees": [
+        "bdes",
+        "ba",
+        "unsure"
+      ],
+      "what": "Vector artwork, which is what logos, icons and print actually need because it scales without blurring.",
+      "how": "Redesign three existing logos in vector and explain the grid logic behind each.",
+      "where": [
+        "canva",
+        "devto"
+      ]
+    },
+    {
+      "id": "video",
+      "label": "Video editing",
+      "aliases": [
+        "premiere",
+        "davinci"
+      ],
+      "degrees": [
+        "bdes",
+        "ba",
+        "bcom",
+        "unsure"
+      ],
+      "what": "Turning raw footage into something that holds attention, which is a genuine and portable creative skill.",
+      "how": "Cut three finished pieces on real deadlines, one of them for someone who is not a friend.",
+      "where": [
+        "davinci",
+        "canva",
+        "youtube"
+      ]
+    },
+    {
+      "id": "seo",
+      "label": "SEO",
+      "aliases": [
+        "search engine optimisation",
+        "search engine optimization"
+      ],
+      "degrees": [
+        "bcom",
+        "ba",
+        "bca",
+        "unsure"
+      ],
+      "what": "Getting pages found in search results, and the technical half of it as much as the keyword half.",
+      "how": "Take one site you own and fix its real crawl and speed problems before touching keywords at all.",
+      "where": [
+        "skillshop",
+        "hubspotacademy",
+        "devto"
+      ]
+    },
+    {
+      "id": "content",
+      "label": "Content writing",
+      "aliases": [
+        "content writing",
+        "copywriting"
+      ],
+      "degrees": [
+        "ba",
+        "bcom",
+        "bdes",
+        "bsc",
+        "bed",
+        "unsure"
+      ],
+      "what": "Writing that makes a reader do something, which is the hardest part of most marketing jobs.",
+      "how": "Write fifty pieces and publish them. Volume teaches judgement that no course will.",
+      "where": [
+        "hubspotacademy",
+        "devto",
+        "so"
+      ]
+    },
+    {
+      "id": "social",
+      "label": "Social media",
+      "aliases": [
+        "social media marketing",
+        "sm",
+        "instagram",
+        "linkedin"
+      ],
+      "degrees": [
+        "ba",
+        "bcom",
+        "bdes",
+        "bed",
+        "unsure"
+      ],
+      "what": "Building an audience and a community, and reading what a platform is actually rewarding right now.",
+      "how": "Grow one account to a few thousand real followers. It is a portfolio you cannot fake.",
+      "where": [
+        "hubspotacademy",
+        "internshala",
+        "devto"
+      ]
+    },
+    {
+      "id": "ads",
+      "label": "Paid advertising",
+      "aliases": [
+        "google ads",
+        "facebook ads",
+        "ppc",
+        "advertising"
+      ],
+      "degrees": [
+        "bcom",
+        "ba",
+        "mba",
+        "unsure"
+      ],
+      "what": "Buying attention in a measurable way, which is the most direct bridge between marketing and money.",
+      "how": "Run a small live campaign with a real budget and report the cost per result honestly.",
+      "where": [
+        "skillshop",
+        "hubspotacademy",
+        "coursera"
+      ]
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics",
+      "aliases": [
+        "google analytics",
+        "data analysis",
+        "web analytics",
+        "ga4"
+      ],
+      "degrees": [
+        "bcom",
+        "bsc",
+        "mca",
+        "bca",
+        "mba",
+        "unsure"
+      ],
+      "what": "Measuring what actually happened, which is what separates marketing from guessing.",
+      "how": "Set up tracking on a real site and explain one surprising number it revealed.",
+      "where": [
+        "skillshop",
+        "kaggle",
+        "hubspotacademy"
+      ]
+    },
+    {
+      "id": "excel",
+      "label": "Excel",
+      "aliases": [
+        "spreadsheets",
+        "ms excel",
+        "google sheets"
+      ],
+      "degrees": [
+        "bcom",
+        "ba",
+        "bsc",
+        "bed",
+        "dip",
+        "bvoc",
+        "mba",
+        "unsure"
+      ],
+      "what": "Still the most-used analytical tool in most Indian offices, well above what people expect.",
+      "how": "Learn pivot tables, lookups and basic Power Query. That is the whole useful surface.",
+      "where": [
+        "hubspotacademy",
+        "khanacademy",
+        "so"
+      ]
+    },
+    {
+      "id": "bi",
+      "label": "Power BI / Tableau",
+      "aliases": [
+        "power bi",
+        "tableau",
+        "business intelligence",
+        "bi",
+        "dashboards"
+      ],
+      "degrees": [
+        "bcom",
+        "bsc",
+        "mba",
+        "bca",
+        "btech",
+        "msc",
+        "unsure"
+      ],
+      "what": "Turning data into dashboards people actually use to make decisions.",
+      "how": "Build one dashboard from a public dataset and make it readable by someone who knows nothing about the data.",
+      "where": [
+        "kaggle",
+        "coursera",
+        "edx"
+      ]
+    },
+    {
+      "id": "ml",
+      "label": "Machine learning",
+      "aliases": [
+        "machine learning",
+        "artificial intelligence",
+        "ai"
+      ],
+      "degrees": [
+        "btech",
+        "bsc",
+        "msc",
+        "mca",
+        "unsure"
+      ],
+      "what": "Systems that find patterns in data instead of following rules a person wrote out by hand.",
+      "how": "Do the maths first. A framework used before you understand what it is optimising is guesswork.",
+      "where": [
+        "kaggle",
+        "cs50",
+        "swayam"
+      ]
+    },
+    {
+      "id": "pytorch",
+      "label": "PyTorch / TensorFlow",
+      "aliases": [
+        "pytorch",
+        "tensorflow",
+        "deep learning",
+        "neural networks"
+      ],
+      "degrees": [
+        "btech",
+        "bsc",
+        "msc",
+        "mca",
+        "unsure"
+      ],
+      "what": "The main libraries for building and training neural networks, and what most applied AI job ads ask for.",
+      "how": "Build a small model from scratch before you use a library to do it for you.",
+      "where": [
+        "kaggle",
+        "swayam"
+      ]
+    },
+    {
+      "id": "stats",
+      "label": "Statistics",
+      "aliases": [
+        "statistics",
+        "maths",
+        "math",
+        "probability"
+      ],
+      "degrees": [
+        "bsc",
+        "msc",
+        "btech",
+        "mba",
+        "bca",
+        "unsure"
+      ],
+      "what": "Knowing whether a number means anything, which is the difference between analysis and noise.",
+      "how": "Learn probability and hypothesis testing properly, not just the formula list for an exam.",
+      "where": [
+        "khanacademy",
+        "coursera",
+        "kaggle"
+      ]
+    },
+    {
+      "id": "pandas",
+      "label": "pandas & NumPy",
+      "aliases": [
+        "pandas",
+        "numpy",
+        "dataframes"
+      ],
+      "degrees": [
+        "bsc",
+        "msc",
+        "btech",
+        "mca",
+        "unsure"
+      ],
+      "what": "The core tools for handling tabular data in Python, and used in almost every data role.",
+      "how": "Load a messy real dataset, clean it, and write down every decision you made along the way.",
+      "where": [
+        "kaggle",
+        "py4e",
+        "coursera"
+      ]
+    },
+    {
+      "id": "communication",
+      "label": "Communication",
+      "aliases": [
+        "communication skills",
+        "public speaking",
+        "writing skills"
+      ],
+      "degrees": [
+        "ba",
+        "bcom",
+        "bdes",
+        "bed",
+        "llb",
+        "mba",
+        "dip",
+        "unsure"
+      ],
+      "what": "Explaining your work to people who do not have your context, which decides almost every promotion.",
+      "how": "Do one short talk a month about something technical. It is the highest-leverage habit in this list.",
+      "where": [
+        "coursera",
+        "devto",
+        "so"
+      ]
+    },
+    {
+      "id": "agile",
+      "label": "Agile / Scrum",
+      "aliases": [
+        "agile",
+        "scrum",
+        "kanban"
+      ],
+      "degrees": [
+        "bca",
+        "btech",
+        "mca",
+        "mba",
+        "unsure"
+      ],
+      "what": "How modern teams plan, track and ship work in short cycles.",
+      "how": "Run a sprint for a student project or club, with real standups and a real backlog.",
+      "where": [
+        "atlassian",
+        "coursera",
+        "devto"
+      ]
+    },
+    {
+      "id": "product",
+      "label": "Product thinking",
+      "aliases": [
+        "product management",
+        "roadmapping",
+        "prioritisation"
+      ],
+      "degrees": [
+        "mba",
+        "bca",
+        "btech",
+        "unsure"
+      ],
+      "what": "Deciding what to build and why, which is the actual skill behind most senior roles.",
+      "how": "Argue for one specific product change using evidence, then go build a rough version of it.",
+      "where": [
+        "coursera",
+        "devto",
+        "edx"
+      ]
+    },
+    {
+      "id": "networking",
+      "label": "Networking",
+      "aliases": [
+        "tcp/ip",
+        "dns",
+        "computer networks"
+      ],
+      "degrees": [
+        "bcom",
+        "ba",
+        "mba",
+        "bed",
+        "llb",
+        "unsure"
+      ],
+      "what": "How machines actually reach each other, and the foundation of every security and infrastructure role.",
+      "how": "Set up two machines on one network and trace every packet between them.",
+      "where": [
+        "cpref",
+        "tryhackme",
+        "mslearn"
+      ]
+    },
+    {
+      "id": "security",
+      "label": "Security basics",
+      "aliases": [
+        "cybersecurity",
+        "cyber security",
+        "infosec",
+        "ethical hacking"
+      ],
+      "degrees": [
+        "btech",
+        "bca",
+        "mca",
+        "bvoc",
+        "dip",
+        "unsure"
+      ],
+      "what": "Knowing how systems are actually broken into, which is the honest starting point for defending them.",
+      "how": "Complete guided labs on deliberately vulnerable machines before touching a real system.",
+      "where": [
+        "tryhackme",
+        "hackthebox",
+        "owasp"
+      ]
+    }
+  ],
+  "ROLES": {
+    "fullstack": {
+      "label": "Full-Stack Developer",
+      "blurb": "Builds both the interface people see and the logic behind it.",
+      "what": "You own a feature end to end: the page, the API, the database and the deployment. In small Indian teams this is usually the most common engineering role.",
+      "how": "Get one stack genuinely deep, ship four real projects, and be able to talk about every line in the codebase. Breadth matters less than one thing done properly.",
+      "where": [
+        "fso",
+        "odin",
+        "freecodecamp"
+      ],
+      "requires": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "node",
+        "restapi",
+        "sql",
+        "git",
+        "testing",
+        "dsa",
+        "linux"
+      ],
+      "phases": [
+        "Learn HTML, CSS and JavaScript properly. Most people skip this and it shows forever. Do not touch a framework yet.",
+        "Pick one framework and one server language. Build a real app with a login and a database, not a tutorial clone.",
+        "Ship two more projects with tests, deployment and a README. Start applying before you feel ready, because you are nearly ready.",
+        "Specialise deliberately: deeper backend, more scale, or better performance. This is where a mid-level role starts paying properly."
+      ]
+    },
+    "frontend": {
+      "label": "Frontend Developer",
+      "blurb": "Builds the part of the product people actually touch.",
+      "what": "You turn designs into fast, accessible, responsive interfaces. Strong demand in India and the easiest engineering path to get into first.",
+      "how": "Master the browser, not just the framework. Learn how the DOM, rendering and accessibility actually work, then apply that to real design files.",
+      "where": [
+        "mdn",
+        "odin",
+        "freecodecamp"
+      ],
+      "requires": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "git",
+        "testing",
+        "uiux",
+        "figma",
+        "communication",
+        "dsa"
+      ],
+      "phases": [
+        "Become genuinely good at HTML and CSS. Build layouts by hand before any framework helps you.",
+        "Learn JavaScript properly, including the DOM and async. This is the step that decides whether the job is available to you.",
+        "Learn one framework, then rebuild a real website from a Figma file. Pixel accuracy is the interview test.",
+        "Move into performance, accessibility and testing, which is what separates a mid-level from a junior frontend role."
+      ]
+    },
+    "backend": {
+      "label": "Backend Developer",
+      "blurb": "Builds the logic, data and reliability behind the product.",
+      "what": "You design APIs, model data, and make systems that stay correct under load. The most reliable hiring market in Indian software.",
+      "how": "One server language, real relational database modelling, and deployed services you have actually debugged at 2am.",
+      "where": [
+        "fso",
+        "postman",
+        "devdocs"
+      ],
+      "requires": [
+        "node",
+        "python",
+        "java",
+        "sql",
+        "nosql",
+        "restapi",
+        "git",
+        "linux",
+        "dsa",
+        "testing",
+        "docker"
+      ],
+      "phases": [
+        "Pick one server language and learn its type system and error handling properly, not just syntax.",
+        "Learn SQL deeply and model a real domain. Data modelling is most of backend work and the least taught.",
+        "Build an API, document it, deploy it, and put a real front end in front of it so it has a user.",
+        "Add testing, caching and observability. Learn to read a flame graph and a slow query plan."
+      ]
+    },
+    "dataanalyst": {
+      "label": "Data Analyst",
+      "blurb": "Turns records into decisions people can act on.",
+      "what": "You answer business questions with data and present the answer clearly. The most transferable skill in the current job market.",
+      "how": "SQL to a professional level, one BI tool, and a portfolio of real analyses with written conclusions rather than pretty charts.",
+      "where": [
+        "sqlbolt",
+        "kaggle",
+        "coursera"
+      ],
+      "requires": [
+        "sql",
+        "excel",
+        "bi",
+        "stats",
+        "pandas",
+        "python",
+        "analytics",
+        "communication",
+        "git",
+        "dsa"
+      ],
+      "phases": [
+        "SQL until joins and window functions are boring. It is the one skill that cannot be skipped in this role.",
+        "Learn statistics and statistics again, properly, and start using a BI tool on real datasets.",
+        "Build three full analyses on public data, each ending in a written recommendation. Presentation is half the job.",
+        "Add Python for automation and larger datasets, and learn to design the tracking that makes future analysis possible."
+      ]
+    },
+    "datascience": {
+      "label": "Data Scientist",
+      "blurb": "Models data to answer questions statistics alone cannot.",
+      "what": "You go beyond describing what happened to predicting and explaining why. Strong demand, but fewer openings than analyst roles.",
+      "how": "Statistics and Python genuinely first, then modelling, and publish work with honest validation rather than a single impressive-looking number.",
+      "where": [
+        "kaggle",
+        "coursera",
+        "swayam"
+      ],
+      "requires": [
+        "python",
+        "pandas",
+        "stats",
+        "ml",
+        "sql",
+        "bi",
+        "communication",
+        "git"
+      ],
+      "phases": [
+        "Python for data and real statistics, including probability and hypothesis testing. Do not skip this to reach the fun part.",
+        "Classical modelling: regression, trees, validation and how to avoid fooling yourself with bad evaluation.",
+        "Work on real Kaggle problems end to end and write up the reasoning, including what did not work.",
+        "Specialise into deep learning or move toward ML engineering, and add SQL because production work lives in databases."
+      ]
+    },
+    "mlengineer": {
+      "label": "ML Engineer",
+      "blurb": "Gets models into production where they can be trusted.",
+      "what": "You build, train, deploy and monitor models in production. Closer to software engineering than to research, and currently well paid.",
+      "how": "Software engineering skills plus real machine learning. The people who do well here can do both, not one or the other.",
+      "where": [
+        "kaggle",
+        "fso",
+        "awssb"
+      ],
+      "requires": [
+        "python",
+        "pandas",
+        "ml",
+        "pytorch",
+        "stats",
+        "sql",
+        "docker",
+        "linux",
+        "git",
+        "restapi"
+      ],
+      "phases": [
+        "Python properly, then linear algebra and probability at a working level, not just exam level.",
+        "Classical machine learning by hand. Understand gradient descent rather than calling a library function.",
+        "Build two end-to-end projects: data, model, evaluation, and an honest account of where it fails.",
+        "Productionise it: API, container, monitoring and retraining. Most ML jobs are won or lost on this step."
+      ]
+    },
+    "devops": {
+      "label": "DevOps Engineer",
+      "blurb": "Makes software reliable to ship and reliable to run.",
+      "what": "You own deployment, infrastructure, monitoring and reliability. Fewer openings than development, but a genuine shortage of skilled people.",
+      "how": "Linux deeply, then containers, then one cloud properly. Learn by breaking things deliberately and reading the logs.",
+      "where": [
+        "fso",
+        "awssb",
+        "gcpsb"
+      ],
+      "requires": [
+        "linux",
+        "docker",
+        "kubernetes",
+        "ci",
+        "aws",
+        "networking",
+        "git",
+        "testing",
+        "restapi"
+      ],
+      "phases": [
+        "Get genuinely comfortable in Linux. No GUI escape hatches, and learn to read logs and processes properly.",
+        "Containers from first principles: build one, run one, break one. Understand what an image layer actually is.",
+        "One cloud platform properly, plus CI/CD on a real project with automated tests blocking deploys.",
+        "Orchestration, monitoring and cost. Learning to sleep at night because your systems page you is the real qualification."
+      ]
+    },
+    "cybersecurity": {
+      "label": "Cyber Security Analyst",
+      "blurb": "Finds the holes before somebody else does.",
+      "what": "You assess systems, detect attacks and close weaknesses. Growing fast in India, and every sector now has a compliance requirement.",
+      "how": "Practice on deliberately vulnerable systems. Theory-only study is the single most common reason candidates stall here.",
+      "where": [
+        "tryhackme",
+        "hackthebox",
+        "owasp"
+      ],
+      "requires": [
+        "networking",
+        "linux",
+        "python",
+        "security",
+        "dsa",
+        "ci",
+        "communication",
+        "git",
+        "testing"
+      ],
+      "phases": [
+        "Networking and Linux properly, because everything else in security depends on understanding them.",
+        "Guided labs from the bottom up. Solve a few hundred deliberately vulnerable machines.",
+        "Pick a direction: web app security, network, or reverse engineering, and go deep in it rather than broad.",
+        "Get a recognised certification, then do real bug bounty work so you have findings you can show."
+      ]
+    },
+    "uiux": {
+      "label": "UI/UX Designer",
+      "blurb": "Decides how a product looks, works and feels to the person using it.",
+      "what": "You research users, design the interface, and test it until it works. Real demand, and one of the few non-engineering tech paths that pays well.",
+      "how": "Four deep portfolio projects with reasoning shown, and real usability testing with people. A gallery of screens is not a portfolio.",
+      "where": [
+        "figma",
+        "coursera",
+        "canva"
+      ],
+      "requires": [
+        "figma",
+        "uiux",
+        "photoshop",
+        "illustrator",
+        "product",
+        "communication",
+        "html",
+        "css",
+        "testing",
+        "analytics"
+      ],
+      "phases": [
+        "Learn Figma properly, including auto-layout and components, then redesign one app you use daily.",
+        "Study usability and layout principles, and start writing why you made each decision.",
+        "Run real usability tests and redesign based on what breaks. This is the step most portfolios skip.",
+        "Specialise towards product design, and learn enough HTML and CSS to be taken seriously by engineers."
+      ]
+    },
+    "marketing": {
+      "label": "Digital Marketer",
+      "blurb": "Drives demand and growth using content, search, social and ads.",
+      "what": "You get people to find a product and then do something about it. The broadest set of entry-level routes into tech-adjacent work.",
+      "how": "Own one channel end to end, with real numbers. Campaigns you can point at beat certificates every time.",
+      "where": [
+        "hubspotacademy",
+        "skillshop",
+        "internshala"
+      ],
+      "requires": [
+        "seo",
+        "content",
+        "video",
+        "social",
+        "ads",
+        "analytics",
+        "excel",
+        "bi",
+        "communication"
+      ],
+      "phases": [
+        "Understand one channel properly, whether it is search, social or ads, including how the platform ranks or charges.",
+        "Write and publish consistently. Content is the part most people avoid and the part that compounds.",
+        "Run a live campaign with real money and report cost per result honestly, including what failed.",
+        "Add analytics and build a repeatable process, which is what turns a marketer into someone a company will pay senior rates."
+      ]
+    },
+    "productmanager": {
+      "label": "Product Manager",
+      "blurb": "Decides what gets built, in what order, and why.",
+      "what": "You sit between users, design and engineering and own the outcome of a product area. High ceiling, and the hardest role to self-teach into.",
+      "how": "Analyse a product you use, write the argument for a change with evidence, and get it in front of working engineers.",
+      "where": [
+        "coursera",
+        "devto",
+        "edx"
+      ],
+      "requires": [
+        "product",
+        "agile",
+        "sql",
+        "analytics",
+        "communication",
+        "uiux",
+        "bi",
+        "figma",
+        "dsa"
+      ],
+      "phases": [
+        "Learn to read data well enough to be useful in a roadmap argument. SQL is the practical tool here.",
+        "Study how products are decided, and write analyses of real product choices with your own alternatives argued fairly.",
+        "Get into an internship, ideally in a small team where you can own a feature end to end.",
+        "Build a track record of decisions that shipped and worked. This role is bought on judgement, and judgement is only proven by outcomes."
+      ]
+    },
+    "mobile": {
+      "label": "Mobile App Developer",
+      "blurb": "Builds the software people carry with them all day.",
+      "what": "You develop apps for Android, iOS or both. Fewer dedicated openings than web, but a distinct and stable skill.",
+      "how": "One platform first, React Native or Flutter, and ship a real app to a store. The deployment step teaches the most.",
+      "where": [
+        "replit",
+        "github",
+        "mdn"
+      ],
+      "requires": [
+        "javascript",
+        "typescript",
+        "react",
+        "git",
+        "testing",
+        "restapi",
+        "sql",
+        "dsa",
+        "figma"
+      ],
+      "phases": [
+        "Get the language genuinely solid first. Cross-platform frameworks hide the fundamentals and it shows later.",
+        "Learn one framework and build an app that does something real with device permissions and local storage.",
+        "Ship it to a store, handle real installs and crashes, and fix what breaks on real devices.",
+        "Add backend services, offline support and performance work, which is where mobile roles get more senior."
+      ]
+    }
+  },
+  "PHASES": [
+    {
+      "id": "p1",
+      "label": "0–3 months",
+      "name": "Foundation"
+    },
+    {
+      "id": "p2",
+      "label": "3–6 months",
+      "name": "Core skills"
+    },
+    {
+      "id": "p3",
+      "label": "6–12 months",
+      "name": "Build and ship"
+    },
+    {
+      "id": "p4",
+      "label": "1–2 years",
+      "name": "Earn it"
+    }
+  ],
+  "GENERIC_ITEM": {
+    "what": "This is something you typed in yourself, so there is no fixed description attached to it. What it turns into depends almost entirely on how concretely you apply it.",
+    "how": "Turn it into something a stranger can look at within a month — a project, a post, a competition entry, a session you ran. Anything you can point to beats anything you can describe.",
+    "where": [
+      "devto",
+      "unstop",
+      "internshala"
+    ]
+  },
+  "GENERIC_PHASES": [
+    "Pick one concrete thing you want to be able to do in three months, and write down what already stands between you and it. That gap is your first plan.",
+    "Learn the smallest useful slice of that, and build something small and finished. Finishing early matters more than finishing perfectly.",
+    "Show it to people who will be blunt about it, then fix what they hit. Exposure to real reactions is the part nobody can shortcut.",
+    "Specialise, keep a visible record of what you can do, and start applying well before you feel ready. Readiness is decided by the work, not the feeling."
+  ]
+}
