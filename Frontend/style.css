@@ -9,8 +9,9 @@ html {
 }
 
 body {
-    background: lightseagreen;
-    color: lightcyan;
+    background: #F4F2EE;
+    background-attachment: fixed;
+    color: #2C2420;
     overflow-x: hidden;
 }
 
@@ -41,10 +42,10 @@ a {
 
 /* solid bar once the page has scrolled past the top */
 .nav.is-stuck {
-    background: rgba(32, 105, 100, 0.72);
+    background: rgba(221, 225, 227, 0.90);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom-color: rgba(245, 245, 245, 0.14);
+    border-bottom-color: rgba(44, 36, 32, 0.14);
     padding-top: 12px;
     padding-bottom: 12px;
 }
@@ -63,7 +64,7 @@ a {
     width: 34px;
     height: 34px;
     border-radius: 9px;
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-weight: 700;
@@ -83,7 +84,7 @@ a {
     font-weight: 700;
     font-size: 16px;
     letter-spacing: 0.02em;
-    color: #f5f5f5;
+    color: #2C2420;
     white-space: nowrap;
 }
 
@@ -92,7 +93,7 @@ a {
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-    color: #c8ff3d;
+    color: #DCC2B6;
     margin-left: 3px;
 }
 
@@ -110,7 +111,7 @@ a {
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
     padding: 6px 0;
     transition: color 0.3s ease;
     white-space: nowrap;
@@ -123,7 +124,7 @@ a {
     bottom: 0;
     width: 100%;
     height: 1px;
-    background: #c8ff3d;
+    background: #DCC2B6;
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -131,7 +132,7 @@ a {
 
 .nav__link:hover,
 .nav__link.is-active {
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .nav__link:hover::after,
@@ -148,7 +149,7 @@ a {
     text-transform: uppercase;
     padding: 11px 20px;
     border-radius: 999px;
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
     white-space: nowrap;
     transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
@@ -170,7 +171,7 @@ a {
     height: 38px;
     padding: 0 8px;
     background: transparent;
-    border: 1px solid rgba(245, 245, 245, 0.14);
+    border: 1px solid rgba(44, 36, 32, 0.14);
     border-radius: 9px;
     cursor: pointer;
 }
@@ -179,7 +180,7 @@ a {
     display: block;
     height: 1.5px;
     width: 100%;
-    background: #f5f5f5;
+    background: #2C2420;
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
 }
 
@@ -209,10 +210,10 @@ a {
         align-items: stretch;
         gap: 0;
         padding: 0 clamp(20px, 5vw, 56px);
-        background: rgba(24, 82, 78, 0.96);
+        background: rgba(221, 225, 227, 0.97);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        border-bottom: 1px solid rgba(245, 245, 245, 0.14);
+        border-bottom: 1px solid rgba(44, 36, 32, 0.14);
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
@@ -247,7 +248,7 @@ a {
         justify-content: space-between;
         margin-top: 10px;
         padding: 9px 10px 9px 16px;
-        border: 1px solid rgba(245, 245, 245, 0.28);
+        border: 1px solid rgba(44, 36, 32, 0.28);
         border-radius: 999px;
     }
 }
@@ -285,7 +286,7 @@ a {
     font-size: clamp(10.4px, 1vw, 12.8px);
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
     margin-bottom: clamp(24px, 4vw, 40px);
     opacity: 0;
 }
@@ -294,7 +295,8 @@ a {
     height: 1px;
     width: min(520px, 70vw);
     margin: 0 auto clamp(28.8px, 4vw, 48px);
-    background: lightseagreen;
+    background: transparent;
+    background-attachment: fixed;
     overflow: hidden;
 }
 
@@ -302,7 +304,7 @@ a {
     display: block;
     height: 100%;
     width: 100%;
-    background: linear-gradient(90deg, transparent, #c8ff3d, transparent);
+    background: linear-gradient(90deg, transparent, #DCC2B6, transparent);
     transform: scaleX(0);
     transform-origin: center;
 }
@@ -335,7 +337,7 @@ a {
     font-style: normal;
     font-size: clamp(16px, 2.6vw, 32px);
     letter-spacing: 0.02em;
-    color: #c8ff3d;
+    color: #DCC2B6;
     margin-top: clamp(16px, 2.4vw, 25.6px);
     opacity: 0;
 }
@@ -356,7 +358,7 @@ a {
     text-transform: uppercase;
     padding: 15.2px 30.4px;
     border-radius: 999px;
-    border: 1px solid rgba(245, 245, 245, 0.14);
+    border: 1px solid rgba(44, 36, 32, 0.14);
     background: transparent;
     cursor: pointer;
     transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
@@ -365,9 +367,9 @@ a {
 }
 
 .btn--solid {
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
-    border-color: #c8ff3d;
+    border-color: #DCC2B6;
 }
 
 .btn--solid:hover {
@@ -376,7 +378,7 @@ a {
 }
 
 .btn--ghost {
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 .btn--ghost:hover {
@@ -401,14 +403,14 @@ a {
     font-size: 9.6px;
     letter-spacing: 0.4em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 .scroll-cue__line {
     display: block;
     width: 1px;
     height: 54px;
-    background: rgba(245, 245, 245, 0.14);
+    background: rgba(44, 36, 32, 0.14);
     position: relative;
     overflow: hidden;
 }
@@ -416,7 +418,7 @@ a {
 .scroll-cue__line i {
     position: absolute;
     inset: 0;
-    background: #f5f5f5;
+    background: #2C2420;
     transform: scaleY(0);
     transform-origin: top;
 }
@@ -425,7 +427,8 @@ a {
 
 .about {
     position: relative;
-    background: lightseagreen;
+    background: transparent;
+    background-attachment: fixed;
     padding: clamp(80px, 12vw, 160px) 6vw;
 }
 
@@ -440,7 +443,7 @@ a {
     font-size: clamp(10.4px, 1vw, 12.8px);
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
     margin-bottom: clamp(24px, 4vw, 40px);
 }
 
@@ -457,7 +460,7 @@ a {
 .about__title em {
     font-family: "Marck Script", cursive;
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .about__body {
@@ -471,7 +474,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: clamp(15.2px, 1.5vw, 18.4px);
     line-height: 1.75;
-    color: rgba(245, 245, 245, 0.78);
+    color: rgba(44, 36, 32, 0.78);
     max-width: 56ch;
 }
 
@@ -481,14 +484,14 @@ a {
 
 .about__facts {
     list-style: none;
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .about__facts li {
     display: flex;
     gap: 20px;
     padding: clamp(18px, 2vw, 26px) 0;
-    border-bottom: 1px solid rgba(245, 245, 245, 0.14);
+    border-bottom: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .about__facts strong {
@@ -496,7 +499,7 @@ a {
     font-size: 12.8px;
     font-weight: 500;
     letter-spacing: 0.16em;
-    color: #c8ff3d;
+    color: #DCC2B6;
     flex-shrink: 0;
     padding-top: 4px;
 }
@@ -505,16 +508,17 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 15.2px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 /* ================= CREATORS (PAGE 3) ================= */
 
 .creators {
     position: relative;
-    background: lightseagreen;
+    background: transparent;
+    background-attachment: fixed;
     padding: clamp(80px, 12vw, 160px) 6vw;
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .creators__inner {
@@ -528,7 +532,7 @@ a {
     font-size: clamp(10.4px, 1vw, 12.8px);
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
     margin-bottom: clamp(24px, 4vw, 40px);
 }
 
@@ -544,14 +548,14 @@ a {
 .creators__title em {
     font-family: "Marck Script", cursive;
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .creators__lede {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: clamp(15.2px, 1.5vw, 18.4px);
     line-height: 1.75;
-    color: rgba(245, 245, 245, 0.7);
+    color: rgba(44, 36, 32, 0.7);
     max-width: 54ch;
     margin-bottom: clamp(40px, 5vw, 68px);
 }
@@ -567,14 +571,14 @@ a {
     bottom: 0;
     left: 0;
     width: 1px;
-    background: rgba(245, 245, 245, 0.14);
+    background: rgba(44, 36, 32, 0.14);
     overflow: hidden;
 }
 
 .creators__rail span {
     position: absolute;
     inset: 0;
-    background: #c8ff3d;
+    background: #DCC2B6;
     transform: scaleY(0);
     transform-origin: top;
 }
@@ -592,7 +596,7 @@ a {
 }
 
 .creators__list {
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .creator {
@@ -604,12 +608,12 @@ a {
     align-items: baseline;
     column-gap: clamp(16px, 2.4vw, 32px);
     padding: clamp(24px, 3vw, 36px) 0;
-    border-bottom: 1px solid rgba(245, 245, 245, 0.14);
+    border-bottom: 1px solid rgba(44, 36, 32, 0.14);
     transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .creator:hover {
-    background: rgba(245, 245, 245, 0.04);
+    background: rgba(44, 36, 32, 0.04);
 }
 
 .creator__num {
@@ -618,7 +622,7 @@ a {
     font-size: 11.6px;
     font-weight: 500;
     letter-spacing: 0.24em;
-    color: rgba(245, 245, 245, 0.35);
+    color: rgba(44, 36, 32, 0.35);
 }
 
 .creator__name {
@@ -629,7 +633,7 @@ a {
     font-size: clamp(19.5px, 2.2vw, 26px);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 /* name is the link Ã¢â‚¬â€ the handle slides out of it on hover */
@@ -660,7 +664,7 @@ a {
     font-size: 13.1px;
     font-weight: 500;
     letter-spacing: 0.04em;
-    color: #c8ff3d;
+    color: #DCC2B6;
     transition: max-width 0.55s cubic-bezier(0.16, 1, 0.3, 1),
         margin-left 0.55s cubic-bezier(0.16, 1, 0.3, 1),
         opacity 0.3s ease;
@@ -674,7 +678,7 @@ a {
 
 .creator__link:hover,
 .creator__link:focus-visible {
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .creator__link:hover .creator__handle,
@@ -685,7 +689,7 @@ a {
 }
 
 .creator__link:focus-visible {
-    outline: 1px solid #c8ff3d;
+    outline: 1px solid #DCC2B6;
     outline-offset: 5px;
 }
 
@@ -697,9 +701,9 @@ a {
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
     padding: 6px 13px;
-    border: 1px solid rgba(200, 255, 61, 0.32);
+    border: 1px solid rgba(206, 216, 208, 0.45);
     border-radius: 999px;
     white-space: nowrap;
 }
@@ -709,7 +713,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 15.2px;
     line-height: 1.65;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
     max-width: 62ch;
     margin-top: 10px;
 }
@@ -740,14 +744,14 @@ a {
     gap: clamp(20px, 3vw, 40px);
     margin-top: clamp(40px, 5vw, 64px);
     padding-top: clamp(28px, 3.6vw, 44px);
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .creators__note {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 15.2px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.7);
+    color: rgba(44, 36, 32, 0.7);
     max-width: 40ch;
 }
 
@@ -769,7 +773,8 @@ a {
 
 .career {
     position: relative;
-    background: lightseagreen;
+    background: transparent;
+    background-attachment: fixed;
     min-height: 100svh;
     padding: clamp(104px, 13vw, 160px) 6vw clamp(72px, 9vw, 120px);
 }
@@ -792,9 +797,9 @@ a {
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.72);
+    color: rgba(44, 36, 32, 0.72);
     background: transparent;
-    border: 1px solid rgba(200, 255, 61, 0.7);
+    border: 1px solid rgba(220, 194, 182, 0.7);
     border-radius: 999px;
     padding: 12px 22px;
     white-space: nowrap;
@@ -812,7 +817,7 @@ a {
 .backlink:hover {
     background: #ffffff;
     color: #000000;
-    border-color: #c8ff3d;
+    border-color: #DCC2B6;
 }
 
 .career__inner {
@@ -826,7 +831,7 @@ a {
     font-size: clamp(10.4px, 1vw, 12.8px);
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
     margin-bottom: clamp(24px, 4vw, 40px);
 }
 
@@ -842,14 +847,14 @@ a {
 .career__title em {
     font-family: "Marck Script", cursive;
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .career__lede {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: clamp(15.2px, 1.5vw, 18.4px);
     line-height: 1.75;
-    color: rgba(245, 245, 245, 0.7);
+    color: rgba(44, 36, 32, 0.7);
     max-width: 54ch;
 }
 
@@ -893,7 +898,7 @@ a {
     padding: 2px 6px;
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.35);
-    color: lightcyan;
+    color: #2C2420;
     font-size: 0.9em;
 }
 
@@ -903,7 +908,7 @@ a {
     align-items: flex-start;
     gap: 14px;
     padding-top: 8px;
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .cform__missing {
@@ -911,7 +916,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 14px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 /* --- fieldset wrapper --- */
@@ -932,13 +937,13 @@ a {
     font-size: 12px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .fset__hint {
     margin-top: 8px;
     font-size: 13px;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 .fset__extra {
@@ -951,7 +956,7 @@ a {
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 /* --- option list --- */
@@ -971,8 +976,8 @@ a {
     align-items: flex-start;
     gap: 10px;
     padding: 12px 14px;
-    background: rgba(245, 245, 245, 0.03);
-    border: 1px solid rgba(245, 245, 245, 0.16);
+    background: rgba(44, 36, 32, 0.03);
+    border: 1px solid rgba(44, 36, 32, 0.16);
     border-radius: 10px;
     cursor: pointer;
     font-size: 14.5px;
@@ -981,8 +986,8 @@ a {
 }
 
 .opt:hover {
-    border-color: rgba(245, 245, 245, 0.4);
-    background: rgba(245, 245, 245, 0.06);
+    border-color: rgba(44, 36, 32, 0.4);
+    background: rgba(44, 36, 32, 0.06);
 }
 
 .opt__text {
@@ -996,17 +1001,17 @@ a {
     width: 16px;
     height: 16px;
     margin: 2px 0 0;
-    accent-color: #c8ff3d;
+    accent-color: #DCC2B6;
     cursor: pointer;
 }
 
 .opt:has(input:checked) {
-    background: rgba(200, 255, 61, 0.08);
-    border-color: #c8ff3d;
+    background: rgba(220, 194, 182, 0.08);
+    border-color: #DCC2B6;
 }
 
 .opt:has(input:focus-visible) {
-    outline: 2px solid #c8ff3d;
+    outline: 2px solid #DCC2B6;
     outline-offset: 2px;
 }
 
@@ -1017,36 +1022,36 @@ a {
     width: 100%;
     max-width: 420px;
     padding: 13px 15px;
-    background: rgba(245, 245, 245, 0.04);
-    border: 1px solid rgba(245, 245, 245, 0.22);
+    background: rgba(44, 36, 32, 0.04);
+    border: 1px solid rgba(44, 36, 32, 0.22);
     border-radius: 10px;
-    color: #f5f5f5;
+    color: #2C2420;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 15px;
     transition: border-color 0.25s ease, background 0.25s ease;
 }
 
 .inp::placeholder {
-    color: rgba(245, 245, 245, 0.38);
+    color: rgba(44, 36, 32, 0.38);
 }
 
 .inp:hover,
 .sel:hover {
-    border-color: rgba(245, 245, 245, 0.45);
+    border-color: rgba(44, 36, 32, 0.45);
 }
 
 .inp:focus,
 .sel:focus {
     outline: none;
-    border-color: #c8ff3d;
-    background: rgba(200, 255, 61, 0.06);
+    border-color: #DCC2B6;
+    background: rgba(220, 194, 182, 0.06);
 }
 
 .sel {
     cursor: pointer;
     appearance: none;
-    background-image: linear-gradient(45deg, transparent 50%, #c8ff3d 50%),
-        linear-gradient(135deg, #c8ff3d 50%, transparent 50%);
+    background-image: linear-gradient(45deg, transparent 50%, #DCC2B6 50%),
+        linear-gradient(135deg, #DCC2B6 50%, transparent 50%);
     background-position: calc(100% - 20px) 55%, calc(100% - 14px) 55%;
     background-size: 6px 6px, 6px 6px;
     background-repeat: no-repeat;
@@ -1059,8 +1064,8 @@ a {
 }
 
 .sel option {
-    background: #206964;
-    color: #f5f5f5;
+    background: #DDE1E3;
+    color: #2C2420;
 }
 
 .addrow {
@@ -1094,8 +1099,8 @@ a {
     align-items: center;
     gap: 8px;
     padding: 7px 8px 7px 13px;
-    background: rgba(200, 255, 61, 0.1);
-    border: 1px solid #c8ff3d;
+    background: rgba(220, 194, 182, 0.1);
+    border: 1px solid #DCC2B6;
     border-radius: 999px;
     font-size: 13.5px;
 }
@@ -1103,7 +1108,7 @@ a {
 .chip__x {
     border: 0;
     background: none;
-    color: #c8ff3d;
+    color: #DCC2B6;
     font-size: 17px;
     line-height: 1;
     padding: 0 4px;
@@ -1113,7 +1118,7 @@ a {
 }
 
 .chip__x:hover {
-    color: #f5f5f5;
+    color: #2C2420;
     transform: scale(1.15);
 }
 
@@ -1122,8 +1127,9 @@ a {
    ========================================================= */
 
 .bp {
-    background: lightseagreen;
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    background: transparent;
+    background-attachment: fixed;
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
     padding: clamp(48px, 7vw, 88px) 6vw clamp(56px, 7vw, 96px);
 }
 
@@ -1138,7 +1144,7 @@ a {
 
 .bp__head {
     padding-bottom: clamp(28px, 4vw, 44px);
-    border-bottom: 1px solid rgba(245, 245, 245, 0.14);
+    border-bottom: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .bp__role {
@@ -1146,18 +1152,18 @@ a {
     font-family: "Asimovian", "Audiowide", sans-serif;
     font-size: clamp(30px, 5vw, 58px);
     line-height: 1.1;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .bp__role em {
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .bp__roleSrc {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 14px;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
     max-width: 62ch;
 }
 
@@ -1165,7 +1171,7 @@ a {
     margin-top: 16px;
     font-size: 15.6px;
     line-height: 1.7;
-    color: rgba(245, 245, 245, 0.78);
+    color: rgba(44, 36, 32, 0.78);
     max-width: 68ch;
 }
 
@@ -1179,8 +1185,8 @@ a {
 
 .bp__meta li {
     padding: 8px 14px;
-    background: rgba(245, 245, 245, 0.04);
-    border: 1px solid rgba(245, 245, 245, 0.16);
+    background: rgba(44, 36, 32, 0.04);
+    border: 1px solid rgba(44, 36, 32, 0.16);
     border-radius: 999px;
     font-size: 13.5px;
 }
@@ -1190,7 +1196,7 @@ a {
     font-size: 10.5px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .bp__block {
@@ -1200,13 +1206,13 @@ a {
 .bp__blockTitle {
     font-family: "Audiowide", sans-serif;
     font-size: clamp(15px, 1.8vw, 20px);
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .bp__blockLede {
     margin-top: 8px;
     font-size: 14.5px;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
     max-width: 68ch;
 }
 
@@ -1221,8 +1227,8 @@ a {
 
 .bp__card {
     padding: 22px 24px 24px;
-    background: rgba(245, 245, 245, 0.035);
-    border: 1px solid rgba(245, 245, 245, 0.16);
+    background: rgba(44, 36, 32, 0.035);
+    border: 1px solid rgba(44, 36, 32, 0.16);
     border-radius: 14px;
     display: flex;
     flex-direction: column;
@@ -1235,27 +1241,27 @@ a {
     justify-content: space-between;
     gap: 14px;
     padding-bottom: 14px;
-    border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+    border-bottom: 1px solid rgba(44, 36, 32, 0.1);
 }
 
 .bp__cardHead h3 {
     font-family: "Audiowide", sans-serif;
     font-size: 16px;
     line-height: 1.3;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .bp__tag {
     flex: 0 0 auto;
     padding: 4px 10px;
     background: none;
-    border: 1px solid #c8ff3d;
+    border: 1px solid #DCC2B6;
     border-radius: 999px;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 9.5px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
     white-space: nowrap;
 }
 
@@ -1270,13 +1276,13 @@ a {
     font-size: 10.5px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .bp__part p {
     font-size: 14.6px;
     line-height: 1.7;
-    color: rgba(245, 245, 245, 0.76);
+    color: rgba(44, 36, 32, 0.76);
 }
 
 .bp__where {
@@ -1293,22 +1299,22 @@ a {
 }
 
 .bp__where a {
-    color: #f5f5f5;
-    border-bottom: 1px solid rgba(200, 255, 61, 0.5);
+    color: #2C2420;
+    border-bottom: 1px solid rgba(220, 194, 182, 0.5);
     font-size: 14.4px;
     transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .bp__where a:hover {
-    color: #c8ff3d;
-    border-bottom-color: #c8ff3d;
+    color: #DCC2B6;
+    border-bottom-color: #DCC2B6;
 }
 
 .bp__kind {
     font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.42);
+    color: rgba(44, 36, 32, 0.42);
 }
 
 /* --- skills to add --- */
@@ -1326,29 +1332,29 @@ a {
 
 .bp__skillList li {
     padding: 16px 18px;
-    background: rgba(245, 245, 245, 0.03);
-    border: 1px solid rgba(245, 245, 245, 0.16);
-    border-left: 2px solid #c8ff3d;
+    background: rgba(44, 36, 32, 0.03);
+    border: 1px solid rgba(44, 36, 32, 0.16);
+    border-left: 2px solid #CED8D0;
     border-radius: 10px;
 }
 
 .bp__skillList h4 {
     margin-bottom: 6px;
     font-size: 14.5px;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .bp__skillList p {
     font-size: 13.6px;
     line-height: 1.65;
-    color: rgba(245, 245, 245, 0.68);
+    color: rgba(44, 36, 32, 0.68);
 }
 
 .bp__note {
     margin-top: 16px;
     font-size: 13.4px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 /* --- timeline --- */
@@ -1356,7 +1362,7 @@ a {
 .bp__timeline {
     list-style: none;
     margin-top: 26px;
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .bp__phase {
@@ -1364,7 +1370,7 @@ a {
     grid-template-columns: 130px 1fr;
     gap: 6px 26px;
     padding: 24px 0;
-    border-bottom: 1px solid rgba(245, 245, 245, 0.14);
+    border-bottom: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .bp__phaseWhen {
@@ -1373,21 +1379,21 @@ a {
     font-size: 12px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
     padding-top: 3px;
 }
 
 .bp__phaseName {
     font-family: "Audiowide", sans-serif;
     font-size: 14.5px;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .bp__phase p {
     margin-top: 8px;
     font-size: 14.6px;
     line-height: 1.7;
-    color: rgba(245, 245, 245, 0.76);
+    color: rgba(44, 36, 32, 0.76);
     max-width: 76ch;
 }
 
@@ -1397,7 +1403,7 @@ a {
     gap: 12px;
     padding-top: clamp(34px, 5vw, 52px);
     margin-top: clamp(30px, 4vw, 46px);
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .btn:disabled {
@@ -1415,7 +1421,7 @@ a {
 .page-career .backlink:focus-visible,
 .page-career .chip__x:focus-visible,
 .page-career .bp__where a:focus-visible {
-    outline: 2px solid #c8ff3d;
+    outline: 2px solid #DCC2B6;
     outline-offset: 2px;
 }
 
@@ -1490,9 +1496,10 @@ a {
 .footer {
     position: relative;
     overflow: hidden;
-    background: lightseagreen;
+    background: transparent;
+    background-attachment: fixed;
     padding: clamp(40px, 6vw, 64px) 6vw 56px;
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 /* oversized watermark wordmark */
@@ -1505,7 +1512,7 @@ a {
     font-size: clamp(72px, 16vw, 230px);
     line-height: 1;
     letter-spacing: -0.03em;
-    color: rgba(245, 245, 245, 0.05);
+    color: rgba(44, 36, 32, 0.05);
     pointer-events: none;
     user-select: none;
 }
@@ -1526,7 +1533,7 @@ a {
     font-size: clamp(19.5px, 2.6vw, 31.2px);
     line-height: 1.25;
     letter-spacing: -0.02em;
-    color: #f5f5f5;
+    color: #2C2420;
     max-width: 22ch;
     margin-bottom: clamp(8px, 1.5vw, 16px);
 }
@@ -1534,7 +1541,7 @@ a {
 .footer__statement em {
     font-family: "Marck Script", cursive;
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .footer__top {
@@ -1544,7 +1551,7 @@ a {
     justify-content: space-between;
     gap: clamp(20px, 3vw, 40px);
     padding-top: clamp(28px, 3.6vw, 44px);
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .footer__logo {
@@ -1559,7 +1566,7 @@ a {
     width: 34px;
     height: 34px;
     border-radius: 9px;
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-weight: 700;
@@ -1579,7 +1586,7 @@ a {
     font-weight: 700;
     font-size: 16px;
     letter-spacing: 0.02em;
-    color: #f5f5f5;
+    color: #2C2420;
     white-space: nowrap;
 }
 
@@ -1588,7 +1595,7 @@ a {
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-    color: #c8ff3d;
+    color: #DCC2B6;
     margin-left: 3px;
 }
 
@@ -1606,7 +1613,7 @@ a {
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
     padding: 6px 0;
     white-space: nowrap;
     transition: color 0.3s ease;
@@ -1619,14 +1626,14 @@ a {
     bottom: 0;
     width: 100%;
     height: 1px;
-    background: #c8ff3d;
+    background: #DCC2B6;
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .footer__links a:hover {
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .footer__links a:hover::after {
@@ -1635,7 +1642,7 @@ a {
 }
 
 .footer__back {
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 .footer__bottom {
@@ -1645,18 +1652,18 @@ a {
     justify-content: space-between;
     gap: 10px;
     padding-top: clamp(24px, 3vw, 36px);
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .footer__copy,
 .footer__tagline {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 13.1px;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 .footer__tagline {
-    color: rgba(245, 245, 245, 0.35);
+    color: rgba(44, 36, 32, 0.35);
 }
 
 @media (max-width: 720px) {
@@ -1705,6 +1712,18 @@ a {
     opacity: 1;
 }
 
+/* The stat panels collapse with max-height: 0 and opacity: 0 so the accordion can
+   animate them, which is the same trick as above: invisible unless something undoes
+   it. A tween does undo it when the accordion runs, but if script.js never gets
+   that far the three panels - following, followers, groups - would stay unreadable
+   on a page whose only job here is to show them. max-height: none lets them take
+   their natural height; the click handler still collapses them, because an inline
+   style outranks this rule. */
+.no-motion .prof__panel {
+    max-height: none;
+    opacity: 1;
+}
+
 .no-motion .intro__rule span,
 .no-motion .scroll-cue__line i {
     transform: none;
@@ -1714,7 +1733,7 @@ a {
    =========================================================
    Colours and layout are lifted from the home hero on purpose: the panel sits on
    the same lightseagreen ground as the body, the text is lightcyan, the accent
-   is the same #c8ff3d, the title pairs Audiowide with Marck Script, and the
+   is the same #DCC2B6, the title pairs Audiowide with Marck Script, and the
    gradient rule under the title is the .intro__rule motif. Everything is
    centred the way .intro__inner is.
 
@@ -1729,9 +1748,9 @@ a {
     gap: 8px;
     padding: 11px 20px;
     border-radius: 999px;
-    border: 1px solid rgba(245, 245, 245, 0.45);
+    border: 1px solid rgba(44, 36, 32, 0.45);
     background: transparent;
-    color: #f5f5f5;
+    color: #2C2420;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 11.2px;
     font-weight: 500;
@@ -1757,7 +1776,7 @@ a {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
     font-size: 13px;
     font-weight: 700;
@@ -1778,19 +1797,22 @@ a {
     max-height: calc(100dvh - 32px);
     overflow-y: auto;
     padding: 0;
-    border: 1px solid rgba(245, 245, 245, 0.3);
+    border: 1px solid rgba(44, 36, 32, 0.3);
     border-radius: 22px;
-    background: lightseagreen;
-    color: lightcyan;
-    box-shadow: 0 30px 90px rgba(0, 60, 55, 0.45);
+    background: rgba(244, 242, 238, 0.88);
+    background-attachment: fixed;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #2C2420;
+    box-shadow: 0 30px 90px rgba(44, 36, 32, 0.18);
     text-align: center;
 }
 
 /* the teal wash keeps the page readable behind it without going grey */
 .auth__dialog::backdrop {
-    background: rgba(32, 168, 160, 0.55);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: rgba(244, 242, 238, 0.70);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .auth__close {
@@ -1805,8 +1827,8 @@ a {
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: rgba(245, 245, 245, 0.18);
-    color: lightcyan;
+    background: rgba(44, 36, 32, 0.18);
+    color: #2C2420;
     font-size: 20px;
     line-height: 1;
     cursor: pointer;
@@ -1814,7 +1836,7 @@ a {
 }
 
 .auth__close:hover {
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
 }
 
@@ -1830,7 +1852,7 @@ a {
     font-weight: 400;
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
 }
 
 /* the .intro__rule gradient, repeated here at dialog scale */
@@ -1848,7 +1870,7 @@ a {
     display: block;
     height: 100%;
     width: 100%;
-    background: linear-gradient(90deg, transparent, #c8ff3d, transparent);
+    background: linear-gradient(90deg, transparent, #DCC2B6, transparent);
 }
 
 .auth__title {
@@ -1858,13 +1880,13 @@ a {
     font-size: clamp(26px, 4.4vw, 34px);
     letter-spacing: -0.03em;
     line-height: 1.1;
-    color: lightcyan;
+    color: #2C2420;
 }
 
 .auth__title em {
     font-family: "Marck Script", cursive;
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 /* --- tab switch --- */
@@ -1875,9 +1897,9 @@ a {
     padding: 4px;
     margin: 0 auto 24px;
     max-width: 320px;
-    border: 1px solid rgba(245, 245, 245, 0.3);
+    border: 1px solid rgba(44, 36, 32, 0.3);
     border-radius: 999px;
-    background: rgba(245, 245, 245, 0.08);
+    background: rgba(44, 36, 32, 0.08);
 }
 
 .auth__tab {
@@ -1885,7 +1907,7 @@ a {
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: rgba(245, 245, 245, 0.72);
+    color: rgba(44, 36, 32, 0.72);
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 11.5px;
     font-weight: 500;
@@ -1896,7 +1918,7 @@ a {
 }
 
 .auth__tab[aria-selected="true"] {
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
 }
 
@@ -1922,29 +1944,29 @@ a {
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.7);
+    color: rgba(44, 36, 32, 0.7);
 }
 
 .auth__dialog .inp {
     max-width: none;
     text-align: center;
-    background: rgba(245, 245, 245, 0.1);
-    border-color: rgba(245, 245, 245, 0.32);
-    color: #f5f5f5;
+    background: rgba(44, 36, 32, 0.1);
+    border-color: rgba(44, 36, 32, 0.32);
+    color: #2C2420;
 }
 
 .auth__dialog .inp::placeholder {
-    color: rgba(245, 245, 245, 0.45);
+    color: rgba(44, 36, 32, 0.45);
 }
 
 .auth__dialog .inp:hover {
-    border-color: rgba(245, 245, 245, 0.55);
+    border-color: rgba(44, 36, 32, 0.55);
 }
 
 .auth__dialog .inp:focus {
-    border-color: #c8ff3d;
-    background: rgba(200, 255, 61, 0.08);
-    color: #f5f5f5;
+    border-color: #DCC2B6;
+    background: rgba(220, 194, 182, 0.08);
+    color: #2C2420;
 }
 
 .auth__submit {
@@ -1957,7 +1979,7 @@ a {
     margin: 18px 0 0;
     font-size: 12.5px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
     text-align: center;
 }
 
@@ -1965,10 +1987,10 @@ a {
     display: none;
     margin: 0 0 18px;
     padding: 12px 14px;
-    border: 1px solid #f5f5f5;
+    border: 1px solid rgba(44, 36, 32, 0.35);
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
+    background: rgba(221, 225, 227, 0.5);
+    color: #2C2420;
     font-size: 13.5px;
     line-height: 1.55;
     text-align: center;
@@ -1979,9 +2001,9 @@ a {
 }
 
 .auth__msg--ok {
-    border-color: #c8ff3d;
-    background: rgba(200, 255, 61, 0.18);
-    color: #ffffff;
+    border-color: #DCC2B6;
+    background: rgba(220, 194, 182, 0.18);
+    color: #2C2420;
 }
 
 /* the signed-in chip that replaces the trigger */
@@ -2016,10 +2038,10 @@ a {
     align-items: center;
     gap: 9px;
     padding: 3px 12px 3px 3px;
-    border: 1px solid rgba(245, 245, 245, 0.3);
+    border: 1px solid rgba(44, 36, 32, 0.3);
     border-radius: 999px;
     background: transparent;
-    color: lightcyan;
+    color: #2C2420;
     font-family: inherit;
     font-size: 13px;
     cursor: pointer;
@@ -2028,8 +2050,8 @@ a {
 
 .prof__chip:hover,
 .prof__chip:focus-visible {
-    border-color: rgba(200, 255, 61, 0.85);
-    background: rgba(200, 255, 61, 0.12);
+    border-color: rgba(220, 194, 182, 0.85);
+    background: rgba(220, 194, 182, 0.12);
 }
 
 .prof__chipname {
@@ -2050,18 +2072,21 @@ a {
     max-height: calc(100dvh - 32px);
     overflow-y: auto;
     padding: 0;
-    border: 1px solid rgba(245, 245, 245, 0.3);
+    border: 1px solid rgba(44, 36, 32, 0.3);
     border-radius: 22px;
-    background: lightseagreen;
-    color: lightcyan;
-    box-shadow: 0 30px 90px rgba(0, 60, 55, 0.45);
+    background: rgba(244, 242, 238, 0.88);
+    background-attachment: fixed;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #2C2420;
+    box-shadow: 0 30px 90px rgba(44, 36, 32, 0.18);
     text-align: left;
 }
 
 .prof__dialog::backdrop {
-    background: rgba(32, 168, 160, 0.55);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: rgba(244, 242, 238, 0.70);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .prof__close {
@@ -2076,8 +2101,8 @@ a {
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: rgba(245, 245, 245, 0.18);
-    color: lightcyan;
+    background: rgba(44, 36, 32, 0.18);
+    color: #2C2420;
     font-size: 20px;
     line-height: 1;
     cursor: pointer;
@@ -2085,7 +2110,7 @@ a {
 }
 
 .prof__close:hover {
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
 }
 
@@ -2109,7 +2134,7 @@ a {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: #c8ff3d;
+    background: #DCC2B6;
     color: #000000;
     font-size: 21px;
     font-weight: 700;
@@ -2124,14 +2149,53 @@ a {
     margin: 0 0 3px;
     font-size: clamp(20px, 3vw, 25px);
     line-height: 1.15;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .prof__email {
     margin: 0;
     font-size: 13px;
-    color: rgba(245, 245, 245, 0.68);
+    color: rgba(44, 36, 32, 0.68);
     overflow-wrap: anywhere;
+}
+
+/* the role badge, lifted from the member card so the same person wears the same
+   label in both places. Only a member has one, so it is hidden on your own
+   profile rather than left as an empty pill. */
+.prof__role {
+    display: inline-block;
+    align-self: flex-start;
+    margin: 7px 0 0;
+    padding: 3px 10px;
+    border: 1px solid rgba(44, 36, 32, 0.18);
+    border-radius: 999px;
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+    font-size: 10.6px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(44, 36, 32, 0.6);
+}
+
+/* Below the header rather than inside .prof__ident: the header is a row beside the
+   Edit button, and a two-line blurb in there would squeeze the name to a column.
+   Full width is also what the member card does with the same words. */
+.prof__blurb {
+    margin: -8px 0 22px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(44, 36, 32, 0.66);
+}
+
+/* the names of the people in a group you are in. A count cannot say who, and
+   these groups hold two to seven people, so the whole list fits under its
+   heading without becoming a wall. Its own line rather than appended to the
+   sub-label, which is about how many and would stop being readable. */
+.prof__roster {
+    display: block;
+    margin-top: 3px;
+    font-size: 12.4px;
+    line-height: 1.5;
+    color: rgba(44, 36, 32, 0.62);
 }
 
 /* the three numbers, sized like the community stat row rather than the hero */
@@ -2145,17 +2209,52 @@ a {
 
 .prof__stat {
     padding: 13px 10px 12px;
-    border: 1px solid rgba(245, 245, 245, 0.22);
+    border: 1px solid rgba(44, 36, 32, 0.22);
     border-radius: 14px;
-    background: rgba(0, 77, 73, 0.16);
+    background: rgba(206, 216, 208, 0.25);
     text-align: center;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.22s ease, border-color 0.22s ease, transform 0.18s ease;
+    position: relative;
+}
+
+.prof__stat:hover {
+    background: rgba(220, 194, 182, 0.22);
+    border-color: rgba(220, 194, 182, 0.6);
+    transform: translateY(-2px);
+}
+
+.prof__stat[aria-expanded="true"] {
+    background: rgba(220, 194, 182, 0.32);
+    border-color: #DCC2B6;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.prof__stat[aria-expanded="true"] .prof__statvalue {
+    color: #2C2420;
+}
+
+.prof__stat[aria-expanded="true"]::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 8px solid #DCC2B6;
+    z-index: 2;
 }
 
 .prof__statlabel {
     font-size: 10.5px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 .prof__statvalue {
@@ -2163,13 +2262,73 @@ a {
     font-size: 25px;
     font-weight: 600;
     line-height: 1;
-    color: #c8ff3d;
+    color: #DCC2B6;
     font-variant-numeric: tabular-nums;
+    transition: color 0.22s ease;
+}
+
+/* --- expandable panels --- */
+.prof__panel {
+    margin: 8px 0 16px;
+    border: 1px solid rgba(220, 194, 182, 0.45);
+    border-radius: 14px;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.28s ease;
+}
+
+.prof__panel:not([hidden]) {
+    padding: 14px 16px;
+}
+
+.prof__panel .prof__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.prof__panel .prof__list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(206, 216, 208, 0.18);
+    transition: background 0.18s ease;
+}
+
+.prof__panel .prof__list li:hover {
+    background: rgba(220, 194, 182, 0.28);
+}
+
+.prof__panel .prof__list b {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2C2420;
+    flex: 1;
+}
+
+.prof__panel .prof__listsub {
+    font-size: 12px;
+    color: rgba(44, 36, 32, 0.55);
+    margin-left: auto;
+}
+
+.prof__panel .prof__empty {
+    font-size: 13px;
+    color: rgba(44, 36, 32, 0.55);
+    text-align: center;
+    padding: 8px 0;
 }
 
 .prof__block {
     padding-top: 18px;
-    border-top: 1px solid rgba(245, 245, 245, 0.16);
+    border-top: 1px solid rgba(44, 36, 32, 0.16);
 }
 
 .prof__block + .prof__block {
@@ -2182,18 +2341,139 @@ a {
     font-weight: 500;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.72);
+    color: rgba(44, 36, 32, 0.72);
+}
+
+/* The edit form sits between the header and the first block. It is hidden by
+   default and revealed when the user presses Edit. The header already has
+   margin-bottom: 22px, so no extra top padding here - just the border to
+   separate it like a block. */
+.prof__edit-form {
+    padding-top: 0;
+    border-top: 1px solid rgba(44, 36, 32, 0.16);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.prof__edit-form .prof__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.prof__edit-form .prof__label {
+    font-size: 10.4px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(44, 36, 32, 0.55);
+}
+
+.prof__edit-form .inp {
+    padding: 11px 13px;
+    border: 1px solid rgba(44, 36, 32, 0.22);
+    border-radius: 12px;
+    background: rgba(44, 36, 32, 0.07);
+    color: #2C2420;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.prof__edit-form .inp:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 1px;
+}
+
+.prof__actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.prof__edit-form .btn {
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+
+.prof__edit-form .btn--solid {
+    border: 1px solid #DCC2B6;
+    background: #DCC2B6;
+    color: #000000;
+}
+
+.prof__edit-form .btn:not(.btn--solid) {
+    border: 1px solid rgba(44, 36, 32, 0.28);
+    background: transparent;
+    color: rgba(44, 36, 32, 0.82);
+}
+
+.prof__edit-form .btn:not(.btn--solid):hover {
+    border-color: #DCC2B6;
+    color: #2C2420;
+}
+
+.prof__msg {
+    margin: 8px 0 0;
+    font-size: 12.4px;
+    line-height: 1.5;
+    color: rgba(44, 36, 32, 0.78);
+}
+
+.prof__msg--ok {
+    color: #DCC2B6;
+}
+
+.prof__edit-form .btn:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 2px;
+}
+
+.prof__edit-form .btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Edit button in the header */
+.prof__edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid rgba(44, 36, 32, 0.28);
+    border-radius: 999px;
+    background: rgba(44, 36, 32, 0.06);
+    font-size: 12.5px;
+    color: rgba(44, 36, 32, 0.82);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.prof__edit-btn:hover {
+    border-color: #DCC2B6;
+    background: rgba(220, 194, 182, 0.14);
+    color: #2C2420;
+}
+
+.prof__edit-btn:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 2px;
+}
+
+.prof__edit-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .prof__hint {
-    letter-spacing: 0.04em;
-    text-transform: none;
-    color: rgba(245, 245, 245, 0.5);
 }
 
 .prof__tags,
-.prof__list,
-.prof__choices {
+.prof__list {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -2207,20 +2487,27 @@ a {
 
 /* The [hidden] attribute is the empty-state switch, but the UA rule for it is a
    stylesheet the author-level `display` above outranks - .prof__list is a flex
-   column, so without these the "no follows yet" message would never hide. */
+   column, so without these the "no follows yet" message would never hide. The
+   chat page toggles its gate, its composer and its attachment preview the same
+   way, and all three are flex, so they need it too. */
 .prof__list[hidden],
 .prof__empty[hidden],
-.prof__tags[hidden] {
+.prof__tags[hidden],
+.prof__edit-form[hidden],
+.chat__gate[hidden],
+.chat__composer[hidden],
+.chat__preview[hidden],
+.chat__note:empty {
     display: none;
 }
 
 .prof__tags li {
     padding: 5px 11px;
-    border: 1px solid rgba(245, 245, 245, 0.26);
+    border: 1px solid rgba(44, 36, 32, 0.26);
     border-radius: 999px;
-    background: rgba(245, 245, 245, 0.08);
+    background: rgba(44, 36, 32, 0.08);
     font-size: 12.5px;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 /* skills read as a second kind of tag without needing its own heading */
@@ -2240,12 +2527,12 @@ a {
     justify-content: space-between;
     gap: 12px;
     padding: 10px 13px;
-    border: 1px solid rgba(245, 245, 245, 0.2);
-    border-left: 3px solid rgba(200, 255, 61, 0.8);
+    border: 1px solid rgba(44, 36, 32, 0.2);
+    border-left: 3px solid rgba(220, 194, 182, 0.8);
     border-radius: 12px;
-    background: rgba(0, 77, 73, 0.14);
+    background: rgba(206, 216, 208, 0.25);
     font-size: 14px;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .prof__list b {
@@ -2254,7 +2541,7 @@ a {
 
 .prof__listsub {
     font-size: 12px;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
     white-space: nowrap;
 }
 
@@ -2262,61 +2549,7 @@ a {
     margin: 0;
     font-size: 13px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.66);
-}
-
-.prof__choices {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 14px;
-}
-
-/* a real checkbox, so the group picker works without JS and reports itself to
-   assistive tech; the label is what carries the look. Hidden by clipping rather
-   than by opacity: opacity: 0 still leaves the box in the hit-test and in the
-   accessibility tree's way, and a clipped 1px box is the standard way to do this. */
-.prof__choice input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-}
-
-.prof__choice label {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 13px;
-    border: 1px solid rgba(245, 245, 245, 0.28);
-    border-radius: 999px;
-    background: rgba(245, 245, 245, 0.06);
-    font-size: 12.5px;
-    color: rgba(245, 245, 245, 0.82);
-    cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
-}
-
-.prof__choice label:hover {
-    border-color: rgba(245, 245, 245, 0.5);
-    color: #f5f5f5;
-}
-
-.prof__choice input:checked + label {
-    border-color: rgba(200, 255, 61, 0.85);
-    background: rgba(200, 255, 61, 0.16);
-    color: #f5f5f5;
-}
-
-.prof__choice input:focus-visible + label {
-    outline: 2px solid #c8ff3d;
-    outline-offset: 2px;
+    color: rgba(44, 36, 32, 0.66);
 }
 
 @media (max-width: 420px) {
@@ -2332,8 +2565,7 @@ a {
 @media (prefers-reduced-motion: reduce) {
 
     .prof__chip,
-    .prof__close,
-    .prof__choice label {
+    .prof__close {
         transition: none;
     }
 }
@@ -2351,7 +2583,7 @@ a {
    COMMUNITY
    =========================================================
    Built on the same tokens as the creators page so the two sit together
-   without looking copied: lightseagreen ground, lightcyan text, the #c8ff3d
+   without looking copied: lightseagreen ground, lightcyan text, the #DCC2B6
    accent, Audiowide headings with a Marck Script word, and the scroll rail
    motif reused for the discussion list.
 
@@ -2361,9 +2593,10 @@ a {
 
 .community {
     position: relative;
-    background: lightseagreen;
+    background: transparent;
+    background-attachment: fixed;
     padding: clamp(80px, 12vw, 160px) 6vw;
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .community__inner {
@@ -2378,7 +2611,7 @@ a {
     font-weight: 500;
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
     margin-bottom: clamp(24px, 4vw, 40px);
 }
 
@@ -2394,14 +2627,14 @@ a {
 .community__title em {
     font-family: "Marck Script", cursive;
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .community__lede {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: clamp(15.2px, 1.5vw, 18.4px);
     line-height: 1.75;
-    color: rgba(245, 245, 245, 0.7);
+    color: rgba(44, 36, 32, 0.7);
     max-width: 54ch;
     margin-bottom: clamp(40px, 5vw, 68px);
 }
@@ -2412,8 +2645,8 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1px;
     margin-bottom: clamp(56px, 7vw, 96px);
-    background: rgba(245, 245, 245, 0.14);
-    border: 1px solid rgba(245, 245, 245, 0.14);
+    background: rgba(44, 36, 32, 0.14);
+    border: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .channel {
@@ -2421,12 +2654,13 @@ a {
     flex-direction: column;
     gap: 12px;
     padding: clamp(24px, 3vw, 36px);
-    background: lightseagreen;
+    background: transparent;
+    background-attachment: fixed;
     transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .channel:hover {
-    background: rgba(245, 245, 245, 0.05);
+    background: rgba(44, 36, 32, 0.05);
 }
 
 .channel__name {
@@ -2436,7 +2670,7 @@ a {
     font-size: clamp(17px, 1.9vw, 21px);
     letter-spacing: -0.01em;
     line-height: 1.2;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .channel__desc {
@@ -2445,7 +2679,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 14.6px;
     line-height: 1.65;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
 }
 
 .channel__count {
@@ -2454,7 +2688,7 @@ a {
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 /* ---------- discussion list ---------- */
@@ -2470,7 +2704,7 @@ a {
     font-weight: 500;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.5);
+    color: rgba(44, 36, 32, 0.5);
 }
 
 .community__rail {
@@ -2479,20 +2713,20 @@ a {
     bottom: 0;
     left: 0;
     width: 1px;
-    background: rgba(245, 245, 245, 0.14);
+    background: rgba(44, 36, 32, 0.14);
     overflow: hidden;
 }
 
 .community__rail span {
     position: absolute;
     inset: 0;
-    background: #c8ff3d;
+    background: #DCC2B6;
     transform: scaleY(0);
     transform-origin: top;
 }
 
 .community__list {
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .thread {
@@ -2500,25 +2734,25 @@ a {
     flex-direction: column;
     gap: 10px;
     padding: clamp(24px, 3vw, 34px) 0;
-    border-bottom: 1px solid rgba(245, 245, 245, 0.14);
+    border-bottom: 1px solid rgba(44, 36, 32, 0.14);
     transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .thread:hover {
-    background: rgba(245, 245, 245, 0.04);
+    background: rgba(44, 36, 32, 0.04);
 }
 
 .thread__tag {
     align-self: flex-start;
     padding: 5px 12px;
-    border: 1px solid rgba(200, 255, 61, 0.32);
+    border: 1px solid rgba(206, 216, 208, 0.45);
     border-radius: 999px;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 10.6px;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #c8ff3d;
+    color: #DCC2B6;
     white-space: nowrap;
 }
 
@@ -2529,13 +2763,13 @@ a {
     font-size: clamp(18.2px, 2.1vw, 25px);
     line-height: 1.25;
     letter-spacing: -0.02em;
-    color: #f5f5f5;
+    color: #2C2420;
     max-width: 46ch;
     transition: color 0.35s ease;
 }
 
 .thread:hover .thread__title {
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .thread__excerpt {
@@ -2543,7 +2777,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 15.2px;
     line-height: 1.65;
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(44, 36, 32, 0.55);
     max-width: 62ch;
 }
 
@@ -2556,17 +2790,17 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12.4px;
     letter-spacing: 0.04em;
-    color: rgba(245, 245, 245, 0.45);
+    color: rgba(44, 36, 32, 0.45);
 }
 
 .thread__author {
-    color: rgba(245, 245, 245, 0.75);
+    color: rgba(44, 36, 32, 0.75);
 }
 
 .thread__replies::before {
     content: "\00B7";
     margin-right: 18px;
-    color: rgba(245, 245, 245, 0.28);
+    color: rgba(44, 36, 32, 0.28);
 }
 
 /* ---------- closing row ---------- */
@@ -2578,14 +2812,14 @@ a {
     gap: clamp(20px, 3vw, 40px);
     margin-top: clamp(40px, 5vw, 64px);
     padding-top: clamp(28px, 3.6vw, 44px);
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .community__note {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 15.2px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.7);
+    color: rgba(44, 36, 32, 0.7);
     max-width: 46ch;
     margin: 0;
 }
@@ -2629,7 +2863,7 @@ a {
    =========================================================
    A horizontally scrolling suggestion slide, and the tag picker that re-ranks
    it. Same ground as the rest of the community section: white at varying
-   opacity for body copy, #c8ff3d reserved for things that are live - the accent
+   opacity for body copy, #DCC2B6 reserved for things that are live - the accent
    means "this is a match" or "you are following this", and nothing else, so it
    keeps its meaning across the page.
 
@@ -2653,7 +2887,7 @@ a {
        page rather than a continuation of this one */
     margin-bottom: clamp(64px, 8vw, 104px);
     padding-top: clamp(40px, 5vw, 64px);
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .people__head {
@@ -2675,7 +2909,7 @@ a {
     font-weight: 500;
     letter-spacing: 0.5em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
     margin-bottom: clamp(16px, 2.4vw, 24px);
 }
 
@@ -2686,13 +2920,13 @@ a {
     font-size: clamp(24px, 3.6vw, 42px);
     line-height: 1.1;
     letter-spacing: -0.03em;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .people__title em {
     font-family: "Marck Script", cursive;
     font-style: normal;
-    color: #c8ff3d;
+    color: #DCC2B6;
 }
 
 .people__lede {
@@ -2701,7 +2935,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 15.2px;
     line-height: 1.7;
-    color: rgba(245, 245, 245, 0.7);
+    color: rgba(44, 36, 32, 0.7);
 }
 
 .people__arrows {
@@ -2716,10 +2950,10 @@ a {
     width: 44px;
     height: 44px;
     padding: 0;
-    border: 1px solid rgba(245, 245, 245, 0.2);
+    border: 1px solid rgba(44, 36, 32, 0.2);
     border-radius: 50%;
     background: none;
-    color: #f5f5f5;
+    color: #2C2420;
     font-size: 16px;
     line-height: 1;
     cursor: pointer;
@@ -2729,8 +2963,8 @@ a {
 }
 
 .people__arrow:hover:not(:disabled) {
-    border-color: #c8ff3d;
-    color: #c8ff3d;
+    border-color: #DCC2B6;
+    color: #DCC2B6;
 }
 
 .people__arrow:disabled {
@@ -2747,7 +2981,7 @@ a {
     gap: 18px;
     margin-bottom: clamp(24px, 3vw, 34px);
     padding: clamp(20px, 2.6vw, 28px);
-    border: 1px solid rgba(245, 245, 245, 0.14);
+    border: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .people__row {
@@ -2764,7 +2998,7 @@ a {
     font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
 }
 
 .people__filter {
@@ -2773,20 +3007,20 @@ a {
     width: 100%;
     max-width: 260px;
     padding: 8px 12px;
-    border: 1px solid rgba(245, 245, 245, 0.18);
+    border: 1px solid rgba(44, 36, 32, 0.18);
     background: transparent;
-    color: #f5f5f5;
+    color: #2C2420;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 13px;
 }
 
 .people__filter::placeholder {
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 .people__filter:focus-visible {
     outline: none;
-    border-color: #c8ff3d;
+    border-color: #DCC2B6;
 }
 
 .people__chips {
@@ -2804,15 +3038,15 @@ a {
     align-content: flex-start;
     padding-right: 6px;
     scrollbar-width: thin;
-    scrollbar-color: rgba(200, 255, 61, 0.45) transparent;
+    scrollbar-color: rgba(220, 194, 182, 0.45) transparent;
 }
 
 .chip {
     padding: 7px 14px;
-    border: 1px solid rgba(245, 245, 245, 0.2);
+    border: 1px solid rgba(44, 36, 32, 0.2);
     border-radius: 999px;
     background: none;
-    color: rgba(245, 245, 245, 0.75);
+    color: rgba(44, 36, 32, 0.75);
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12.6px;
     line-height: 1.2;
@@ -2822,14 +3056,14 @@ a {
 }
 
 .chip:hover {
-    border-color: rgba(200, 255, 61, 0.55);
-    color: #f5f5f5;
+    border-color: rgba(220, 194, 182, 0.55);
+    color: #2C2420;
 }
 
 .chip[aria-pressed="true"] {
-    border-color: #c8ff3d;
-    background: rgba(200, 255, 61, 0.12);
-    color: #c8ff3d;
+    border-color: #DCC2B6;
+    background: rgba(220, 194, 182, 0.12);
+    color: #DCC2B6;
 }
 
 .people__status {
@@ -2839,11 +3073,11 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12.4px;
     letter-spacing: 0.04em;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
 }
 
 .people__status b {
-    color: #c8ff3d;
+    color: #DCC2B6;
     font-weight: 500;
 }
 
@@ -2856,7 +3090,7 @@ a {
     margin-bottom: clamp(20px, 2.6vw, 28px);
     scroll-snap-type: x mandatory;
     scrollbar-width: thin;
-    scrollbar-color: rgba(200, 255, 61, 0.45) transparent;
+    scrollbar-color: rgba(220, 194, 182, 0.45) transparent;
 }
 
 .people__slide::-webkit-scrollbar {
@@ -2864,18 +3098,18 @@ a {
 }
 
 .people__slide::-webkit-scrollbar-track {
-    background: rgba(245, 245, 245, 0.1);
+    background: rgba(44, 36, 32, 0.1);
 }
 
 .people__slide::-webkit-scrollbar-thumb {
-    background: rgba(200, 255, 61, 0.45);
+    background: rgba(220, 194, 182, 0.45);
 }
 
 .people__loading {
     margin: 0;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 14px;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
 }
 
 /* the card: the same lightseagreen as the page behind it, no fill at all, and
@@ -2896,7 +3130,7 @@ a {
 
 .person:hover {
     border-color: rgba(0, 0, 0, 0.82);
-    background: rgba(245, 245, 245, 0.04);
+    background: rgba(44, 36, 32, 0.04);
 }
 
 /* following is the one state that turns the edge green, plus a spine down the
@@ -2904,14 +3138,49 @@ a {
    against teal is a hue clash as well as a lightness one, so it reads at a
    glance in a row of twelve without reading the button text. */
 .person.is-following {
-    border-color: rgba(200, 255, 61, 0.8);
-    box-shadow: inset 3px 0 0 rgba(200, 255, 61, 0.55);
+    border-color: rgba(220, 194, 182, 0.8);
+    box-shadow: inset 3px 0 0 rgba(220, 194, 182, 0.55);
 }
 
 .person__top {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+/* The name and avatar open the full profile, so this is a real button - but it
+   must not look like one. Every scrap of the browser's button furniture is taken
+   off, because any one of them surviving draws a box around somebody's name and
+   handle, and a box there is the ugliest thing a card can do: appearance:none
+   first, since that is what stops the UA painting an edge at all, then border and
+   background by hand for the engines that ignore it. No padding either, since that
+   alone changes where the text sits.
+
+   What is left is the row it replaced, plus a cursor and a focus ring. The ring
+   stays on purpose: it is now the only thing telling a keyboard user where they
+   are, and :focus-visible shows it to them alone rather than to every click. */
+.person__open {
+    -webkit-appearance: none;
+    appearance: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.person__open:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 4px;
+    border-radius: 8px;
 }
 
 .person__avatar {
@@ -2921,15 +3190,15 @@ a {
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: rgba(245, 245, 245, 0.1);
+    background: rgba(44, 36, 32, 0.1);
     font-family: "Audiowide", sans-serif;
     font-size: 13px;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .person.is-following .person__avatar {
-    background: rgba(200, 255, 61, 0.16);
-    color: #c8ff3d;
+    background: rgba(220, 194, 182, 0.16);
+    color: #DCC2B6;
 }
 
 .person__id {
@@ -2937,12 +3206,13 @@ a {
 }
 
 .person__name {
+    display: block;
     margin: 0;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-weight: 700;
     font-size: 15.2px;
     line-height: 1.2;
-    color: #f5f5f5;
+    color: #2C2420;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2952,7 +3222,7 @@ a {
     display: block;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12px;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2962,13 +3232,13 @@ a {
     display: inline-block;
     align-self: flex-start;
     padding: 4px 10px;
-    border: 1px solid rgba(245, 245, 245, 0.18);
+    border: 1px solid rgba(44, 36, 32, 0.18);
     border-radius: 999px;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 10.6px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 .person__blurb {
@@ -2977,7 +3247,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 13.6px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
 }
 
 /* the reason for the suggestion, so the number is not just an oracle */
@@ -2986,7 +3256,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12px;
     line-height: 1.5;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 .person__tags {
@@ -2997,18 +3267,18 @@ a {
 
 .tag {
     padding: 4px 9px;
-    border: 1px solid rgba(245, 245, 245, 0.14);
+    border: 1px solid rgba(44, 36, 32, 0.14);
     border-radius: 999px;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 10.6px;
     letter-spacing: 0.08em;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
     white-space: nowrap;
 }
 
 .tag--shared {
-    border-color: rgba(200, 255, 61, 0.42);
-    color: #c8ff3d;
+    border-color: rgba(220, 194, 182, 0.42);
+    color: #DCC2B6;
 }
 
 .person__foot {
@@ -3017,7 +3287,7 @@ a {
     justify-content: space-between;
     gap: 12px;
     padding-top: 14px;
-    border-top: 1px solid rgba(245, 245, 245, 0.12);
+    border-top: 1px solid rgba(44, 36, 32, 0.12);
 }
 
 .person__score {
@@ -3026,21 +3296,21 @@ a {
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(245, 245, 245, 0.45);
+    color: rgba(44, 36, 32, 0.45);
 }
 
 .person__score b {
-    color: #c8ff3d;
+    color: #DCC2B6;
     font-weight: 500;
 }
 
 .follow {
     flex: none;
     padding: 8px 16px;
-    border: 1px solid #c8ff3d;
+    border: 1px solid #DCC2B6;
     border-radius: 999px;
     background: none;
-    color: #c8ff3d;
+    color: #DCC2B6;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12px;
     font-weight: 500;
@@ -3052,18 +3322,18 @@ a {
 }
 
 .follow:hover {
-    background: rgba(200, 255, 61, 0.14);
+    background: rgba(220, 194, 182, 0.14);
 }
 
 .follow[aria-pressed="true"] {
-    background: rgba(200, 255, 61, 0.14);
+    background: rgba(220, 194, 182, 0.14);
 }
 
 .person__followers {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 11px;
     letter-spacing: 0.06em;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 .people__empty {
@@ -3071,7 +3341,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 14px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 .people__note {
@@ -3080,7 +3350,7 @@ a {
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12.6px;
     line-height: 1.6;
-    color: rgba(245, 245, 245, 0.62);
+    color: rgba(44, 36, 32, 0.62);
 }
 
 /* =========================================================
@@ -3097,7 +3367,7 @@ a {
        not collapse with a sibling margin the way two margins do, so this is
        where the extra breathing room actually comes from */
     padding-top: clamp(36px, 4.5vw, 56px);
-    border-top: 1px solid rgba(245, 245, 245, 0.14);
+    border-top: 1px solid rgba(44, 36, 32, 0.14);
 }
 
 .groups__head {
@@ -3134,8 +3404,8 @@ a {
 }
 
 .group.is-joined {
-    border-color: rgba(200, 255, 61, 0.8);
-    box-shadow: inset 3px 0 0 rgba(200, 255, 61, 0.55);
+    border-color: rgba(220, 194, 182, 0.8);
+    box-shadow: inset 3px 0 0 rgba(220, 194, 182, 0.55);
 }
 
 .group__body {
@@ -3157,26 +3427,26 @@ a {
     font-weight: 700;
     font-size: 16px;
     line-height: 1.2;
-    color: #f5f5f5;
+    color: #2C2420;
 }
 
 .group__score {
     flex: none;
     padding: 3px 9px;
-    border: 1px solid rgba(200, 255, 61, 0.55);
+    border: 1px solid rgba(220, 194, 182, 0.55);
     border-radius: 999px;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 11.5px;
     font-weight: 700;
-    color: #c8ff3d;
+    color: #DCC2B6;
     font-variant-numeric: tabular-nums;
 }
 
 /* a group with nothing to rank against says so rather than showing a 0%, which
    would read as "nothing in common" when it means "you have not picked yet" */
 .group__score[data-unranked] {
-    border-color: rgba(245, 245, 245, 0.28);
-    color: rgba(245, 245, 245, 0.6);
+    border-color: rgba(44, 36, 32, 0.28);
+    color: rgba(44, 36, 32, 0.6);
     font-weight: 400;
 }
 
@@ -3184,21 +3454,21 @@ a {
     margin: 0;
     font-size: 13.4px;
     line-height: 1.55;
-    color: rgba(245, 245, 245, 0.78);
+    color: rgba(44, 36, 32, 0.78);
 }
 
 .group__why {
     margin: 0;
     font-size: 12.6px;
     line-height: 1.5;
-    color: rgba(245, 245, 245, 0.9);
+    color: rgba(44, 36, 32, 0.9);
 }
 
 .group__who {
     margin: 0;
     font-size: 11.6px;
     line-height: 1.5;
-    color: rgba(245, 245, 245, 0.6);
+    color: rgba(44, 36, 32, 0.6);
 }
 
 .group__join {
@@ -3208,7 +3478,7 @@ a {
     border: 1px solid rgba(0, 0, 0, 0.55);
     border-radius: 999px;
     background: transparent;
-    color: #f5f5f5;
+    color: #2C2420;
     font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
     font-size: 12.6px;
     font-weight: 600;
@@ -3218,19 +3488,19 @@ a {
 }
 
 .group__join:hover {
-    border-color: #c8ff3d;
-    background: #c8ff3d;
+    border-color: #DCC2B6;
+    background: #DCC2B6;
     color: #000000;
 }
 
 .group.is-joined .group__join {
-    border-color: rgba(200, 255, 61, 0.8);
-    background: rgba(200, 255, 61, 0.16);
-    color: #c8ff3d;
+    border-color: rgba(220, 194, 182, 0.8);
+    background: rgba(220, 194, 182, 0.16);
+    color: #DCC2B6;
 }
 
 .group__join:focus-visible {
-    outline: 2px solid #c8ff3d;
+    outline: 2px solid #DCC2B6;
     outline-offset: 2px;
 }
 
@@ -3241,9 +3511,35 @@ a {
     }
 }
 
+/* The group's own name is the link to its chat, so this has to read as part of
+   the heading rather than as a second control sitting under it. That means no
+   underline or colour of its own at rest - just the heading, with a link's
+   cursor, focus ring and hover to say it goes somewhere.
+
+   Its base rule used to sit inside the reduced-motion query, behind a stray
+   ".group," that pulled the whole card's layout in with it. */
+.group__chat {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.group__chat:hover {
+    color: #8A5A3B;
+}
+
+.group__chat:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
-    .group,
+    .group__chat {
+        transition: none;
+    }
+
     .group__join {
         transition: none;
     }
@@ -3285,6 +3581,411 @@ a {
     .people__arrow,
     .person,
     .follow {
+        transition: none;
+    }
+}
+
+/* ================= GROUP CHAT =================
+   A full-height column: the bar and the composer stay put and only the
+   conversation between them scrolls. The page itself does not scroll, which is
+   why the log needs min-height: 0 - a flex child defaults to min-height: auto,
+   so without it the log grows to the height of the whole history and pushes the
+   composer off the bottom of the screen. */
+
+.chatbody {
+    overflow: hidden;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 1.8vw, 20px);
+    height: 100svh;
+    max-width: 920px;
+    margin: 0 auto;
+    /* clears the fixed navbar, same job .community--page does */
+    padding: clamp(96px, 12vw, 128px) 5vw clamp(16px, 2vw, 24px);
+}
+
+.chat__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(44, 36, 32, 0.14);
+}
+
+.chat__eyebrow {
+    display: block;
+    margin: 0 0 6px;
+    font-size: 10.4px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(44, 36, 32, 0.5);
+}
+
+.chat__ident {
+    min-width: 0;
+}
+
+.chat__title {
+    margin: 0;
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-size: clamp(22px, 3.2vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #2C2420;
+}
+
+.chat__sub {
+    margin: 8px 0 0;
+    font-size: 12.6px;
+    line-height: 1.5;
+    color: rgba(44, 36, 32, 0.6);
+}
+
+.chat__note {
+    margin: 0;
+    font-size: 12.4px;
+    line-height: 1.5;
+    text-align: right;
+    color: #DCC2B6;
+}
+
+.chat__gate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid rgba(0, 0, 0, 0.55);
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.chat__gatetext {
+    flex: 1 1 260px;
+    margin: 0;
+    font-size: 13.4px;
+    line-height: 1.55;
+    color: rgba(44, 36, 32, 0.82);
+}
+
+.chat__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #DCC2B6;
+    text-decoration: none;
+    padding: 4px 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.chat__back:hover {
+    opacity: 0.7;
+    transform: translateX(-2px);
+}
+
+.chat__back:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+.chat__backlink {
+    font-size: 12.4px;
+    color: rgba(44, 36, 32, 0.6);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.chat__backlink:hover {
+    color: #DCC2B6;
+}
+
+.chat__backlink:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 2px;
+}
+
+.chat__log {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin: 0;
+    padding: 2px 6px 2px 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(44, 36, 32, 0.22) transparent;
+}
+
+.chat__msg {
+    max-width: 82%;
+    padding: 12px 15px 13px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.16);
+    align-self: flex-start;
+}
+
+.chat__msg.is-mine {
+    align-self: flex-end;
+    border-color: rgba(220, 194, 182, 0.42);
+}
+
+.chat__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 9px;
+    margin: 0 0 6px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: rgba(44, 36, 32, 0.5);
+}
+
+.chat__meta b {
+    font-weight: 500;
+    color: rgba(44, 36, 32, 0.85);
+}
+
+.chat__meta time {
+    font-variant-numeric: tabular-nums;
+}
+
+.chat__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    /* messages carry a name, a timestamp and an id in their markup, and a
+       pasted URL should not be the one thing that breaks out of it */
+    overflow-wrap: anywhere;
+    color: rgba(44, 36, 32, 0.9);
+}
+
+.chat__pic {
+    margin-top: 4px;
+}
+
+.chat__pic:has(.chat__text) {
+    margin-top: 10px;
+}
+
+.chat__image {
+    display: block;
+    max-width: 100%;
+    /* capped so a landscape screenshot does not take the whole column */
+    max-height: 340px;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid rgba(44, 36, 32, 0.14);
+    background: rgba(0, 0, 0, 0.25);
+    object-fit: contain;
+}
+
+.chat__none,
+.chat__missing {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(44, 36, 32, 0.5);
+}
+
+.chat__composer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.55);
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.16);
+}
+
+.chat__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat__attach {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid rgba(44, 36, 32, 0.28);
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: rgba(44, 36, 32, 0.82);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.chat__attach:hover,
+.chat__attach:focus-visible {
+    border-color: rgba(220, 194, 182, 0.85);
+    background: rgba(220, 194, 182, 0.14);
+    color: #2C2420;
+}
+
+.chat__attach:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 2px;
+}
+
+.chat__attachicon {
+    font-size: 15px;
+    line-height: 1;
+    color: #DCC2B6;
+}
+
+/* The label is the button, so the real input is not painted. display: none
+   rather than clipped, because a clipped input is still in the tab order and
+   its focus ring would land on an invisible box; the label carries tabindex and
+   a keydown handler instead, so it is the focusable thing and shows the ring.
+   A label still activates a display: none control, so the click path is fine. */
+.chat__file {
+    display: none;
+}
+
+.chat__send {
+    margin-left: auto;
+    padding: 8px 22px;
+    border-radius: 999px;
+    border: 1px solid #DCC2B6;
+    background: #DCC2B6;
+    color: #000000;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.chat__send:disabled {
+    opacity: 0.45;
+    cursor: progress;
+}
+
+/* Screen-reader-only: the textarea needs a real label, but printing "Message"
+   above a three-line box the user is already looking at is just noise. Clipped
+   rather than hidden, so it stays in the accessibility tree. */
+.chat__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* .chat__input, not .chat__text: the message body in the log is a <p> of the
+   same job, and one class cannot be both a paragraph and a resizable box. */
+.chat__input {
+    width: 100%;
+    min-height: 62px;
+    max-height: 190px;
+    padding: 11px 13px;
+    border: 1px solid rgba(44, 36, 32, 0.22);
+    border-radius: 12px;
+    background: rgba(44, 36, 32, 0.07);
+    color: #2C2420;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.55;
+    resize: vertical;
+}
+
+.chat__input:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 1px;
+}
+
+.chat__preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px dashed rgba(220, 194, 182, 0.45);
+    border-radius: 12px;
+    background: rgba(220, 194, 182, 0.07);
+}
+
+.chat__previewimg {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(44, 36, 32, 0.18);
+}
+
+.chat__previewnote {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(44, 36, 32, 0.78);
+}
+
+.chat__previewdrop {
+    padding: 6px 14px;
+    border: 1px solid rgba(44, 36, 32, 0.28);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 12px;
+    color: rgba(44, 36, 32, 0.82);
+    cursor: pointer;
+}
+
+.chat__previewdrop:hover {
+    border-color: #DCC2B6;
+    color: #2C2420;
+}
+
+.chat__previewdrop:focus-visible {
+    outline: 2px solid #DCC2B6;
+    outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+    .chat {
+        padding-left: 4vw;
+        padding-right: 4vw;
+    }
+
+    .chat__msg {
+        max-width: 92%;
+    }
+
+    .chat__note {
+        text-align: left;
+    }
+
+    .chat__attachtext {
+        display: none;
+    }
+
+    .chat__attach {
+        padding: 9px 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .chat__attach,
+    .chat__send,
+    .chat__previewdrop {
         transition: none;
     }
 }

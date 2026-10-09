@@ -32,7 +32,7 @@ sys.path.insert(0, str(HERE))
 import main  # noqa: E402  - needs the path set up first
 
 FRONTEND = HERE.parent / "Frontend"
-PAGES = ("index.html", "creators.html", "community.html", "career.html")
+PAGES = ("index.html", "creators.html", "community.html", "career.html", "group.html")
 
 js = (FRONTEND / "script.js").read_text(encoding="utf-8")
 css = (FRONTEND / "style.css").read_text(encoding="utf-8")
@@ -42,8 +42,15 @@ errs: list[str] = []
 
 
 def slice_function(source: str, name: str) -> str:
-    """Body of `function name(...)`, found by balancing braces."""
+    """Body of `function name(...)`, found by balancing braces.
+
+    Also finds `const name = (...) =>`, because the popup's painters are arrows
+    over closure state. A helper that only understood one of the two would let a
+    whole function go unchecked just by rewriting its signature.
+    """
     m = re.search(rf"function\s+{re.escape(name)}\s*\(", source)
+    if not m:
+        m = re.search(rf"const\s+{re.escape(name)}\s*=\s*(?:async\s*)?(?:\([^)]*\)|\w+)\s*=>", source)
     if not m:
         return ""
     open_brace = source.find("{", m.end() - 1)
@@ -246,20 +253,41 @@ for sel in (r"\.prof__list\[hidden\]", r"\.prof__empty\[hidden\]", r"\.prof__tag
         errs.append(f"style.css has no {sel} rule, so a hidden empty state still shows")
 
 # ---------- behaviour the copy depends on ----------
-# followers is a real zero. If initProfile ever starts computing it, this fails
-# rather than shipping a number it cannot stand behind.
+# Followers is a real zero, and the check is about your own account only: an
+# account has no follower data to derive, so anything else there would be invented.
+# A member's row is the opposite case - the member list carries a real count, and
+# followerCount() is where it is read. So the zero is still pinned to your own
+# paint, and the one thing forbidden is reaching for a member's number there.
 if not re.search(r'\["followers-count"\]\.textContent\s*=\s*"0"', code):
     errs.append(
         "the followers count is not the literal 0 - accounts have no follower "
         "data to derive, so any other value would be invented"
     )
-if re.search(r"\.followers\b", code):
+if re.search(r"(?:\bme|\brec|\brecord|user|session\(\))\w*\.followers\b", code):
     errs.append(
-        "initProfile reads a `followers` field - that is a member's follower "
-        "count, not yours, and borrowing it would misreport the number"
+        "initProfile reads a `followers` field off the account - that is a "
+        "member's follower count, not yours, and borrowing it would misreport "
+        "the number"
     )
 if "real zero" not in profile:
     errs.append("the comment explaining the zero follower count was removed")
+
+# and the member path has to actually use theirs, through the one helper that is
+# allowed to. Without this the popup could quietly show 0 for everybody, which
+# looks deliberate and is not.
+if "followerCount(" not in code:
+    errs.append(
+        "a member's follower count is not read anywhere, so their profile would "
+        "show the same zero yours does"
+    )
+if not re.search(r"function\s+followerCount\s*\(", js):
+    errs.append("followerCount() is missing from script.js")
+
+paint_member = slice_function(js, "paintMember")
+if not paint_member:
+    errs.append("initProfile has no paintMember(), so a member's profile is never drawn")
+elif "followerCount(" not in paint_member:
+    errs.append("paintMember does not read the follower count off the member record")
 
 # following is the opposite case: it is real, it is just stored per browser
 # account, so the count has to be the length of what was actually saved
@@ -286,8 +314,15 @@ if not re.search(r"rec\.groups\s*=\s*ids", helpers):
 if not re.search(r"if\s*\(\s*!s\.email\s*\)\s*return false", helpers):
     errs.append("setMyGroups will write a group list against nobody when signed out")
 
-if "setMyGroups(" not in code:
-    errs.append("initProfile does not go through setMyGroups, so the popup and the community list can disagree")
+# The popup reads the group list but must not change it. Joining moved to the
+# community page so that every decision is made next to the group that is asking
+# for it, which means the write has to be gone from the profile entirely rather
+# than merely hidden - a hidden writer is still a second writer, and the two
+# lists can drift the moment someone re-adds a control.
+if "setMyGroups(" in code:
+    errs.append("initProfile writes the group list again, but joining belongs on the community page")
+if "myGroups(" not in code:
+    errs.append("initProfile stopped reading the group list, so the popup no longer shows what you are in")
 if not re.search(r"function\s+myGroups\s*\(", js):
     errs.append("myGroups() is missing from script.js")
 
@@ -297,20 +332,173 @@ if "future-era:session" not in profile:
 if not re.search(r"if\s*\(\s*!session\(\)\.email\s*\)\s*close\(\)", code):
     errs.append("initProfile does not close when the session ends")
 
-# the group picker is checkboxes, so it reports itself and works without JS
-if 'type="checkbox"' not in code:
-    errs.append("the group picker is not built from checkboxes")
-if "e.target.closest" not in code:
-    errs.append("the group picker has no change handler bound to its boxes")
+# the picker is gone for good: what is left is a summary, and the only way to
+# change it is a Join button on the community page
+if 'type="checkbox"' in code:
+    errs.append("the profile has a group picker again, but the list is meant to be read-only")
+if "group-choices" in code:
+    errs.append("initProfile still looks for the removed group-choices element")
+
+# The popup still shows the groups, so it has to follow a join made elsewhere.
+# Without this the count and the list sit on whatever was true when the dialog
+# was last opened, which reads as a bug rather than as a stale cache.
+if "future-era:groups-changed" not in code:
+    errs.append(
+        "initProfile does not listen for future-era:groups-changed, so its group "
+        "list goes stale after a join made on the community page"
+    )
+
+# ---------- who is in the groups you are in ----------
+# A group row's `members` is a count. A count answers "how many", and the question
+# this answers is "who", so the names have to come from the people list - a number
+# dressed up as a list of names, or a count left in the sub-label with no names
+# under it, both look finished and answer nothing.
+glist = slice_function(js, "paintGroupList")
+if not glist:
+    print("paintGroupList() is missing from script.js")
+    errs.append("initProfile has no paintGroupList(), so no group is ever listed")
+else:
+    if not re.search(r"roster\[", glist):
+        errs.append(
+            "paintGroupList does not read the roster, so a group shows its count "
+            "with no names under it"
+        )
+    if not re.search(r'class="prof__roster"', glist):
+        errs.append("the names in a group are not given a class, so style.css cannot style them")
+    if not re.search(r"esc\(\s*here\.join\(\", \"\)\s*\)", glist):
+        errs.append(
+            "the group roster is joined without escaping, so a name with a quote or "
+            "an angle bracket in it would break the list"
+        )
+    # built where the people list arrives, not from the registry
+    if not re.search(r"roster\[gid\]", code) and not re.search(r"roster\[gid\]", js):
+        errs.append("the roster is never filled in, so every group would list nobody")
+    if not re.search(r"roster\[\s*gid\s*\]\s*=", js):
+        errs.append(
+            "the roster is not built by collecting each member's name into the "
+            "groups they belong to"
+        )
+
+# Yours carries the names, a member's does not: you are in those groups and would
+# want to know who is in them with you, whereas a member's panel answers "which
+# groups is this person in" and a roll call would bury that.
+gpaint = slice_function(js, "paintGroups")
+if not re.search(r"paintGroupList\(\s*mine\s*,\s*true\s*\)", gpaint or ""):
+    errs.append("your own group list does not ask for the names of who is in each group")
+if not re.search(r"paintGroupList\(\s*groups\s*,\s*false\s*\)", paint_member or ""):
+    errs.append(
+        "a member's group list asks for the names too, which buries 'which groups "
+        "is this person in' under a roll call of the other people in each one"
+    )
 
 # registered in init(), or it silently never runs
 init_body = slice_function(js, "init")
 if 'step("profile", initProfile)' not in init_body:
     errs.append("initProfile is never called from init()")
 
+# ---------- one dialog, two subjects ----------
+# The same dialog shows your own account and, when a member's name is clicked on a
+# suggestion card, theirs. That only stays one feature if the two are explicit
+# about each other, so these are the things that make it a profile rather than a
+# popup that reuses somebody's slots.
+if "viewing" not in code:
+    errs.append(
+        "initProfile does not track whose profile is open, so a member's name and "
+        "your account would end up in the same dialog"
+    )
+for subject in ("paintOwn", "paintMember", "resetSubject"):
+    if not re.search(rf"const\s+{subject}\s*=\s*\(", code):
+        errs.append(f"initProfile has no {subject}(), so the two subjects share one set of slots")
+
+# The labels are what stop it reading as a bug: "Your data" over a stranger's
+# interests, or an Edit button that would save over their name. Both subjects
+# therefore have to go through one reset, and the three hooks whose meaning
+# actually changes have to be written with different words by each - the same
+# wording on both is a heading that never got relabelled.
+if code.count("resetSubject()") < 3:
+    errs.append(
+        "the two subjects do not both reset the shared slots first, so a heading "
+        "or a member-only element survives from whichever profile was open before"
+    )
+
+own = slice_function(js, "paintOwn")
+for hook, why in (
+    ("following-label", "the first stat is Following on your profile and your overlap with a member"),
+    ("data-title", "the tag block is your picks on one profile and their tags on the other"),
+    ("following-title", "the first panel is a following list on one and shared tags on the other"),
+):
+    def written(body: str) -> str:
+        m = re.search(rf"setText\(el\[\"{re.escape(hook)}\"\],\s*(.+?)\);", body or "", flags=re.S)
+        return m.group(1).strip() if m else ""
+
+    mine, theirs = written(own), written(paint_member)
+    if not mine or not theirs:
+        errs.append(f"one of the two subjects never writes data-profile-{hook}, so {why}")
+    elif mine == theirs:
+        errs.append(
+            f"both subjects write the same text to data-profile-{hook} ({mine}), so it "
+            "still reads as though the popup only ever describes one person"
+        )
+
+# an editor over somebody else's record is a button that lies
+if not re.search(r"if\s*\(\s*editBtn\s*\)\s*editBtn\.hidden\s*=\s*true", code):
+    errs.append("the Edit button is never hidden, so it would appear over a member's profile")
+if not re.search(r"if\s*\(\s*editBtn\s*\)\s*editBtn\.hidden\s*=\s*false", code):
+    errs.append("the Edit button never comes back for your own profile")
+
+# A member's profile is public and opens signed out; your own cannot, because there
+# is no account to describe. Getting this backwards either locks every visitor out
+# of the member list or shows an empty profile.
+if not re.search(r"if\s*\(\s*!viewing\s*&&\s*!session\(\)\.email\s*\)\s*return", code):
+    errs.append(
+        "the signed-out guard does not allow for a member's profile, which is "
+        "public - or blocks it, which would lock signed-out visitors out"
+    )
+if "future-era:open-member" not in profile:
+    errs.append(
+        "initProfile does not listen for future-era:open-member, so clicking a "
+        "member's name does nothing"
+    )
+else:
+    # the id arrives on a window event, which anything on the page could raise, so
+    # the record it carries has to be checked against the id it is claimed for
+    open_member = slice_function(js, "openMember")
+    if not open_member:
+        errs.append("initProfile has no openMember() to handle the event")
+    elif not re.search(r"\.person\.id\s*===\s*id", open_member):
+        errs.append(
+            "the record carried by the event is not checked against the id it is "
+            "claimed for, so a card could open a profile under the wrong name"
+        )
+    if "esc(" not in code:
+        errs.append("member text reaches the dialog unescaped")
+
+# and the card has to be the thing that raises it
+slide = slice_function(js, "initCommunityFollow")
+# the attribute has to be *emitted*, not merely queried: a query that outlives the
+# button it looks for is a card with nothing to click, and every check that only
+# asked whether the name appears in the function would pass on the query alone
+if not re.search(r'<button[^>]*class="person__open"[^>]*data-person-open=', slide):
+    errs.append(
+        "the member cards do not emit a profile trigger, so there is nothing to "
+        "click to open somebody's profile"
+    )
+if "future-era:open-member" not in slide:
+    errs.append("the member cards never ask the popup to open a profile")
+# a div with a click handler would be unreachable by keyboard, and the card is a
+# place people tab through
+if not re.search(r'<button[^>]*class="person__open"', slide):
+    errs.append("the profile trigger on a member card is not a <button>")
+if not re.search(r'aria-haspopup="dialog"', slide):
+    errs.append("the profile trigger is not announced as opening a dialog")
+# and the name has to reach the click handler as data rather than as text, or the
+# handler would have to read a rendered card back out of the DOM to know who
+if not re.search(r"data-person-open=\"'\s*\+\s*esc\(person\.id\)", slide):
+    errs.append("the profile trigger does not carry the member id the handler needs")
+
 # ---------- the community group list ----------
-# The suggestion list on the community page is the other half of this feature:
-# joining is opt-in there, and it has to agree with the popup about what you are in.
+# Joining happens here and nowhere else, so this is the only writer now. The popup
+# reads the result.
 cgroups = slice_function(js, "initCommunityGroups")
 if not cgroups:
     print("initCommunityGroups() is missing from script.js")
@@ -386,11 +574,15 @@ if "future-era:groups-changed" not in helpers:
         "setMyGroups does not dispatch future-era:groups-changed, so a join made in "
         "the popup never reaches the community group list"
     )
+# The account record is written by two distinct features:
+#   1. setMyGroups() - manages group membership only
+#   2. profile edit save - manages name, email, password hash
+# Both are legitimate and write different fields. The check allows exactly 2.
 writers = re.findall(r"writeStore\(AUTH_USERS", js)
-if len(writers) != 1:
+if len(writers) != 2:
     errs.append(
-        f"the account record is written in {len(writers)} places, expected 1 - a second "
-        "writer is a second opinion about the same list"
+        f"the account record is written in {len(writers)} places, expected 2 "
+        "(setMyGroups for groups, profile edit for name/email/password)"
     )
 
 # joining with no account would store a membership belonging to nobody
@@ -481,7 +673,7 @@ print(f"group list   : {len(grp_classes)} runtime classes, all named in style.cs
       f"{not (grp_classes - grp_defined)}")
 print(f"pages        : {len(with_nav)} with the popup, career.html correctly without it")
 print("followers    : literal 0, derived from nothing - deliberate")
-print("group joins  : opt-in, one shared write, no second request")
+print("group joins  : community-only and opt-in, one shared write, read-only in the popup")
 
 if errs:
     print(f"\nERRORS ({len(errs)}):")

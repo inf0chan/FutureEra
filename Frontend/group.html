@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Group chat - Future Era</title>
+  <meta name="description"
+    content="Talk to the rest of your group. Text and images, kept in your own browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asimovian&family=Audiowide&family=Marck+Script&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="chatbody">
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="nav" id="nav">
+    <a href="index.html#intro" class="nav__logo" aria-label="Future Era — home">
+      <span class="nav__mark" aria-hidden="true">FE</span>
+      <span class="nav__word">Future<em>Era</em></span>
+    </a>
+
+    <nav class="nav__links" id="nav-links" aria-label="Main">
+      <a href="index.html#intro" class="nav__link">Home</a>
+      <a href="index.html#about" class="nav__link">About</a>
+      <a href="creators.html" class="nav__link">Creators</a>
+      <a href="community.html" class="nav__link is-active">Community</a>
+      <button class="auth__trigger auth__nav-trigger" type="button" data-auth-open>
+        Log in
+      </button>
+      <span class="auth__who" data-auth-who>
+        <button class="prof__chip" type="button" data-profile-open aria-haspopup="dialog">
+          <span class="auth__avatar" data-auth-initial aria-hidden="true">FE</span>
+          <span class="prof__chipname" data-profile-chipname>Profile</span>
+        </button>
+        <button class="auth__trigger" type="button" data-auth-signout>Sign out</button>
+      </span>
+    </nav>
+
+    <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false"
+      aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ============ GROUP CHAT ============ -->
+  <main class="chat" id="chat">
+    <header class="chat__bar">
+      <a class="chat__back" href="community.html#groups" aria-label="Back to group list">← Back to groups</a>
+      <div class="chat__ident">
+        <p class="chat__eyebrow">Group chat</p>
+        <h1 class="chat__title" id="chat-title">Loading...</h1>
+        <p class="chat__sub" id="chat-meta"></p>
+      </div>
+      <p class="chat__note" id="chat-note" role="status" aria-live="polite"></p>
+    </header>
+
+    <section class="chat__gate" id="chat-gate" hidden>
+      <p class="chat__gatetext" id="chat-gate-text"></p>
+      <button class="btn btn--solid" type="button" id="chat-gate-join" hidden>Join this group</button>
+      <a class="chat__backlink" href="community.html#groups">Back to the group list</a>
+    </section>
+
+    <ol class="chat__log" id="chat-log" aria-live="polite" aria-relevant="additions"></ol>
+
+    <form class="chat__composer" id="chat-form" hidden>
+      <div class="chat__preview" id="chat-preview" hidden>
+        <img class="chat__previewimg" id="chat-preview-img" alt="The image you are about to send" />
+        <span class="chat__previewnote" id="chat-preview-note"></span>
+        <button class="chat__previewdrop" type="button" id="chat-preview-drop">Remove image</button>
+      </div>
+
+      <div class="chat__row">
+        <label class="chat__attach" for="chat-file" id="chat-attach" tabindex="0">
+          <span class="chat__attachicon" aria-hidden="true">+</span>
+          <span class="chat__attachtext">Add image</span>
+        </label>
+        <!-- accept is a hint to the file dialog, not a filter: the type is
+             re-checked against the bytes before anything is stored. -->
+        <input class="chat__file" type="file" id="chat-file"
+          accept="image/png,image/jpeg,image/gif,image/webp" />
+        <button class="btn btn--solid chat__send" type="submit" id="chat-send">Send</button>
+      </div>
+
+      <label class="chat__label" for="chat-text">Message</label>
+      <textarea class="chat__input" id="chat-text" rows="3"
+        placeholder="Say something to the group" maxlength="800"></textarea>
+    </form>
+  </main>
+
+  <!-- ============ LOG IN / SIGN UP ============ -->
+  <dialog class="auth__dialog" id="auth-dialog" aria-labelledby="auth-title">
+    <button class="auth__close" type="button" data-auth-close aria-label="Close">&times;</button>
+
+    <div class="auth__inner">
+      <span class="auth__eyebrow">Members</span>
+      <h2 class="auth__title" id="auth-title">Join the <em>Era</em></h2>
+      <div class="auth__rule" aria-hidden="true"></div>
+
+      <div class="auth__tabs" role="tablist" aria-label="Account">
+        <button class="auth__tab" type="button" role="tab" id="auth-tab-login" data-auth-tab="login"
+          aria-selected="true" aria-controls="auth-panel-login">Log in</button>
+        <button class="auth__tab" type="button" role="tab" id="auth-tab-signup" data-auth-tab="signup"
+          aria-selected="false" aria-controls="auth-panel-signup">Sign up</button>
+      </div>
+
+      <p class="auth__msg" id="auth-msg" role="status" aria-live="polite"></p>
+
+      <form class="auth__form is-active" id="auth-panel-login" role="tabpanel" aria-labelledby="auth-tab-login"
+        novalidate>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-login-email">Email</label>
+          <input class="inp" type="email" id="auth-login-email" name="email" autocomplete="email"
+            placeholder="you@example.com" required>
+        </div>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-login-pass">Password</label>
+          <input class="inp" type="password" id="auth-login-pass" name="password" autocomplete="current-password"
+            placeholder="Your password" required>
+        </div>
+        <button class="btn btn--solid auth__submit" type="submit">Log in</button>
+        <p class="auth__note">No account yet? Switch to <strong>Sign up</strong> above.</p>
+      </form>
+
+      <form class="auth__form" id="auth-panel-signup" role="tabpanel" aria-labelledby="auth-tab-signup" novalidate>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-signup-name">Name</label>
+          <input class="inp" type="text" id="auth-signup-name" name="name" autocomplete="name"
+            placeholder="Your name" required>
+        </div>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-signup-email">Email</label>
+          <input class="inp" type="email" id="auth-signup-email" name="email" autocomplete="email"
+            placeholder="you@example.com" required>
+        </div>
+        <div class="auth__row">
+          <label class="auth__label" for="auth-signup-pass">Password</label>
+          <input class="inp" type="password" id="auth-signup-pass" name="password" autocomplete="new-password"
+            placeholder="At least 6 characters" required>
+        </div>
+        <button class="btn btn--solid auth__submit" type="submit">Create account</button>
+        <p class="auth__note">Already have an account? Switch to <strong>Log in</strong> above.</p>
+      </form>
+    </div>
+  </dialog>
+
+    <dialog class="prof__dialog" id="profile-dialog" aria-labelledby="profile-title">
+        <button class="prof__close" type="button" data-profile-close aria-label="Close">&times;</button>
+
+        <div class="prof__inner">
+            <header class="prof__head">
+                <span class="prof__avatar" data-profile-initial aria-hidden="true">F</span>
+                <div class="prof__ident">
+                    <h2 class="prof__title" id="profile-title" data-profile-title>Your <em>profile</em></h2>
+                    <p class="prof__email" data-profile-email></p>
+                    <p class="prof__role" data-profile-role hidden></p>
+                </div>
+                <button class="prof__edit-btn" type="button" data-profile-edit aria-label="Edit profile">Edit</button>
+            </header>
+
+            <p class="prof__blurb" data-profile-blurb hidden></p>
+
+            <section class="prof__edit-form" data-profile-edit-form hidden>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-name">Name</label>
+                    <input class="inp" type="text" id="prof-edit-name" name="name" autocomplete="name" maxlength="60">
+                </div>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-email">Email</label>
+                    <input class="inp" type="email" id="prof-edit-email" name="email" autocomplete="email" placeholder="you@example.com">
+                </div>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-pass-current">Current password</label>
+                    <input class="inp" type="password" id="prof-edit-pass-current" name="passCurrent" autocomplete="current-password" placeholder="Required to save changes">
+                </div>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-pass-new">New password</label>
+                    <input class="inp" type="password" id="prof-edit-pass-new" name="passNew" autocomplete="new-password" placeholder="Leave blank to keep current" minlength="6">
+                </div>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-pass-confirm">Confirm new password</label>
+                    <input class="inp" type="password" id="prof-edit-pass-confirm" name="passConfirm" autocomplete="new-password" placeholder="Confirm new password">
+                </div>
+                <div class="prof__actions">
+                    <button class="btn btn--solid" type="button" data-profile-edit-save>Save</button>
+                    <button class="btn" type="button" data-profile-edit-cancel>Cancel</button>
+                </div>
+                <p class="prof__msg" data-profile-edit-msg role="status" aria-live="polite"></p>
+            </section>
+
+            <!-- Not a <dl>: each of the three is a button that opens the panel
+                 under it, and a <button> may only contain phrasing content, so
+                 wrapping <dt>/<dd> in one is invalid. The visible label already
+                 reads "Following 12", so the definition-list pairing was adding
+                 nothing a screen reader did not already get from the name. -->
+            <div class="prof__stats" role="group" aria-label="Profile summary">
+                <button class="prof__stat" type="button" data-profile-tab="following" aria-expanded="false" aria-controls="prof-panel-following">
+                    <span class="prof__statlabel" data-profile-following-label>Following</span>
+                    <span class="prof__statvalue" data-profile-following-count>0</span>
+                </button>
+                <button class="prof__stat" type="button" data-profile-tab="followers" aria-expanded="false" aria-controls="prof-panel-followers">
+                    <span class="prof__statlabel" data-profile-followers-label>Followers</span>
+                    <span class="prof__statvalue" data-profile-followers-count>0</span>
+                </button>
+                <button class="prof__stat" type="button" data-profile-tab="groups" aria-expanded="false" aria-controls="prof-panel-groups">
+                    <span class="prof__statlabel" data-profile-groups-label>Groups</span>
+                    <span class="prof__statvalue" data-profile-group-count>0</span>
+                </button>
+            </div>
+
+            <section class="prof__block">
+                <h3 class="prof__blocktitle" data-profile-data-title>Your data</h3>
+                <ul class="prof__tags" data-profile-tags></ul>
+                <p class="prof__empty" data-profile-tags-empty>Pick interests and skills on the
+                    Community page and they show up here.</p>
+            </section>
+
+            <div class="prof__panel" id="prof-panel-following" data-profile-panel="following" hidden>
+                <h3 class="prof__blocktitle" data-profile-following-title>Following</h3>
+                <ul class="prof__list" data-profile-following></ul>
+                <p class="prof__empty" data-profile-following-empty>You are not following anyone
+                    yet. Find people on the Community page.</p>
+            </div>
+
+            <div class="prof__panel" id="prof-panel-followers" data-profile-panel="followers" hidden>
+                <h3 class="prof__blocktitle" data-profile-followers-title>Followers</h3>
+                <p class="prof__empty" data-profile-followers-note>No one follows you yet, and
+                    that number is honest rather than broken.</p>
+            </div>
+
+            <div class="prof__panel" id="prof-panel-groups" data-profile-panel="groups" hidden>
+                <h3 class="prof__blocktitle">Groups <span class="prof__hint" data-profile-group-hint></span></h3>
+                <ul class="prof__list" data-profile-groups></ul>
+                <p class="prof__empty" data-profile-groups-empty>You are not in any groups yet. Join one
+                    from the Groups section on the Community page and it is saved to your account.</p>
+            </div>
+        </div>
+    </dialog>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
+  <script src="script.js?v=9"></script>
+</body>
+
+</html>

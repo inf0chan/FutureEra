@@ -345,16 +345,49 @@ else:
             errs.append(f"script.js reads #{i} but community.html does not declare it")
 
     # and so does every data hook it queries in the static markup. The rest -
-    # data-tag, data-kind, data-follow, data-person - are set by the renderer
-    # itself, so they are not expected in the HTML. These are written as bare
-    # boolean attributes, so a name match is the test, not "name=".
-    rendered_itself = {"data-tag", "data-kind", "data-follow", "data-person"}
+    # data-tag, data-kind, data-follow, data-person, data-person-open - are set by
+    # the renderer itself, so they are not expected in the HTML. These are written
+    # as bare boolean attributes, so a name match is the test, not "name=".
+    rendered_itself = {"data-tag", "data-kind", "data-follow", "data-person",
+                       "data-person-open"}
     for hook in sorted(set(re.findall(r'\[(data-[\w-]+)[\]=]', render)) - rendered_itself):
         if not re.search(rf"\b{re.escape(hook)}\b", community_html):
             errs.append(f"script.js queries [{hook}] but community.html does not declare it")
 
+    # A button that is *supposed* to look like plain text is the one place on this
+    # card where the browser's own furniture is the bug: a surviving border,
+    # background, radius or padding draws a box around somebody's name and handle,
+    # which reads as an error rather than as a link. None of the checks above would
+    # notice - .person__open is defined, so the class check passes, and the box only
+    # exists in a browser.
+    open_rule = re.search(r"\.person__open\s*\{([^}]*)\}", css_code)
+    if not open_rule:
+        errs.append(
+            ".person__open is not defined in style.css, so the profile trigger would "
+            "render as the browser's default button - a box around the member's name"
+        )
+    else:
+        decls = open_rule.group(1)
+        for prop, wanted in (("border", r"\b0\b"), ("background", r"\bnone\b"),
+                             ("padding", r"\b0\b")):
+            hit = re.search(rf"^\s*{prop}\s*:\s*([^;]+);", decls, flags=re.M)
+            if hit is None:
+                errs.append(f".person__open does not set {prop}, so the button's default shows")
+            elif not re.search(wanted, hit.group(1)):
+                errs.append(f".person__open sets {prop}: {hit.group(1).strip()} - still a box")
+        if not re.search(r"appearance\s*:\s*none", decls):
+            errs.append(
+                ".person__open does not set appearance: none, so the browser may still "
+                "paint its own edge even with border: 0"
+            )
+        # and nothing may put a background back on hover, which is where it showed up
+        hover = re.search(r"\.person__open:hover\s*\{([^}]*)\}", css_code)
+        if hover and re.search(r"background", hover.group(1)):
+            errs.append(".person__open:hover paints a background, which boxes the name again")
+
     # the two halves of script.js talk over window events; if one side is
     # renamed the other goes quiet and nothing says so
+
     for event, needed in (
         ("future-era:open-auth", 2),  # dispatched by the slide, listened for by initAuth
         ("future-era:session", 2),    # dispatched by initAuth, listened for by the slide

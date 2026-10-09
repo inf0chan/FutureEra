@@ -22,6 +22,7 @@ CHECKS = (
     ("animations", "check_anim.py"),
     ("log in / sign up", "check_auth.py"),
     ("profile popup", "check_profile.py"),
+    ("group chat", "check_chat.py"),
 )
 
 failed: list[str] = []

@@ -77,7 +77,7 @@
             <span class="about__eyebrow" data-reveal>About this site</span>
 
             <h2 class="about__title" data-reveal>
-                Built by GenX, for the ones<br />who come <em>after</em>.
+                Built by Setu, for the ones<br />who come <em>after</em>.
             </h2>
 
             <div class="about__body">
@@ -219,60 +219,95 @@
             <header class="prof__head">
                 <span class="prof__avatar" data-profile-initial aria-hidden="true">F</span>
                 <div class="prof__ident">
-                    <h2 class="prof__title" id="profile-title">Your <em>profile</em></h2>
+                    <h2 class="prof__title" id="profile-title" data-profile-title>Your <em>profile</em></h2>
                     <p class="prof__email" data-profile-email></p>
+                    <p class="prof__role" data-profile-role hidden></p>
                 </div>
+                <button class="prof__edit-btn" type="button" data-profile-edit aria-label="Edit profile">Edit</button>
             </header>
 
-            <dl class="prof__stats">
-                <div class="prof__stat">
-                    <dt class="prof__statlabel">Following</dt>
-                    <dd class="prof__statvalue" data-profile-following-count>0</dd>
+            <p class="prof__blurb" data-profile-blurb hidden></p>
+
+            <section class="prof__edit-form" data-profile-edit-form hidden>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-name">Name</label>
+                    <input class="inp" type="text" id="prof-edit-name" name="name" autocomplete="name" maxlength="60">
                 </div>
-                <div class="prof__stat">
-                    <dt class="prof__statlabel">Followers</dt>
-                    <dd class="prof__statvalue" data-profile-followers-count>0</dd>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-email">Email</label>
+                    <input class="inp" type="email" id="prof-edit-email" name="email" autocomplete="email" placeholder="you@example.com">
                 </div>
-                <div class="prof__stat">
-                    <dt class="prof__statlabel">Groups</dt>
-                    <dd class="prof__statvalue" data-profile-group-count>0</dd>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-pass-current">Current password</label>
+                    <input class="inp" type="password" id="prof-edit-pass-current" name="passCurrent" autocomplete="current-password" placeholder="Required to save changes">
                 </div>
-            </dl>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-pass-new">New password</label>
+                    <input class="inp" type="password" id="prof-edit-pass-new" name="passNew" autocomplete="new-password" placeholder="Leave blank to keep current" minlength="6">
+                </div>
+                <div class="prof__row">
+                    <label class="prof__label" for="prof-edit-pass-confirm">Confirm new password</label>
+                    <input class="inp" type="password" id="prof-edit-pass-confirm" name="passConfirm" autocomplete="new-password" placeholder="Confirm new password">
+                </div>
+                <div class="prof__actions">
+                    <button class="btn btn--solid" type="button" data-profile-edit-save>Save</button>
+                    <button class="btn" type="button" data-profile-edit-cancel>Cancel</button>
+                </div>
+                <p class="prof__msg" data-profile-edit-msg role="status" aria-live="polite"></p>
+            </section>
+
+            <!-- Not a <dl>: each of the three is a button that opens the panel
+                 under it, and a <button> may only contain phrasing content, so
+                 wrapping <dt>/<dd> in one is invalid. The visible label already
+                 reads "Following 12", so the definition-list pairing was adding
+                 nothing a screen reader did not already get from the name. -->
+            <div class="prof__stats" role="group" aria-label="Profile summary">
+                <button class="prof__stat" type="button" data-profile-tab="following" aria-expanded="false" aria-controls="prof-panel-following">
+                    <span class="prof__statlabel" data-profile-following-label>Following</span>
+                    <span class="prof__statvalue" data-profile-following-count>0</span>
+                </button>
+                <button class="prof__stat" type="button" data-profile-tab="followers" aria-expanded="false" aria-controls="prof-panel-followers">
+                    <span class="prof__statlabel" data-profile-followers-label>Followers</span>
+                    <span class="prof__statvalue" data-profile-followers-count>0</span>
+                </button>
+                <button class="prof__stat" type="button" data-profile-tab="groups" aria-expanded="false" aria-controls="prof-panel-groups">
+                    <span class="prof__statlabel" data-profile-groups-label>Groups</span>
+                    <span class="prof__statvalue" data-profile-group-count>0</span>
+                </button>
+            </div>
 
             <section class="prof__block">
-                <h3 class="prof__blocktitle">Your data</h3>
+                <h3 class="prof__blocktitle" data-profile-data-title>Your data</h3>
                 <ul class="prof__tags" data-profile-tags></ul>
                 <p class="prof__empty" data-profile-tags-empty>Pick interests and skills on the
                     Community page and they show up here.</p>
             </section>
 
-            <section class="prof__block">
-                <h3 class="prof__blocktitle">Following</h3>
+            <div class="prof__panel" id="prof-panel-following" data-profile-panel="following" hidden>
+                <h3 class="prof__blocktitle" data-profile-following-title>Following</h3>
                 <ul class="prof__list" data-profile-following></ul>
                 <p class="prof__empty" data-profile-following-empty>You are not following anyone
                     yet. Find people on the Community page.</p>
-            </section>
+            </div>
 
-            <section class="prof__block">
-                <h3 class="prof__blocktitle">Followers</h3>
-                <p class="prof__empty">No one follows you yet, and that number is honest rather than
-                    broken. Accounts and follows live in this browser only, with no shared server, so
-                    nobody else's follow can reach your profile. Your following list above is real.</p>
-            </section>
+            <div class="prof__panel" id="prof-panel-followers" data-profile-panel="followers" hidden>
+                <h3 class="prof__blocktitle" data-profile-followers-title>Followers</h3>
+                <p class="prof__empty" data-profile-followers-note>No one follows you yet, and
+                    that number is honest rather than broken.</p>
+            </div>
 
-            <section class="prof__block">
+            <div class="prof__panel" id="prof-panel-groups" data-profile-panel="groups" hidden>
                 <h3 class="prof__blocktitle">Groups <span class="prof__hint" data-profile-group-hint></span></h3>
                 <ul class="prof__list" data-profile-groups></ul>
-                <p class="prof__empty" data-profile-groups-empty>You are not in any groups yet. Pick
-                    some below and they are saved to your account.</p>
-                <ul class="prof__choices" data-profile-group-choices></ul>
-            </section>
+                <p class="prof__empty" data-profile-groups-empty>You are not in any groups yet. Join one
+                    from the Groups section on the Community page and it is saved to your account.</p>
+            </div>
         </div>
     </dialog>
 
     <script src="vendor/gsap.min.js"></script>
     <script src="vendor/ScrollTrigger.min.js"></script>
-    <script src="script.js?v=8"></script>
+    <script src="script.js?v=9"></script>
 </body>
 
 </html>

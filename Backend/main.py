@@ -5,6 +5,8 @@ Serves two things from one process on one port:
 
   1. The career data as JSON at /api/career-data
   2. The static site itself (Frontend/) at /
+  3. The community data at /api/people and /api/groups
+  4. The Authentication at /api/auth
 
 The data used to live in Frontend/career-data.js as a JS file the browser
 executed directly. It now lives in Backend/data/career_data.json and reaches
@@ -16,13 +18,18 @@ rather than in the browser for the same reason the career data moved: the rule
 belongs in the backend where it can be tested, not scattered through script.js.
 
 Run:
-    uvicorn main:app --reload --port 8000
+    python main.py
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import threading
+import time
+import urllib.error
+import urllib.request
+import webbrowser
 from contextlib import asynccontextmanager
 from functools import lru_cache
 from pathlib import Path
@@ -429,3 +436,85 @@ else:
         return JSONResponse(
             {"error": f"Frontend folder not found at {FRONTEND}"}, status_code=500
         )
+
+
+def open_browser_when_ready(url: str) -> None:
+    """Open the site in the default browser once the server is accepting.
+
+    Runs on a daemon thread with a short poll rather than a fixed sleep: a fixed
+    sleep is either long enough to feel broken or short enough to open a browser
+    onto a connection that is refused. Polling the health endpoint asks the
+    server itself, so the tab only appears once there is something to show.
+    """
+    for _ in range(100):
+        try:
+            with urllib.request.urlopen(url + "/api/health", timeout=1) as response:
+                if response.status == 200:
+                    webbrowser.open(url)
+                    return
+        except (urllib.error.URLError, OSError):
+            time.sleep(0.2)
+
+    print(f"  server never answered on {url} - open it yourself")
+
+
+def main() -> None:
+    """Start the server. This is what `python main.py` runs.
+
+    Flags, all optional:
+
+        --port N      port to listen on (default 8000)
+        --host H      address to bind (default 127.0.0.1)
+        --no-reload   do not restart on file changes
+        --no-browser  do not open the browser automatically
+
+    The path is passed to uvicorn as the string "main:app" rather than as the
+    `app` object. Reload mode re-imports the module in a fresh process to pick up
+    edits, and it can only do that from an importable name - handing it the object
+    works until you change a file, then the reloader crashes on a missing
+    "main" in sys.modules.
+    """
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run the Future Era server.")
+    parser.add_argument("--port", type=int, default=8000, help="port to listen on")
+    parser.add_argument("--host", default="127.0.0.1", help="address to bind")
+    parser.add_argument("--no-reload", action="store_true", help="disable auto-reload")
+    parser.add_argument("--no-browser", action="store_true", help="do not open a browser")
+    args = parser.parse_args()
+
+    url = f"http://{'127.0.0.1' if args.host in ('0.0.0.0', '::') else args.host}:{args.port}"
+
+    # import errors here are the confusing case: uvicorn's own traceback says
+    # nothing about which module failed, so a missing dependency reads as a
+    # server crash instead of a pip install.
+    try:
+        import uvicorn
+    except ImportError:
+        print(
+            "uvicorn is not installed.\n"
+            "  python -m pip install -r requirements.txt"
+        )
+        raise SystemExit(1)
+
+    if not args.no_browser:
+        threading.Thread(
+            target=open_browser_when_ready, args=(url,), daemon=True
+        ).start()
+
+    print(f"  Future Era on {url}   (Ctrl+C to stop)")
+
+    # reload_dirs is only meaningful with reload on; passing it otherwise makes
+    # uvicorn warn that it "will not reload as not all conditions are met", which
+    # reads as a broken setup on a start that was meant to be a plain one.
+    uvicorn.run(
+        "main:app",
+        host=args.host,
+        port=args.port,
+        reload=not args.no_reload,
+        reload_dirs=[str(BACKEND)] if not args.no_reload else None,
+    )
+
+
+if __name__ == "__main__":
+    main()

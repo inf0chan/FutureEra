@@ -47,11 +47,13 @@ css_code = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
 
 pages = {
     name: (FRONTEND / name).read_text(encoding="utf-8")
-    for name in ("index.html", "career.html", "creators.html", "community.html")
+    for name in ("index.html", "career.html", "creators.html", "community.html", "group.html")
 }
 
 # career.html has no navbar at all - it uses a backlink instead - so it carries
-# no auth trigger and no dialog. The others must.
+# no auth trigger and no dialog. The others must, including group.html: it opens
+# in its own tab, so a visitor can arrive there with nothing signed in and has to
+# be able to sign in from where they are.
 with_nav = {n: h for n, h in pages.items() if 'class="nav"' in h}
 without_nav = {n: h for n, h in pages.items() if n not in with_nav}
 

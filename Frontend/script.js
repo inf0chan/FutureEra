@@ -180,27 +180,6 @@ function initAuth() {
         },
     };
 
-    /* SHA-256 where the browser exposes it (https or localhost), otherwise a
-       cheap stand-in so the flow still behaves on a plain http:// origin. Neither
-       is a real KDF - hashing at all is only here to keep the password out of
-       readable text. */
-    const digest = (text) => {
-        const subtle = window.crypto && window.crypto.subtle;
-        if (subtle && window.TextEncoder) {
-            return subtle
-                .digest("SHA-256", new window.TextEncoder().encode(text))
-                .then((buf) =>
-                    Array.from(new Uint8Array(buf))
-                        .map((b) => b.toString(16).padStart(2, "0"))
-                        .join("")
-                );
-        }
-        let h = 0;
-        for (let i = 0; i < text.length; i += 1) h = (h * 31 + text.charCodeAt(i)) | 0;
-        return Promise.resolve("weak:" + h);
-    };
-
-    const looksLikeEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
     const val = (panel, id) => {
         const el = panel.querySelector("#" + id);
         return el ? String(el.value || "").trim() : "";
@@ -682,11 +661,35 @@ function writeStore(key, value) {
     }
 }
 
+/* SHA-256 where the browser exposes it (https or localhost), otherwise a
+   cheap stand-in so the flow still behaves on a plain http:// origin. Neither
+   is a real KDF - hashing at all is only here to keep the password out of
+   readable text. */
+function digest(text) {
+    const subtle = window.crypto && window.crypto.subtle;
+    if (subtle && window.TextEncoder) {
+        return subtle
+            .digest("SHA-256", new window.TextEncoder().encode(text))
+            .then((buf) =>
+                Array.from(new Uint8Array(buf))
+                    .map((b) => b.toString(16).padStart(2, "0"))
+                    .join("")
+            );
+    }
+    let h = 0;
+    for (let i = 0; i < text.length; i += 1) h = (h * 31 + text.charCodeAt(i)) | 0;
+    return Promise.resolve("weak:" + h);
+}
+
+function looksLikeEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+}
+
 /* ---------- group membership, in one place ----------
-   The profile popup and the community group list both show and change which
-   groups you are in, so the read and the write live here rather than being
-   written twice and drifting - the popup would end up showing a group the
-   community page had just removed. */
+   The community group list and the group chat page both change which groups you
+   are in, so the read and the write live here rather than being written twice
+   and drifting - the profile popup would end up showing a group you had just
+   removed. The popup itself only reads. */
 
 const sessionOf = () => readStore(AUTH_SESSION, {}) || {};
 
@@ -745,6 +748,7 @@ function initCommunityFollow() {
     let vocabulary = { interests: [], skills: [] };
     let label = { interests: {}, skills: {} };
     let mine = { interests: [], skills: [] };
+    let shown = [];
 
     const stored = readStore(PROFILE_KEY, {}) || {};
     mine.interests = Array.isArray(stored.interests) ? stored.interests : [];
@@ -854,11 +858,20 @@ function initCommunityFollow() {
             '<article class="person' + (followed ? " is-following" : "") + '" role="listitem" data-person="' +
             esc(person.id) + '">' +
             '<div class="person__top">' +
+            /* the name and the avatar open the full profile. A button rather than
+               a wrapper div: the card is an <article> with a Follow button already
+               in it, and a div with a click handler would be invisible to the
+               keyboard - the one way somebody can use this without a pointer. The
+               card's own heading was the <h3> that used to be here, and the
+               button's accessible name is the name, so nothing is lost. */
+            '<button class="person__open" type="button" data-person-open="' + esc(person.id) + '"' +
+            ' aria-haspopup="dialog" aria-label="' +
+            esc("See " + person.name + "'s full profile") + '">' +
             '<span class="person__avatar" aria-hidden="true">' + esc(person.name.charAt(0).toUpperCase()) + "</span>" +
             '<span class="person__id">' +
-            '<h3 class="person__name">' + esc(person.name) + "</h3>" +
+            '<span class="person__name">' + esc(person.name) + "</span>" +
             '<span class="person__handle">' + esc(person.handle) + "</span>" +
-            "</span>" +
+            "</span></button>" +
             "</div>" +
             '<span class="person__role">' + esc(person.roleLabel) + "</span>" +
             '<p class="person__blurb">' + esc(person.blurb) + "</p>" +
@@ -885,6 +898,12 @@ function initCommunityFollow() {
 
     const renderPeople = (list) => {
         const followed = following();
+
+        /* kept so a click on a name can hand the popup the record behind it. The
+           popup is on every page with a navbar and fetches the same list itself,
+           but this is the copy already on screen, so the profile opens filled in
+           rather than blank while that request is in flight. */
+        shown = list;
 
         if (!list.length) {
             slide.innerHTML = '<p class="people__empty">Nobody to suggest right now.</p>';
@@ -969,9 +988,28 @@ function initCommunityFollow() {
         if (button) flipFollow(button.dataset.follow, button);
     };
 
+    /* Opening somebody's full profile is the popup's job, not this card's: the
+       popup is the only thing on the site that can render one, and it exists on
+       every page with a navbar. So the card asks for it over a window event
+       rather than building a second profile view here. */
+    const onOpenProfile = (e) => {
+        const button = e.target.closest("[data-person-open]");
+        if (!button) return;
+
+        const id = button.dataset.personOpen;
+        /* resolved from the list that was painted rather than off the attribute,
+           so the record and the button cannot disagree about who this is */
+        const person = shown.filter((p) => p.id === id)[0];
+
+        window.dispatchEvent(new CustomEvent("future-era:open-member", {
+            detail: { id: id, person: person || null },
+        }));
+    };
+
     interestBox.addEventListener("click", onChip);
     skillBox.addEventListener("click", onChip);
     slide.addEventListener("click", onFollow);
+    slide.addEventListener("click", onOpenProfile);
 
     if (filter) {
         filter.addEventListener("input", () => renderChips());
@@ -994,7 +1032,7 @@ function showPeopleError(err) {
         slide.innerHTML =
             '<p class="people__empty" role="alert">Could not load the member list (' +
             String(err.message || err) +
-            "). Start the backend with <code>uvicorn main:app</code> and reload.</p>";
+            "). Start the backend with <code>python main.py</code> and reload.</p>";
     }
     if (window.console) console.error("community members failed to load:", err);
 }
@@ -1745,17 +1783,45 @@ function initFooter() {
     if (year) year.textContent = new Date().getFullYear();
 }
 
+/* Every label in the profile dialog is written on every open, because the dialog
+   has two subjects and the headings change between them. This is the one place
+   that does it: a heading left holding the other subject's wording is how a popup
+   ends up saying "Your data" above somebody else's interests. */
+function setText(node, text) {
+    if (node) node.textContent = text;
+}
+
+/* Copy that only makes sense for your own account, kept out of the paint function
+   so the two subjects' text can be compared side by side. */
+const OWN_FOLLOWERS_NOTE = "No one follows you yet, and that number is honest rather than " +
+    "broken. Accounts and follows live in this browser only, with no shared server, so " +
+    "nobody else's follow can reach your profile. Your following list above is real.";
+const OWN_TAGS_EMPTY = "Pick interests and skills on the Community page and they show up here.";
+
+/* A member's follower count is served data and is shown as it stands. It is read in
+   exactly one place, and never off the account record: an account has no follower
+   data to derive, so borrowing a member's number there would be a different lie. */
+function followerCount(member) {
+    const n = Number(member && member.followers);
+    return isFinite(n) && n > 0 ? n : 0;
+}
+
 /* ---------- profile popup ----------
-   Opened from the signed-in chip in the navbar, so it is on every page that has
-   a navbar. It answers four questions: who am I, what have I picked, who do I
+   One dialog, two subjects. Your own account opens from the chip in the navbar, so
+   it is on every page that has a navbar. A member's opens when their name is
+   clicked on a suggestion card, and shows the same sections for the same reasons:
+   who they are, what they are into, who follows them and which groups they are in.
+   It answers four questions about you - who am I, what have I picked, who do I
    follow, and which groups am I in.
 
    Followers is the odd one out and deliberately so. An account here is an email
    and a password hash in this browser, and nothing ever links one account to a
    member card, so no other person's follow can be attributed to you - there is
    no honest way to produce a number. Rather than invent one or borrow a
-   stranger's, the count is a real 0 and the copy next to it says why. If a shared
-   backend ever lands, that is the single line to replace. */
+   stranger's, your own count is a real 0 and the copy next to it says why. A
+   member's is the opposite case: the member list carries a real count, so their
+   row shows it. If a shared backend ever lands, the zero is the single line to
+   replace. */
 function initProfile() {
     const dialog = document.getElementById("profile-dialog");
     const openBtns = Array.from(document.querySelectorAll("[data-profile-open]"));
@@ -1765,9 +1831,12 @@ function initProfile() {
     if (!dialog || !openBtns.length) return;
 
     const el = {};
-    ["initial", "email", "following-count", "followers-count", "group-count", "group-hint",
+    ["initial", "email", "role", "blurb", "title",
+        "following-count", "followers-count", "group-count", "group-hint",
+        "following-label", "followers-label", "groups-label",
+        "data-title", "following-title", "followers-title", "followers-note",
         "tags", "tags-empty", "following", "following-empty",
-        "groups", "groups-empty", "group-choices"].forEach((key) => {
+        "groups", "groups-empty"].forEach((key) => {
         el[key] = dialog.querySelector("[data-profile-" + key + "]");
     });
     const closeBtn = dialog.querySelector("[data-profile-close]");
@@ -1787,8 +1856,25 @@ function initProfile() {
        follow id resolves to somebody rather than a slug */
     let registry = [];
     let members = {};
+    /* who is in each group, by name. Built here from the people list rather than
+       taken from a field on the registry, because the registry's `members` is a
+       count: a count answers "how many" and the question is "who". */
+    let roster = {};
     let label = { interests: {}, skills: {}, groups: {} };
     let asked = false;
+
+    /* ---------- whose profile is on screen ----------
+       `viewing` is "" for your own account and a member id for somebody else's.
+       It is the only thing that decides which of the two paints runs, so the two
+       can never be half-applied to each other: every slot below is written on
+       every open, by one paint or the other.
+
+       `opened` is the record the click carried. The member list may not have been
+       fetched on this page at all - the home page has no suggestion slide - so the
+       click hands over what it already has and the fetch below replaces it with
+       the same record plus the label lookups. */
+    let viewing = "";
+    let opened = null;
 
     const getJSON = (url) => fetch(url).then((res) => {
         if (!res.ok) throw new Error(url + " said " + res.status);
@@ -1809,7 +1895,16 @@ function initProfile() {
                 registry.forEach((row) => { label.groups[row.id] = row.label; });
 
                 members = {};
-                (p.people || []).forEach((m) => { members[m.id] = m; });
+                roster = {};
+                (p.people || []).forEach((m) => {
+                    members[m.id] = m;
+                    /* every group this person is listed in collects their name, so
+                       the roster is a by-product of the one list we already have */
+                    (Array.isArray(m.groups) ? m.groups : []).forEach((gid) => {
+                        if (!roster[gid]) roster[gid] = [];
+                        roster[gid].push(String(m.name || m.handle || m.id));
+                    });
+                });
 
                 label.interests = {};
                 (p.interests || []).forEach((row) => { label.interests[row.id] = row.label; });
@@ -1824,24 +1919,40 @@ function initProfile() {
 
     const groupLabel = (id) => label.groups[id] || id;
 
-    const paintTags = () => {
-        if (!el.tags) return;
+    /* an id the vocabulary has not loaded yet falls back to the id, which is the
+       slug people.json already uses ("python", "ai") rather than a blank. The
+       repaint after the fetch replaces it with the real label. */
+    const tagLabel = (kind, id) => label[kind][id] || id;
 
+    const myPicks = () => {
         const picks = readStore(PROFILE_KEY, {}) || {};
         const asList = (v) => (Array.isArray(v) ? v : []);
-        /* interests carry no marker class - the plain chip is the interest
-           look, and only the second kind needs telling apart */
-        const rows = asList(picks.interests)
-            .map((id) => ({ text: label.interests[id] || id, kind: "Interest" }))
-            .concat(asList(picks.skills).map((id) => ({
-                text: label.skills[id] || id, kind: "Skill",
-            })));
+        return asList(picks.interests).concat(asList(picks.skills));
+    };
+
+    /* interests carry no marker class - the plain chip is the interest look, and
+       only the second kind needs telling apart. Both subjects use this, so the
+       chip is defined once rather than twice and drifting. */
+    const paintTags = (rows) => {
+        if (!el.tags) return;
 
         el.tags.innerHTML = rows.map((row) =>
             '<li' + (row.kind === "Skill" ? ' class="is-skill"' : "") +
             ' title="' + esc(row.kind) + '">' + esc(row.text) + "</li>").join("");
 
         if (el["tags-empty"]) el["tags-empty"].hidden = rows.length > 0;
+    };
+
+    const pickedTags = () => {
+        const picks = readStore(PROFILE_KEY, {}) || {};
+        const asList = (v) => (Array.isArray(v) ? v : []);
+        /* interests carry no marker class - the plain chip is the interest
+           look, and only the second kind needs telling apart */
+        return asList(picks.interests)
+            .map((id) => ({ text: tagLabel("interests", id), kind: "Interest" }))
+            .concat(asList(picks.skills).map((id) => ({
+                text: tagLabel("skills", id), kind: "Skill",
+            })));
     };
 
     const paintFollowing = () => {
@@ -1863,28 +1974,64 @@ function initProfile() {
         const mine = myGroups();
 
         if (el["group-count"]) el["group-count"].textContent = mine.length;
+        paintGroupList(mine, true);
+    };
+
+    /* the group list is the same shape either way - only the source of the ids
+       differs, yours from the account record and theirs from the member list.
+       `withRoster` is the one difference in content: your groups carry the names of
+       who is in them, because you are in them and would want to know. A member's
+       panel answers "which groups is this person in", and listing the other people
+       in each of those would bury that answer under a roll call. */
+    const paintGroupList = (ids, withRoster) => {
         if (el.groups) {
-            el.groups.innerHTML = mine.map((id) => {
+            el.groups.innerHTML = ids.map((id) => {
                 const row = registry.filter((g) => g.id === id)[0];
+                /* every name, not the first three and a count: a group here holds
+                   between two and seven people, so there is nothing to truncate,
+                   and "and 2 more" would be a worse answer than the whole list */
+                const here = withRoster ? roster[id] : null;
                 return "<li><b>" + esc(groupLabel(id)) + "</b>" +
                     (row && row.blurb
                         ? '<span class="prof__listsub">' + esc(row.members) + " members</span>"
-                        : "") + "</li>";
+                        : "") +
+                    /* nothing at all when the people list never arrived: the hint
+                       beside the heading already says the backend is offline, and a
+                       second line admitting the same thing per group is noise. An
+                       empty roster would be worse - it reads as "nobody is here" */
+                    (here && here.length
+                        ? '<span class="prof__roster">' + esc(here.join(", ")) + "</span>"
+                        : "") +
+                    "</li>";
             }).join("");
         }
-        if (el["groups-empty"]) el["groups-empty"].hidden = mine.length > 0;
-
-        /* checkboxes are updated in place rather than re-rendered, so clicking
-           one does not throw away the focus ring mid-interaction */
-        if (el["group-choices"]) {
-            Array.prototype.forEach.call(
-                el["group-choices"].querySelectorAll('input[type="checkbox"]'),
-                (box) => { box.checked = mine.indexOf(box.value) !== -1; },
-            );
-        }
+        if (el["groups-empty"]) el["groups-empty"].hidden = ids.length > 0;
     };
 
-    const paint = () => {
+    /* ---------- the two subjects share one set of slots ----------
+       Every heading, note and member-only element is written here, before either
+       subject puts its numbers in. Whatever is not being shown has to be cleared
+       rather than left holding the other one's words: a dialog that said "Your
+       data" above a stranger's interests, or offered an Edit button over somebody
+       else's name, would be worse than an empty one. Doing it in one place is also
+       what makes the third path - an id nothing answers to - able to reset the
+       dialog without repeating any of it. */
+    const resetSubject = () => {
+        if (el.role) el.role.hidden = true;
+        if (el.blurb) el.blurb.hidden = true;
+        if (editBtn) editBtn.hidden = true;
+        if (editForm) editForm.hidden = true;
+        if (el["group-hint"]) el["group-hint"].textContent = "";
+
+        /* the two labels that mean the same thing for both subjects, and the two
+           that do not, which each paint sets for itself */
+        setText(el["followers-label"], "Followers");
+        setText(el["groups-label"], "Groups");
+        setText(el["followers-title"], "Followers");
+    };
+
+    /* ---------- your own profile ---------- */
+    const paintOwn = () => {
         const s = session();
         const me = record();
         const name = String(me.name || s.name || "").trim();
@@ -1892,39 +2039,273 @@ function initProfile() {
 
         const seed = (name || email || "F").trim();
         if (el.initial) el.initial.textContent = seed.charAt(0).toUpperCase();
+        /* the heading is put back as markup rather than as text: a member's name
+           is written into this same element, so switching subjects has to restore
+           the <em> as well as the words */
+        if (el.title) el.title.innerHTML = "Your <em>profile</em>";
         if (el.email) el.email.textContent = email;
+        /* only this subject touches the navbar chip. Reading somebody else's
+           profile must not rename the button that opens yours. */
         if (chipName) chipName.textContent = name || email || "Profile";
+
+        /* the editor only ever appears over your own record */
+        if (editBtn) editBtn.hidden = false;
+        resetSubject();
+
+        setText(el["following-label"], "Following");
+        setText(el["following-title"], "Following");
+        setText(el["data-title"], "Your data");
+        if (el["followers-note"]) el["followers-note"].textContent = OWN_FOLLOWERS_NOTE;
+        if (el["tags-empty"]) el["tags-empty"].textContent = OWN_TAGS_EMPTY;
+        if (el["following-empty"]) {
+            el["following-empty"].textContent = "You are not following anyone yet. " +
+                "Find people on the Community page.";
+        }
+        if (el["groups-empty"]) {
+            el["groups-empty"].textContent = "You are not in any groups yet. Join one " +
+                "from the Groups section on the Community page and it is saved to your account.";
+        }
 
         /* There is no server to attribute another account's follow to, so this is
            a real zero rather than a placeholder for one. */
         if (el["followers-count"]) el["followers-count"].textContent = "0";
 
-        paintTags();
+        paintTags(pickedTags());
         paintFollowing();
         paintGroups();
     };
 
-    const buildChoices = () => {
-        if (!el["group-choices"]) return;
+    /* ---------- somebody else's profile ----------
+       Every number here is served data rather than something derived from this
+       browser, which is why the three rows can all be real. The first one is your
+       overlap with them rather than a list you can edit, so the panel underneath
+       it becomes the tags themselves. */
+    const paintMember = (m) => {
+        const name = String(m.name || m.handle || m.id || "").trim();
+        const groups = Array.isArray(m.groups) ? m.groups : [];
+        const match = m.match || {};
+        const shared = (match.interests || []).concat(match.skills || []);
+        const asList = (v) => (Array.isArray(v) ? v : []);
 
-        const mine = myGroups();
-        el["group-choices"].innerHTML = registry.map((row, i) =>
-            '<li class="prof__choice">' +
-            '<input type="checkbox" id="prof-group-' + i + '" value="' + esc(row.id) + '"' +
-            (mine.indexOf(row.id) !== -1 ? " checked" : "") + ">" +
-            '<label for="prof-group-' + i + '">' + esc(row.label) + "</label></li>").join("");
+        const seed = (name || "F").trim();
+        if (el.initial) el.initial.textContent = seed.charAt(0).toUpperCase();
+        if (el.title) el.title.textContent = name;
+        /* a member has no address on this site, and their handle is the closest
+           thing to one - so it takes the slot your email would occupy */
+        if (el.email) el.email.textContent = m.handle || "";
 
-        if (el["group-hint"]) el["group-hint"].textContent = "";
+        resetSubject();
+
+        if (el.role) {
+            el.role.textContent = m.roleLabel || "";
+            el.role.hidden = !m.roleLabel;
+        }
+        if (el.blurb) {
+            el.blurb.textContent = m.blurb || "";
+            el.blurb.hidden = !m.blurb;
+        }
+
+        setText(el["following-label"], "In common");
+        setText(el["following-title"], "In common with you");
+        setText(el["data-title"], "Interests and skills");
+        if (el["followers-note"]) {
+            el["followers-note"].textContent = "This is the follower count the member " +
+                "list carries, so it is real. Who they follow is not recorded " +
+                "anywhere, so there is no honest number to put under that.";
+        }
+        if (el["tags-empty"]) {
+            el["tags-empty"].textContent = "This member has no interests or skills listed.";
+        }
+        if (el["groups-empty"]) {
+            el["groups-empty"].textContent = "This member is not listed in any group.";
+        }
+
+        if (el["following-count"]) el["following-count"].textContent = shared.length;
+        if (el["followers-count"]) el["followers-count"].textContent = followerCount(m);
+        if (el["group-count"]) el["group-count"].textContent = groups.length;
+
+        paintTags(
+            asList(m.interests).map((id) => ({ text: tagLabel("interests", id), kind: "Interest" }))
+                .concat(asList(m.skills).map((id) => ({
+                    text: tagLabel("skills", id), kind: "Skill",
+                })))
+        );
+
+        /* the shared tags go in the panel the first tab opens, reusing the list
+           element rather than adding a second one that is only ever on screen in
+           one of the two modes */
+        if (el.following) {
+            el.following.innerHTML = shared.map((id) => {
+                const isSkill = asList(m.skills).indexOf(id) > -1;
+                return "<li><b>" + esc(tagLabel(isSkill ? "skills" : "interests", id)) + "</b>" +
+                    '<span class="prof__listsub">' + (isSkill ? "Skill" : "Interest") +
+                    "</span></li>";
+            }).join("");
+        }
+        if (el["following-empty"]) {
+            el["following-empty"].hidden = shared.length > 0;
+            el["following-empty"].textContent = myPicks().length
+                ? "Nothing in common yet - same direction, different toolkits."
+                : "Pick a few tags on the Community page and this will say what the two of you share.";
+        }
+
+        paintGroupList(groups, false);
     };
+
+    /* An id nothing in the member list answers to: the record never arrived, so
+       there is no profile to paint. The dialog is reset rather than left holding
+       the last subject, and says what happened instead of showing an empty card. */
+    const paintUnknown = () => {
+        resetSubject();
+
+        if (el.initial) el.initial.textContent = "?";
+        if (el.title) el.title.textContent = "Member not found";
+        if (el.email) el.email.textContent = "";
+        setText(el["following-label"], "In common");
+        setText(el["data-title"], "Interests and skills");
+        if (el["followers-count"]) el["followers-count"].textContent = "0";
+        if (el["following-count"]) el["following-count"].textContent = "0";
+        if (el["group-count"]) el["group-count"].textContent = "0";
+    };
+
+    const paint = () => {
+        /* the member list wins over whatever the click carried: it is the same
+           record plus the label lookups, and it has been checked against the id */
+        const m = viewing ? members[viewing] || opened : null;
+
+        /* a stale panel would show the last subject's list under the new heading,
+           so the accordion collapses on every repaint rather than on close only */
+        closeAllPanels();
+
+        if (viewing && !m) {
+            paintUnknown();
+            return;
+        }
+
+        if (m) paintMember(m);
+        else paintOwn();
+    };
+
+    /* ---------- profile edit ----------
+       The edit form lives in the same dialog, hidden until the user presses Edit.
+       Saving requires the current password (so a hijacked session cannot change the
+       account), validates the new email against the registry, hashes any new password,
+       and migrates the follows key if the email changes. The session is updated so
+       the navbar chip and the profile itself reflect the new name/email immediately. */
+    const editBtn = dialog.querySelector("[data-profile-edit]");
+    const editForm = dialog.querySelector("[data-profile-edit-form]");
+    const editName = dialog.querySelector("#prof-edit-name");
+    const editEmail = dialog.querySelector("#prof-edit-email");
+    const editPassCurrent = dialog.querySelector("#prof-edit-pass-current");
+    const editPassNew = dialog.querySelector("#prof-edit-pass-new");
+    const editPassConfirm = dialog.querySelector("#prof-edit-pass-confirm");
+    const editSave = dialog.querySelector("[data-profile-edit-save]");
+    const editCancel = dialog.querySelector("[data-profile-edit-cancel]");
+    const editMsg = dialog.querySelector("[data-profile-edit-msg]");
+
+    let editing = false;
+
+    const showEditMsg = (text, ok) => {
+        if (!editMsg) return;
+        editMsg.textContent = text;
+        editMsg.classList.toggle("prof__msg--ok", !!ok);
+    };
+
+    const clearEditMsg = () => { if (editMsg) editMsg.textContent = ""; };
+
+    const enterEdit = () => {
+        const me = record();
+        const s = session();
+        if (!me.email) return;
+
+        editing = true;
+        if (editName) editName.value = me.name || "";
+        if (editEmail) editEmail.value = me.email || "";
+        if (editPassCurrent) editPassCurrent.value = "";
+        if (editPassNew) editPassNew.value = "";
+        if (editPassConfirm) editPassConfirm.value = "";
+        clearEditMsg();
+
+        if (editForm) editForm.hidden = false;
+        if (editBtn) editBtn.textContent = "Editing…";
+        if (editBtn) editBtn.disabled = true;
+    };
+
+    const exitEdit = () => {
+        editing = false;
+        if (editForm) editForm.hidden = true;
+        if (editBtn) editBtn.textContent = "Edit";
+        if (editBtn) editBtn.disabled = false;
+        clearEditMsg();
+    };
+
+    const saveEdit = () => {
+        const me = record();
+        const s = session();
+        if (!me.email) return;
+
+        const name = editName ? editName.value.trim() : "";
+        const email = editEmail ? editEmail.value.trim().toLowerCase() : "";
+        const passCurrent = editPassCurrent ? editPassCurrent.value : "";
+        const passNew = editPassNew ? editPassNew.value : "";
+        const passConfirm = editPassConfirm ? editPassConfirm.value : "";
+
+        if (!passCurrent) { showEditMsg("Current password is required."); return; }
+        if (email && !looksLikeEmail(email)) { showEditMsg("Enter a valid email."); return; }
+        if (passNew && passNew.length < 6) { showEditMsg("New password must be at least 6 characters."); return; }
+        if (passNew && passNew !== passConfirm) { showEditMsg("New passwords do not match."); return; }
+        if (!name && !email && !passNew) { showEditMsg("Nothing to change."); return; }
+
+        digest(s.email + "::" + passCurrent).then((hash) => {
+            if (hash !== me.hash) { showEditMsg("Current password is incorrect."); return; }
+
+            const users = readStore(AUTH_USERS, {}) || {};
+            const oldEmail = me.email;
+            const newEmail = email || oldEmail;
+
+            if (newEmail !== oldEmail && users[newEmail]) {
+                showEditMsg("That email is already in use.");
+                return;
+            }
+
+            const next = { ...me, name: name || me.name, email: newEmail };
+            if (passNew) next.hash = digest(newEmail + "::" + passNew);
+
+            delete users[oldEmail];
+            users[newEmail] = next;
+            writeStore(AUTH_USERS, users);
+
+            if (newEmail !== oldEmail) {
+                const follows = readStore(FOLLOWS_KEY + oldEmail, []);
+                if (follows.length) {
+                    writeStore(FOLLOWS_KEY + newEmail, follows);
+                    writeStore(FOLLOWS_KEY + oldEmail, []);
+                }
+            }
+
+            const newSession = { ...s, name: next.name, email: next.email };
+            writeStore(AUTH_SESSION, newSession);
+
+            exitEdit();
+            paint();
+            showProfileError(new Error("Profile updated"));
+        });
+    };
+
+    if (editBtn) editBtn.addEventListener("click", enterEdit);
+    if (editCancel) editCancel.addEventListener("click", exitEdit);
+    if (editSave) editSave.addEventListener("click", saveEdit);
 
     const close = () => {
         if (dialog.open && typeof dialog.close === "function") dialog.close();
     };
 
     const open = () => {
-        /* unreachable while signed out - the chip is inside .auth__who - but the
-           guard is what stops an empty profile appearing if that ever changes */
-        if (!session().email) return;
+        /* Your own profile is unreachable signed out - the chip is inside
+           .auth__who, and there would be no account to describe. A member's is
+           public, so the guard is lifted for them: a visitor who is not signed in
+           can still read who somebody is. */
+        if (!viewing && !session().email) return;
 
         if (typeof dialog.showModal === "function") {
             if (!dialog.open) dialog.showModal();
@@ -1936,13 +2317,14 @@ function initProfile() {
         if (toggle) toggle.setAttribute("aria-expanded", "false");
 
         paint();
-        buildChoices();
-
         load()
-            .then(() => { paint(); buildChoices(); })
+            .then(() => { paint(); })
             .catch((err) => {
                 /* the popup still opens with whatever is in storage: a name, the
-                   follows that were saved, the groups already joined */
+                   follows that were saved, the groups already joined. The names of
+                   those groups are the only thing the lookups were for, so without
+                   them the list falls back to raw ids - which is why the hint
+                   says so rather than the popup pretending it is complete. */
                 if (el["group-hint"]) {
                     el["group-hint"].textContent = "group names unavailable - backend offline";
                 }
@@ -1950,31 +2332,109 @@ function initProfile() {
             });
     };
 
-    openBtns.forEach((btn) => btn.addEventListener("click", open));
+    const openOwn = () => {
+        /* the chip is the only way back to your own profile once you have opened
+           somebody else's, and it has to say which subject it is asking for or
+           the click would land on whoever was last looked at */
+        viewing = "";
+        opened = null;
+        open();
+    };
+
+    const openMember = (e) => {
+        const detail = (e && e.detail) || {};
+        const id = String(detail.id || "");
+
+        /* The id arrives on a window event, which anything on the page could
+           raise, so it is only used to look a member up and the record has to
+           agree with it. A record for a different member is thrown away rather
+           than painted under the wrong name. */
+        if (!id) return;
+
+        viewing = id;
+        opened = detail.person && detail.person.id === id ? detail.person : null;
+        open();
+    };
+
+    openBtns.forEach((btn) => btn.addEventListener("click", openOwn));
+    window.addEventListener("future-era:open-member", openMember);
     if (closeBtn) closeBtn.addEventListener("click", close);
     dialog.addEventListener("click", (e) => { if (e.target === dialog) close(); });
 
-    if (el["group-choices"]) {
-        el["group-choices"].addEventListener("change", (e) => {
-            const box = e.target.closest ? e.target.closest('input[type="checkbox"]') : null;
-            if (!box) return;
-
-            const mine = myGroups();
-            const next = box.checked
-                ? (mine.indexOf(box.value) === -1 ? mine.concat([box.value]) : mine)
-                : mine.filter((id) => id !== box.value);
-
-            setMyGroups(next);
-            paint();
-        });
-    }
-
     /* Signing out must not leave the popup on screen showing the last account's
-       name, and the chip label has to follow the session too. */
+       name, and the chip label has to follow the session too. A member's profile
+       is dropped as well: the session change is about your account, and the popup
+       has one subject at a time - leaving it on a stranger would be a profile you
+       signed out of that still had your following list behind it. */
     window.addEventListener("future-era:session", () => {
+        viewing = "";
+        opened = null;
         if (!session().email) close();
         else paint();
     });
+
+    /* This popup no longer changes the group list - joining happens on the
+       Community page, where each group can say why it is being suggested. But it
+       still *shows* that list, so it has to follow changes made elsewhere. Without
+       this it would sit on whatever it painted when it was last opened, which is
+       a stale number in a dialog that is meant to be the summary of your account. */
+    window.addEventListener("future-era:groups-changed", () => {
+        /* a member's groups come from the member list, not from your account, so
+           a join made elsewhere has nothing to say about them */
+        if (session().email && !viewing) paint();
+    });
+
+    /* ---------- stat-tab accordion (Instagram-style) ----------
+       Clicking Following / Followers / Groups on the stat bar expands the
+       matching panel directly below the stat row.  Clicking the same tab again
+       collapses it.  Only one panel is open at a time.
+       The three headings are the same three either way round - your first panel
+       is who you follow, a member's is what you have in common with them - so
+       the tabs open the panels in the order they are written.
+       NOTE: we never set hidden=true after first reveal — overflow:hidden in CSS
+       does the visual hiding via max-height:0, avoiding the transitionend race. */
+    const statBtns = Array.from(dialog.querySelectorAll("[data-profile-tab]"));
+    const panels   = Array.from(dialog.querySelectorAll("[data-profile-panel]"));
+
+    /* Also puts the panel back out of the a11y tree. A panel left un-hidden at
+       max-height 0 is invisible but still readable, and paint() calls this on
+       every repaint - so switching between your profile and a member's cannot
+       leave the last subject's list behind for a screen reader. */
+    const closeAllPanels = () => {
+        statBtns.forEach((b) => b.setAttribute("aria-expanded", "false"));
+        panels.forEach((p) => {
+            p.style.maxHeight = "0px";
+            p.style.opacity   = "0";
+            p.hidden = true;
+        });
+    };
+
+    statBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const key    = btn.dataset.profileTab;
+            const panel  = dialog.querySelector("[data-profile-panel=\"" + key + "\"]");
+            const isOpen = btn.getAttribute("aria-expanded") === "true";
+
+            closeAllPanels();
+
+            if (!isOpen && panel) {
+                /* strip hidden so the element participates in layout */
+                panel.hidden = false;
+                /* double rAF so the browser has painted the unhidden state
+                   before we animate from max-height:0 */
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                        panel.style.opacity   = "1";
+                    });
+                });
+                btn.setAttribute("aria-expanded", "true");
+            }
+        });
+    });
+
+    /* reset panels when dialog closes so they start hidden next open */
+    dialog.addEventListener("close", () => { closeAllPanels(); });
 }
 
 function showProfileError(err) {
@@ -2039,7 +2499,15 @@ function initCommunityGroups() {
             return '<li class="group' + (on ? " is-joined" : "") + '" data-group="' + esc(g.id) + '">' +
                 '<div class="group__body">' +
                 '<div class="group__top">' +
-                '<h3 class="group__name">' + esc(g.label) + "</h3>" +
+                /* The chat lives on the group's own name, because that is what
+                   people look for - a separate "Open chat" line was one more
+                   thing to read before arriving. Still a real link to a real
+                   page, so it can be middle-clicked, copied, or opened in a new
+                   tab, and rel="noopener" keeps the chat page from reaching back
+                   through window.opener into this one. */
+                '<h3 class="group__name"><a class="group__chat" href="group.html?g=' +
+                encodeURIComponent(g.id) + '" target="_blank" rel="noopener">' +
+                esc(g.label) + "</a></h3>" +
                 '<span class="group__score"' + (m.score === null || m.score === undefined ? ' data-unranked="true"' : "") +
                 ">" + (m.score === null || m.score === undefined ? "not ranked" : m.score + "%") + "</span>" +
                 "</div>" +
@@ -2112,6 +2580,537 @@ function initCommunityGroups() {
     if (RANKED) onRanked({ detail: RANKED });
 };
 
+/* ---------- group chat ----------
+   One chat per group, opened from the card on the community page.
+
+   Messages and their images live in IndexedDB rather than localStorage, for one
+   concrete reason: a single phone photo as a base64 data URL runs 1-3MB, and
+   localStorage has roughly 5MB for the entire origin. Four pictures would fill
+   it and every later write would throw QuotaExceededError, so the honest options
+   were a database that stores Blobs natively or no images at all. IndexedDB
+   also gets a large share of the disk rather than a fixed 5MB.
+
+   The consequence is the one that follows and group membership have, and it is
+   worth being blunt about: this is per-browser. Nobody else can read what you
+   write here, and clearing site data deletes it. There is no write endpoint to
+   put a message in, exactly as there is none for a follow. */
+
+const CHAT_DB_NAME = "future-era-chat";
+const CHAT_DB_VERSION = 1;
+const CHAT_MAX_TEXT = 800;
+const CHAT_MAX_BYTES = 2 * 1024 * 1024;
+const CHAT_MAX_EDGE = 1200;
+
+/* Checked against the bytes in the file, not against what the browser claims.
+   SVG is deliberately absent: it can carry script, and a blob URL of one is
+   same-origin content. */
+const CHAT_IMAGE_TYPES = {
+    "image/jpeg": true,
+    "image/png": true,
+    "image/gif": true,
+    "image/webp": true,
+};
+
+const chatUid = () => Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+
+const chatMb = (bytes) => (bytes / (1024 * 1024)).toFixed(1) + "MB";
+
+function chatOpenDb() {
+    return new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+            reject(new Error("This browser has no IndexedDB, so there is nowhere to keep a chat history"));
+            return;
+        }
+
+        let req;
+        try {
+            req = window.indexedDB.open(CHAT_DB_NAME, CHAT_DB_VERSION);
+        } catch (err) {
+            reject(err);
+            return;
+        }
+
+        req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains("messages")) {
+                const store = db.createObjectStore("messages", { keyPath: "id", autoIncrement: true });
+                store.createIndex("group", "group", { unique: false });
+            }
+            if (!db.objectStoreNames.contains("images")) {
+                db.createObjectStore("images", { keyPath: "id" });
+            }
+        };
+        req.onsuccess = () => resolve(req.result);
+        /* Private browsing in some engines reports success and then throws on the
+           first write, so the failure is caught again at the write rather than
+           only here. */
+        req.onerror = () => reject(req.error || new Error("chat storage could not be opened"));
+        req.onblocked = () => reject(new Error("chat storage is open in another tab"));
+    });
+}
+
+/* One transaction for the message and its image, or neither. A message that
+   points at an image that was never stored would render as a broken box. */
+function chatStoreMessage(db, record, image) {
+    return new Promise((resolve, reject) => {
+        const stores = image ? ["messages", "images"] : "messages";
+        const tx = db.transaction(stores, "readwrite");
+
+        if (image) {
+            record.imageId = "img-" + chatUid();
+            tx.objectStore("images").put({
+                id: record.imageId,
+                blob: image.blob,
+                type: image.type,
+                bytes: image.blob.size,
+            });
+        }
+
+        const req = tx.objectStore("messages").add(record);
+        tx.oncomplete = () => resolve(req.result);
+        tx.onerror = () => reject(tx.error || new Error("the message was not saved"));
+        tx.onabort = () => reject(tx.error || new Error("the message was not saved"));
+    });
+}
+
+/* The index returns in key order, which is insertion order, so this is oldest
+   first without a sort. */
+function chatListMessages(db, group) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("messages", "readonly");
+        const req = tx.objectStore("messages").index("group").getAll(group);
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error || new Error("the conversation could not be read"));
+    });
+}
+
+function chatGetImage(db, id) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("images", "readonly");
+        const req = tx.objectStore("images").get(id);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => reject(req.error || new Error("the image could not be read"));
+    });
+}
+
+/* The first dozen bytes, which is where every one of these four formats states
+   what it is. Reading the declared type instead would mean trusting a value the
+   uploader chose. */
+function chatSniffImage(file) {
+    return file.slice(0, 12).arrayBuffer().then((buf) => {
+        const b = new Uint8Array(buf);
+        const starts = (sig) => sig.every((v, i) => b[i] === v);
+        const ascii = (from, len) => String.fromCharCode.apply(null, Array.prototype.slice.call(b, from, from + len));
+
+        if (starts([0xff, 0xd8, 0xff])) return "image/jpeg";
+        if (starts([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return "image/png";
+        if (ascii(0, 6) === "GIF87a" || ascii(0, 6) === "GIF89a") return "image/gif";
+        if (ascii(0, 4) === "RIFF" && ascii(8, 4) === "WEBP") return "image/webp";
+        return null;
+    });
+}
+
+function chatDecodeViaImg(file) {
+    return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+        };
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("that file could not be read as an image"));
+        };
+        img.src = url;
+    });
+}
+
+function chatDecodeImage(file) {
+    if (typeof window.createImageBitmap === "function") {
+        return window.createImageBitmap(file).catch(() => chatDecodeViaImg(file));
+    }
+    return chatDecodeViaImg(file);
+}
+
+function chatCanvasBlob(canvas, type, quality) {
+    return new Promise((resolve, reject) => {
+        if (typeof canvas.toBlob !== "function") {
+            reject(new Error("this browser cannot re-encode images"));
+            return;
+        }
+        canvas.toBlob((out) => {
+            if (out) resolve(out);
+            else reject(new Error("that image could not be re-encoded"));
+        }, type, quality);
+    });
+}
+
+/* A phone photo is 4000px wide and 5MB. Kept whole it is a few hundred times
+   more detail than a chat bubble needs, so anything over the edge limit is
+   scaled down and re-encoded in its own format - keeping the format rather than
+   always writing JPEG, because re-encoding a PNG as JPEG throws away the
+   transparency that made it a PNG. */
+function chatPrepareImage(file) {
+    return chatSniffImage(file).then((sniffed) => {
+        if (!sniffed || !CHAT_IMAGE_TYPES[sniffed]) {
+            throw new Error("that is not a PNG, JPEG, GIF or WebP image");
+        }
+        return chatDecodeImage(file).then((src) => {
+            const w = src.width || src.naturalWidth || 0;
+            const h = src.height || src.naturalHeight || 0;
+            if (!w || !h) throw new Error("that image has no readable dimensions");
+
+            /* A GIF is left exactly as it is: re-encoding one discards the
+               animation, which is the only reason to send a GIF. If it is over
+               the limit we say so rather than quietly turning it into a still. */
+            if (sniffed === "image/gif") {
+                if (file.size > CHAT_MAX_BYTES) {
+                    throw new Error("that GIF is " + chatMb(file.size) + ", over the " + chatMb(CHAT_MAX_BYTES) + " limit");
+                }
+                if (typeof src.close === "function") src.close();
+                return { blob: file, type: sniffed, width: w, height: h };
+            }
+
+            const scale = Math.min(1, CHAT_MAX_EDGE / Math.max(w, h));
+            if (scale === 1 && file.size <= CHAT_MAX_BYTES) {
+                if (typeof src.close === "function") src.close();
+                return { blob: file, type: sniffed, width: w, height: h };
+            }
+
+            const outW = Math.max(1, Math.round(w * scale));
+            const outH = Math.max(1, Math.round(h * scale));
+            const canvas = document.createElement("canvas");
+            canvas.width = outW;
+            canvas.height = outH;
+
+            const ctx = canvas.getContext("2d");
+            if (!ctx) throw new Error("this browser cannot resize images");
+            ctx.drawImage(src, 0, 0, outW, outH);
+            if (typeof src.close === "function") src.close();
+
+            return chatCanvasBlob(canvas, sniffed, 0.82).then((blob) => ({
+                blob: blob,
+                /* the browser may hand back a different type than asked for, so
+                   the stored type is the one the bytes actually are */
+                type: blob.type || sniffed,
+                width: outW,
+                height: outH,
+            }));
+        });
+    });
+}
+
+function chatWhen(ts) {
+    const d = new Date(ts);
+    const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    if (d.toDateString() === new Date().toDateString()) return time;
+    return d.toLocaleDateString([], { day: "numeric", month: "short" }) + " at " + time;
+}
+
+function initGroupChat() {
+    const log = document.getElementById("chat-log");
+    if (!log) return;   /* not the chat page */
+
+    const form = document.getElementById("chat-form");
+    const text = document.getElementById("chat-text");
+    const file = document.getElementById("chat-file");
+    const attachLabel = document.getElementById("chat-attach");
+    const preview = document.getElementById("chat-preview");
+    const previewImg = document.getElementById("chat-preview-img");
+    const previewNote = document.getElementById("chat-preview-note");
+    const dropPreview = document.getElementById("chat-preview-drop");
+    const send = document.getElementById("chat-send");
+    const gate = document.getElementById("chat-gate");
+    const gateText = document.getElementById("chat-gate-text");
+    const gateJoin = document.getElementById("chat-gate-join");
+    const title = document.getElementById("chat-title");
+    const meta = document.getElementById("chat-meta");
+    const note = document.getElementById("chat-note");
+
+    let db = null;
+    let groupId = "";
+    let registry = [];
+    let pending = null;   /* the prepared image waiting to be sent */
+    let previewUrl = "";
+    let liveUrls = [];    /* object URLs of images in the log, revoked on repaint */
+    let busy = false;
+
+    const say = (text) => { if (note) note.textContent = text; };
+
+    /* An object URL pins its blob in memory for the life of the document, so every
+       one is released when the log is rebuilt. Without this, scrolling back and
+       forth through a long conversation would leak the whole history. */
+    const releaseLogUrls = () => {
+        liveUrls.forEach((url) => URL.revokeObjectURL(url));
+        liveUrls = [];
+    };
+
+    const dropPending = () => {
+        pending = null;
+        if (file) file.value = "";
+        if (preview) preview.hidden = true;
+        if (previewImg) previewImg.removeAttribute("src");
+        if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = ""; }
+    };
+
+    const rowLabel = () => {
+        const row = registry.filter((g) => g.id === groupId)[0];
+        return row ? row.label : groupId;
+    };
+
+    /* Posting is for members, so the composer is only offered once there is an
+       account and a membership. The check runs again at send time: membership
+       can be removed in another tab, and a page opened ten minutes ago is not
+       evidence of anything. */
+    const applyGate = () => {
+        if (!groupId) return;
+
+        const who = sessionOf();
+        const member = who.email && myGroups().indexOf(groupId) > -1;
+
+        if (gate) {
+            gate.hidden = !!member;
+            if (!member) {
+                gateText.textContent = who.email
+                    ? "You are not in " + rowLabel() + " yet. Join it to post in the chat."
+                    : "Sign in and join " + rowLabel() + " to post in the chat.";
+                gateJoin.hidden = !who.email;
+            }
+        }
+        if (form) form.hidden = !member;
+    };
+
+    /* The group id arrives in the query string, so it is checked against the
+       registry before anything is done with it - an unrecognised one has no
+       label, no blurb and no members, and writing messages against it would
+       create a room that nothing in the UI can explain. */
+    const wanted = new URLSearchParams(window.location.search).get("g") || "";
+
+    chatOpenDb().then((opened) => {
+        db = opened;
+        return fetch("/api/groups").then((res) => (res.ok ? res.json() : null));
+    }).then((data) => {
+        registry = (data && data.groups) || [];
+        const row = registry.filter((g) => g.id === wanted)[0];
+
+        if (!wanted || !row) {
+            say("That group link is not one we recognise.");
+            if (title) title.textContent = "Group not found";
+            if (meta) meta.textContent = "";
+            if (form) form.hidden = true;
+            return;
+        }
+
+        groupId = row.id;
+        document.title = row.label + " - Future Era chat";
+        if (title) title.textContent = row.label;
+        if (meta) meta.textContent = row.members + " members - " + row.blurb;
+
+        applyGate();
+        render();
+    }).catch((err) => {
+        if (title) title.textContent = "Chat unavailable";
+        if (meta) meta.textContent = "";
+        if (form) form.hidden = true;
+        say(err && err.message ? err.message : "chat storage is not available in this browser");
+    });
+
+    const renderOne = (m) => {
+        const mine = m.email === sessionOf().email;
+        const who = m.name || m.email || "Someone";
+        const body = [];
+
+        if (m.text) body.push('<p class="chat__text">' + esc(m.text) + "</p>");
+
+        if (m.imageId) {
+            /* The dimensions are stored with the message so the space is reserved
+               before the blob arrives, rather than the log jumping as images
+               land. The file name and type are never interpolated here: they came
+               off disk, and only the sniffed type is trusted. */
+            const dims = m.imageW && m.imageH
+                ? ' width="' + Number(m.imageW) + '" height="' + Number(m.imageH) + '"'
+                : "";
+            body.push('<div class="chat__pic"><img class="chat__image" alt="Image sent by ' +
+                esc(who) + '" data-image="' + esc(m.imageId) + '"' + dims + "></div>");
+        }
+
+        return '<li class="chat__msg' + (mine ? " is-mine" : "") + '">' +
+            '<p class="chat__meta"><b>' + esc(who) + "</b>" +
+            (mine ? "" : " <span>" + esc(m.email || "") + "</span>") +
+            '<time datetime="' + new Date(m.created).toISOString() + '">' +
+            esc(chatWhen(m.created)) + "</time></p>" +
+            body.join("") + "</li>";
+    };
+
+    const render = () => {
+        if (!db || !groupId) return;
+
+        chatListMessages(db, groupId).then((rows) => {
+            releaseLogUrls();
+
+            if (!rows.length) {
+                log.innerHTML = '<li class="chat__none">No messages yet. Say something.</li>';
+                return;
+            }
+
+            log.innerHTML = rows.map(renderOne).join("");
+
+            /* Blobs are fetched one at a time and put in by id, so one missing or
+               unreadable image cannot take the rest of the conversation with it. */
+            rows.filter((m) => m.imageId).forEach((m) => {
+                chatGetImage(db, m.imageId).then((rec) => {
+                    const img = log.querySelector('[data-image="' + CSS.escape(m.imageId) + '"]');
+                    if (!rec || !img) return;
+
+                    const url = URL.createObjectURL(rec.blob);
+                    liveUrls.push(url);
+                    img.src = url;
+                    img.addEventListener("load", function () {
+                        /* once it is painted the reserved box is the wrong size */
+                        img.removeAttribute("width");
+                        img.removeAttribute("height");
+                    });
+                }).catch(() => {
+                    const img = log.querySelector('[data-image="' + CSS.escape(m.imageId) + '"]');
+                    if (img) {
+                        const wrap = img.parentNode;
+                        if (wrap) wrap.innerHTML = '<p class="chat__missing">image could not be loaded</p>';
+                    }
+                });
+            });
+
+            const near = log.scrollHeight - log.clientHeight - log.scrollTop < 120;
+            if (near || !log.dataset.seen) {
+                log.scrollTop = log.scrollHeight;
+                log.dataset.seen = "1";
+            }
+        }).catch((err) => say(err.message || "the conversation could not be read"));
+    };
+
+    const take = (fileIn) => {
+        if (!fileIn) return;
+        say("");
+
+        chatPrepareImage(fileIn).then((image) => {
+            pending = image;
+
+            if (preview) preview.hidden = false;
+            if (previewNote) {
+                previewNote.textContent = chatMb(image.blob.size) + " - " +
+                    image.width + "x" + image.height + " - ready to send";
+            }
+            if (previewImg) {
+                if (previewUrl) URL.revokeObjectURL(previewUrl);
+                previewUrl = URL.createObjectURL(image.blob);
+                previewImg.src = previewUrl;
+            }
+        }).catch((err) => {
+            dropPending();
+            say(err && err.message ? err.message : "that image cannot be attached");
+        });
+    };
+
+    if (file) file.addEventListener("change", () => take(file.files && file.files[0]));
+    if (attachLabel && file) {
+        /* The label is a real <label for>, so the file dialog opens on click and
+           on Enter with no script at all. This is belt and braces for the same
+           reason as the accept attribute: a hint is not a filter. */
+        attachLabel.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); file.click(); }
+        });
+    }
+    if (dropPreview) {
+        dropPreview.addEventListener("click", () => { dropPending(); say(""); });
+    }
+
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (busy) return;
+
+            const who = sessionOf();
+            if (!who.email) {
+                window.dispatchEvent(new CustomEvent("future-era:open-auth"));
+                return;
+            }
+            if (myGroups().indexOf(groupId) === -1) {
+                applyGate();
+                say("you are not a member of this group any more");
+                return;
+            }
+
+            const body = text ? text.value.trim() : "";
+            if (!body && !pending) {
+                say("write something, or attach an image");
+                if (text) text.focus();
+                return;
+            }
+            if (body.length > CHAT_MAX_TEXT) {
+                say("that message is " + body.length + " characters; the limit is " + CHAT_MAX_TEXT);
+                return;
+            }
+
+            const record = {
+                group: groupId,
+                email: who.email,
+                name: String(who.name || who.email).trim(),
+                text: body.slice(0, CHAT_MAX_TEXT),
+                created: Date.now(),
+            };
+            if (pending) {
+                record.imageId = "";
+                record.imageType = pending.type;
+                record.imageW = pending.width;
+                record.imageH = pending.height;
+            }
+
+            busy = true;
+            if (send) send.disabled = true;
+            say("sending...");
+
+            const image = pending;
+            chatStoreMessage(db, record, image)
+                .then(() => {
+                    if (text) text.value = "";
+                    dropPending();
+                    say("");
+                    render();
+                })
+                .catch((err) => {
+                    /* A full disk and a rejected blob both land here, and both are
+                       worth saying out loud: the alternative is a message that
+                       looks sent and is not. */
+                    say((err && err.message ? err.message : "the message was not saved") +
+                        " - it has not been sent.");
+                })
+                .then(() => {
+                    busy = false;
+                    if (send) send.disabled = false;
+                });
+        });
+    }
+
+    if (gateJoin) {
+        gateJoin.addEventListener("click", () => {
+            if (myGroups().indexOf(groupId) === -1) setMyGroups(myGroups().concat([groupId]));
+            applyGate();
+        });
+    }
+
+    /* Signing in, signing out, or a join or leave made in another tab all change
+       whether the composer should be there at all. */
+    window.addEventListener("future-era:session", () => { applyGate(); render(); });
+    window.addEventListener("future-era:groups-changed", () => { applyGate(); render(); });
+
+    window.addEventListener("pagehide", () => {
+        releaseLogUrls();
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        if (db) db.close();
+    });
+}
+
 function init() {
     /* The CSS starts the hero, the scroll cue and a few sections at opacity: 0
        so GSAP can fade them in. If we are not going to animate - no GSAP, or
@@ -2133,6 +3132,7 @@ function init() {
     step("community", initCommunity);
     step("communityFollow", initCommunityFollow);
     step("communityGroups", initCommunityGroups);
+    step("groupChat", initGroupChat);
     step("profile", initProfile);
     step("careerHero", initCareerHero);
     step("footer", initFooter);
@@ -2184,7 +3184,7 @@ function showDataError(err) {
     form.innerHTML =
         '<p class="cform__error" role="alert">' +
         "Could not load the career data (" + String(err.message || err) + "). " +
-        "Start the backend with <code>uvicorn main:app</code> and reload." +
+        "Start the backend with <code>python main.py</code> and reload." +
         "</p>";
 
     if (window.console) console.error("career data failed to load:", err);

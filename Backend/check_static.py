@@ -13,7 +13,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 FRONTEND = HERE.parent / "Frontend"
-PAGES = ("index.html", "career.html", "creators.html", "community.html")
+PAGES = ("index.html", "career.html", "creators.html", "community.html", "group.html")
 
 # The career data moved out of Frontend/ and is served by this backend now, so
 # the data is read from here - the same file the API loads.
@@ -195,7 +195,7 @@ for vendor in ("vendor/gsap.min.js", "vendor/ScrollTrigger.min.js"):
 # project could tell the difference, because the checks read the file rather
 # than what a browser would fetch.
 #
-# So the ?v= has to be there, and all four pages have to agree on the number, or
+# So the ?v= has to be there, and all five pages have to agree on the number, or
 # one page quietly keeps serving a stale script for as long as that version is
 # cached. Bump it in all four when script.js changes.
 versions: dict[str, str] = {}
